@@ -11,13 +11,13 @@
         <!--  instances : The number of instances of this bolt to be constructed at runtime -->
         <bolt  label=""  instances="">
 
-            <!--  stream : The single-token name of a stream emited by the parent bolt -->
+            <!--  stream : The single-token name of a stream emitted by the bolt -->
             <!--  type : The name of a defined type that describes the shape of the fields on the stream -->
             <emits  stream=""  type="">
 
             </emits>
 
-            <!--  stream : The name of a stream read by the parent polt. -->
+            <!--  stream : The name of a stream read by the bolt -->
             <!--  grouping : One of "fields", "shuffle", "global", "all", "local" -->
             <reads  stream=""  grouping="">
 
