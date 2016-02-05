@@ -1,0 +1,92 @@
+
+<c:if test="not(c:isVariableDefined('root'))">
+    <c:setVariable select="/*" var="root" />
+</c:if>
+
+*******************************
+
+
+
+
+
+*** Begin custom model updates for root (3)
+
+*** End custom model updates for root (3)
+
+
+
+<c:iterate select="$root/artifact" var="artifact">
+
+    <c:set select="$artifact" name="moduleProject"><c:get select="$artifact/@id" /></c:set>
+
+
+    *** Begin custom model updates for artifact (4)
+
+    *** End custom model updates for artifact (4)
+
+
+    *** Begin custom model post updates for artifact (4)
+
+    *** End custom model post updates for artifact (4)
+
+
+</c:iterate> 
+
+*** Begin custom model post updates for root (3)
+
+*** End custom model post updates for root (3)
+
+
+
+
+*******************************
+
+
+
+
+*** Begin custom pre-generation actions for root (3)
+
+*** End custom pre-generation actions for root (3)
+
+
+*** Begin custom generation updates for root (3)
+
+*** End custom generation updates for root (3)
+
+
+<c:iterate select="$root/artifact" var="artifact">
+
+
+    *** Begin custom pre-generation actions for artifact (4)
+
+    *** End custom pre-generation actions for artifact (4)
+
+    <c:project name="{$artifact/@moduleProject}" />
+
+    <c:folder path="{$artifact/@moduleProject}/src/main/java" />
+
+    <c:folder path="{$artifact/@moduleProject}/src/main/resources" />
+
+    <c:folder path="{$artifact/@moduleProject}/src/test/java" />
+
+    <c:folder path="{$artifact/@moduleProject}/src/test/resources" />
+
+    <c:file path="{$artifact/@moduleProject}/.gitignore" template="templates/artifact/gitignore.prod" replace="false" />
+
+
+    <c:file path="{$artifact/@moduleProject}/pom.xml" template="templates/artifact/pomXml.prod" replace="false" />
+
+
+    <c:file path="{$artifact/@moduleProject}/readme.txt" template="templates/artifact/readme.prod" replace="true" />
+
+
+    *** Begin custom generation updates for artifact (4)
+
+    *** End custom generation updates for artifact (4)
+
+
+</c:iterate> 
+
+
+
+*******************************

@@ -1,0 +1,15 @@
+
+
+
+<root>
+
+
+    <!--  id : The maven artifact id -->
+    <!--  group : The maven group id -->
+    <artifact  id=""  group="">
+
+
+    </artifact>
+
+
+</root>

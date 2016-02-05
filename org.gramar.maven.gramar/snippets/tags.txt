@@ -1,0 +1,25 @@
+"getter" snippets for defined tokens (input and calculated)
+
+
+Snippets for artifact
+
+
+	<c:get select="$artifact/@moduleProject" />
+
+	<c:get select="$artifact/@id" />
+
+	<c:get select="$artifact/@group" />
+
+
+    <c:iterate select="$root/artifact" var="artifact"  > 
+	    
+
+Snippets for root
+
+
+	    
+
+
+
+
+

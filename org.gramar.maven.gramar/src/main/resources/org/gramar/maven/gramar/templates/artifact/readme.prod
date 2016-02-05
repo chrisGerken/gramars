@@ -1,0 +1,4 @@
+
+To build this artifact with source and javadoc jars:
+
+    mvn  install javadoc:javadoc javadoc:jar source:jar

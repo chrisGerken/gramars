@@ -1,0 +1,1 @@
+java -jar ./target/org.gramar.maven.gramar.jar $@

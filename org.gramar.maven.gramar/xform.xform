@@ -1,0 +1,35 @@
+
+<xform id="2" nextID="1808" provider="gramar.org" version="0.9.0" xformDir="org/gramar/maven/gramar" xformId="org.gramar.maven.gramar" xformProject="org.gramar.maven.gramar">
+	<group id="4" indent="    " name="artifact" parentId="3" root="false">
+		<createProject id="5" locationExpr="" name="{$artifact/@moduleProject}" oLocation="" oPath="gramar" projectExpr="{$artifact/@moduleProject}" purpose="module">
+		</createProject>
+		<createFolder folderExpr="/src/main/java" id="1653" oPath="/src/main/java" path="{$artifact/@moduleProject}/src/main/java" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="/src/main/java">
+		</createFolder>
+		<createFolder folderExpr="/src/main/resources" id="1674" oPath="/src/main/resources" path="{$artifact/@moduleProject}/src/main/resources" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="/src/main/resources">
+		</createFolder>
+		<createFolder folderExpr="/src/test/java" id="1683" oPath="/src/test/java" path="{$artifact/@moduleProject}/src/test/java" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="/src/test/java">
+		</createFolder>
+		<createFolder folderExpr="/src/test/resources" id="1694" oPath="/src/test/resources" path="{$artifact/@moduleProject}/src/test/resources" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="/src/test/resources">
+		</createFolder>
+		<createFile binary="false" changeableName="false" folderExpr="" id="7" nameExpr=".gitignore" oPath=".gitignore" path="{$artifact/@moduleProject}/.gitignore" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="gitignore" purposeAsTokenName="false" replace="false" src="org.gramar.maven/refimpl/art000003" template="templates/artifact/gitignore.prod">
+		</createFile>
+		<createFile binary="false" changeableName="false" folderExpr="" id="9" nameExpr="pom.xml" oPath="pom.xml" path="{$artifact/@moduleProject}/pom.xml" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="pomXml" purposeAsTokenName="false" replace="false" src="org.gramar.maven/refimpl/art000005" template="templates/artifact/pomXml.prod">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="" id="1807" nameExpr="readme.txt" oPath="readme.txt" path="{$artifact/@moduleProject}/readme.txt" projectExpr="{$artifact/@moduleProject}" projectId="5" purpose="readme" purposeAsTokenName="false" replace="true" src="org.gramar.maven/refimpl/art000672" template="templates/artifact/readme.prod">
+		</createFile>
+		<token derived="true" desc="Token representing the new generated name for project gramar" formula="{$artifact/@id}" id="" name="moduleProject">
+		</token>
+		<token derived="false" desc="" formula="" name="id">
+			<desc>The maven artifact id</desc>
+			</token>
+		<token derived="false" desc="" formula="" name="group">
+			<desc>The maven group id</desc>
+			</token>
+		</group>
+	<group id="3" indent="" name="root" parentId="" root="true">
+		</group>
+	<replacement newString="{$artifact/@moduleProject}" oldString="gramar">
+		</replacement>
+	<ignored>
+		</ignored>
+	</xform>
