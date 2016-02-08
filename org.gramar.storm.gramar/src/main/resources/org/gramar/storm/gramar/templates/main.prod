@@ -115,7 +115,7 @@
     </c:iterate> 
 
     <c:iterate select="$topology/spout" var="spout">
-        <c:set select="$spout" name="name"><c:get select="camelCase($spout/@label)" /></c:set>
+        <c:set select="$spout" name="name"><c:get select="c:camelCase($spout/@label)" /></c:set>
         <c:set select="$spout" name="spoutTestJava"><c:get select="$spout/@name" />SpoutTest</c:set>
         <c:set select="$spout" name="iSpoutJava">I<c:get select="$spout/@name" />Spout</c:set>
         <c:set select="$spout" name="spoutJava"><c:get select="$spout/@name" />Spout</c:set>

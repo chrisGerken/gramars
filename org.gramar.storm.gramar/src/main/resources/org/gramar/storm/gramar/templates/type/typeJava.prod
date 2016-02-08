@@ -29,6 +29,12 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 		this.<c:get select="$field/@var"/> = <c:get select="$field/@var"/>;
 </c:iterate>	
 	}
+
+	public <c:get select="$type/@typeJava" />(<c:get select="$type/@typeJava" /> original) {	
+<c:iterate select="$type/field" var="field">
+		this.<c:get select="$field/@var"/> = original.<c:get select="$field/@getter"/>();
+</c:iterate>	
+	}
 <c:iterate select="$type/field" var="field">
 
 	public <c:get select="$field/@type"/> <c:get select="$field/@getter"/>() { 
