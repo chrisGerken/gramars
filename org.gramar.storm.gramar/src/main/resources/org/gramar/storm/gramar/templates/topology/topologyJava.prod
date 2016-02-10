@@ -24,6 +24,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.utils.Utils;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,6 +53,7 @@ public class <c:get select="$topology/@topologyJava" /> {
 			<c:userRegion>// Begin topology execution code<c:initialCode>
 
     	String target = DEFAULT_TARGET;
+		boolean external = false;
     	
     	for (int i = 0; i < args.length; i++) {
     		System.out.println("args["+i+"] = "+args[i]);
@@ -60,11 +62,11 @@ public class <c:get select="$topology/@topologyJava" /> {
     	if (args.length > 0 && TARGETS.contains(args[0])) {
     		target = args[0];
         } else if (args.length > 0) {
-        	System.out.println("Invalid target environment specified");
-        	return;
+    		target = args[0];
+        	external = true;
         }
 
-        config = loadConfig(target);
+        config = loadConfig(target,external);
 
        	if (isRunLocally()) {
        		submitTopologyLocal();
@@ -119,13 +121,23 @@ public class <c:get select="$topology/@topologyJava" /> {
 
     }
 
-    public static Config loadConfig(String env) {
-        log.info("<c:get select="$topology/@topologyJava" /> Initializing " + env + " topology");
+    public static Config loadConfig(String target, boolean external) {
+
         Properties props = new Properties();
+        InputStream is = null;
+
         Config config = new Config();
         try {
-            props.load(<c:get select="$topology/@topologyJava" />.class.getResourceAsStream("/" + env + ".properties"));
-           for (Object prop : props.keySet()) {
+	        if (external) {
+		        log.info("<c:get select="$topology/@topologyJava" /> Initializing from " + target);
+	    	    is = new FileInputStream(target);
+	        } else {
+		        log.info("<c:get select="$topology/@topologyJava" /> Initializing " + target + " topology");
+        	    is = <c:get select="$topology/@topologyJava" />.class.getResourceAsStream("/" + target + ".properties");
+        	}
+            props.load(is);
+            is.close();
+            for (Object prop : props.keySet()) {
 				Object value = props.get(prop);
 				try {
 					// see if it's an Integer
