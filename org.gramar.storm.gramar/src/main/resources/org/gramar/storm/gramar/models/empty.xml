@@ -18,10 +18,10 @@
             </emits>
 
             <!--  stream : The name of a stream read by the bolt -->
-            <!--  grouping : One of "fields", "shuffle", "global", "all", "local" -->
-            <reads  stream=""  grouping="">
+            <!--  grouping : One of "fields", "shuffle", "global", "all", "local", "localOrShuffle", "none", "partialKey" (custom not yet supported) -->
+            <reads  stream=""  grouping=""  >
 
-                <!--  name : The name of the fields whose value is used to direct tuples on this stream -->
+                <!--  name : The name of the fields whose value is used to direct tuples on this stream (for fields and partialKey groupings) -->
                 <fieldRef  name="">
 
                 </fieldRef>

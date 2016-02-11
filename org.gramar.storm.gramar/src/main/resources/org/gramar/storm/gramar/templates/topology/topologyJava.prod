@@ -4,6 +4,9 @@ package <c:get select="$topology/@topologyPkg" />;
 
 import <c:get select="$topology/@spoutPkg" />.*;
 import <c:get select="$topology/@boltPkg" />.*;
+<c:iterate select="c:unique( $topology/bolt/reads[@grouping='custom'] , '@customGrouping' )" var="reads" >
+import <c:get select="$topology/@logicPkg" />.<c:get select="$reads/@customGrouping" />;
+</c:iterate>
 import <c:get select="$topology/@utilPkg" />.AlarmClock;
 import <c:get select="$topology/@utilPkg" />.<c:get select="$topology/@loggerJava" />;
 import <c:get select="$topology/@utilPkg" />.<c:get select="$topology/@iLoggerJava" />;
@@ -15,6 +18,7 @@ import backtype.storm.ILocalCluster;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.generated.AlreadyAliveException;
+import backtype.storm.generated.AuthorizationException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.generated.NotAliveException;
 import backtype.storm.generated.StormTopology;
@@ -89,6 +93,8 @@ public class <c:get select="$topology/@topologyJava" /> {
 			log.error("<c:get select="$topology/@topologyJava" /> Topology was already alive: "+e);
 		} catch (InvalidTopologyException e) {
 			log.error("<c:get select="$topology/@topologyJava" /> Invalid topology: "+e);
+		} catch (AuthorizationException e) {
+			log.error("AtomicTopology IAuthorization Problemy: "+e);
 		}
 
     }
@@ -191,6 +197,18 @@ public class <c:get select="$topology/@topologyJava" /> {
 </c:when>
 <c:when test=" 'local' ">
         boltDeclarer.localOrShuffleGrouping("<c:get select="$emits/../@name" />","<c:get select="$reads/@stream" />");
+</c:when>
+<c:when test=" 'localOrShuffle' ">
+        boltDeclarer.localOrShuffleGrouping("<c:get select="$emits/../@name" />","<c:get select="$reads/@stream" />");
+</c:when>
+<c:when test=" 'none' ">
+        boltDeclarer.noneGrouping("<c:get select="$emits/../@name" />","<c:get select="$reads/@stream" />");
+</c:when>
+<c:when test=" 'custom' ">
+        boltDeclarer.customGrouping("<c:get select="$emits/../@name" />","<c:get select="$reads/@stream" />", new <c:get select="$reads/@customGrouping" />());
+</c:when>
+<c:when test=" 'partialKey' ">
+        boltDeclarer.partialKeyGrouping("<c:get select="$emits/../@name" />","<c:get select="$reads/@stream" />",new Fields(<c:iterate select="$reads/fieldRef" var="fieldRef" delimiter=", ">"<c:get select="$fieldRef/@name" />"</c:iterate>);
 </c:when>
 </c:choose>
 </c:iterate>

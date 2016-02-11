@@ -1,0 +1,81 @@
+package <c:get select="$topology/@logicPkg" />;
+
+	<c:userRegion>// Begin imports<c:initialCode> 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import <c:get select="$topology/@beanPkg" />.*;
+import <c:get select="$topology/@utilPkg" />.Marshaller;
+
+import backtype.storm.generated.GlobalStreamId;
+import backtype.storm.grouping.CustomStreamGrouping;
+import backtype.storm.task.GeneralTopologyContext;
+import backtype.storm.task.WorkerTopologyContext;
+import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.TupleImpl;
+import backtype.storm.tuple.Values;
+
+	</c:initialCode>// End imports</c:userRegion> 
+
+
+public class <c:get select="$reads/@customGrouping" /> implements CustomStreamGrouping {
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * The general context.  Used to convert lists of objects to a Tuple for unmarshalling.
+	 */
+	private GeneralTopologyContext  context;
+	
+	/**
+	 * List of the task ID's for the target component ()
+	 */
+	private List<Integer>			tasks;
+
+	public <c:get select="$reads/@customGrouping" />() {
+
+			<c:userRegion>// Begin constructor logic<c:initialCode> 
+
+			</c:initialCode>// End constructor logic</c:userRegion> 
+
+	}
+
+	@Override
+	public List<Integer> chooseTasks(int arg0, List<Object> arg1) {
+
+			<c:userRegion>// Begin chooseTasks logic<c:initialCode> 
+
+		Tuple tuple = new TupleImpl(context, new Values(arg1), 0, "<c:get select="$reads/@stream" />");
+		<c:get select="$topology/*/emits[@stream=$reads/@stream]/@type" /> <c:get select="c:lowercaseFirst($topology/*/emits[@stream=$reads/@stream]/@type)" /> = Marshaller.as<c:get select="$topology/*/emits[@stream=$reads/@stream]/@type" />(tuple);
+		
+		// Change the code below to choose the actual task id(s) you want
+		// this tuple sent to.
+		
+		List<Integer> targetTasks = new ArrayList<Integer>();
+		targetTasks.add( (int) (System.currentTimeMillis() % tasks.size()));
+		return targetTasks;
+
+			</c:initialCode>// End chooseTasks logic</c:userRegion> 
+
+	}
+
+	@Override
+	public void prepare(WorkerTopologyContext arg0, GlobalStreamId arg1,
+			List<Integer> arg2) {
+
+			<c:userRegion>// Begin prepare logic<c:initialCode> 
+
+		context = arg0;
+		tasks = arg2;
+		
+			</c:initialCode>// End prepare logic</c:userRegion> 
+
+	}
+
+<c:userRegion>// Begin custom methods<c:initialCode> 
+
+</c:initialCode>// End custom methods</c:userRegion> 
+
+
+}

@@ -83,6 +83,10 @@
 				<c:log severity="error">Bolt <c:get select="$bolt/@label"/> reads from ill-defined stream <c:get select="$reads/@stream" /></c:log>
 			</c:if>
 
+			<c:if test="$reads/@grouping='custom'" >
+	            <c:set select="$reads" name="customGrouping"><c:get select="c:uppercaseFirst($reads/@stream)" />From<c:get select="c:uppercaseFirst($bolt/@name)" />Grouping</c:set>
+			</c:if>
+
             *** End custom model updates for reads (280)
 
 
@@ -317,6 +321,10 @@
 
     <c:file path="{$topology/@allProject}/dump.xml" template="templates/dump.prod" replace="true" />
 
+	<c:iterate select="c:unique( $topology/bolt/reads[@grouping='custom'] , '@customGrouping' )" var="reads" >
+        <c:file path="{$topology/@stormProject}/src/main/java/{$topology/@logicDir}/{$reads/@customGrouping}.java" template="templates/stream/customGrouping.prod" replace="true" />
+	</c:iterate>
+	
     *** End custom generation updates for topology (4)
 
 

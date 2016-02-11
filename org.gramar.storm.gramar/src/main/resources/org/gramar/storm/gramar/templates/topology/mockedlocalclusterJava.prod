@@ -5,6 +5,7 @@ import java.util.Map;
 import backtype.storm.ILocalCluster;
 import backtype.storm.generated.AlreadyAliveException;
 import backtype.storm.generated.ClusterSummary;
+import backtype.storm.generated.Credentials;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.generated.KillOptions;
 import backtype.storm.generated.NotAliveException;
