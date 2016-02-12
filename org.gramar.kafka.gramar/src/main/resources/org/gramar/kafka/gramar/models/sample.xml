@@ -1,0 +1,24 @@
+
+<root>
+
+    <!--  name : The maven artifact name.  Also the project name by convention. -->
+    <!--  groupId : The maven group ID -->
+    <!--  version : The maven artifact version. -->
+    <!--  basePackage :  -->
+    <component  name=""  groupId=""  version=""  basePackage="">
+
+        <!--  name :  -->
+        <!--  messageType : The fully qualified name of the message type, or "Long" or "String" -->
+        <!--  keyType : The fully qualified name of the key type, or "Long" or "String".  -->
+        <!--  partitioner : A true|false value indicating whether or not a partitioner is to be configured  -->
+        <!--  partitions : An integer number of partitions -->
+        <topic  name=""  messageType=""  keyType=""  partitioner=""  partitions="" />
+
+        <!--  groupId :  -->
+        <!--  artifact :  -->
+        <!--  version :  -->
+        <dependency  groupId=""  artifact=""  version="" />
+
+    </component>
+
+</root>

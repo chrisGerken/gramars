@@ -1,0 +1,9 @@
+package <c:get select="$component/@exceptionPkg" />;
+
+public class OffsetOutOfRangeException extends PartitionConsumerException {
+
+	public OffsetOutOfRangeException() {
+
+	}
+
+}

@@ -1,0 +1,12 @@
+
+<root>
+
+    <component  name="ad-source"  basePackage="org.fredward.ad.source" groupId="fredward.net"  version="1.0.0-SNAPSHOT">
+
+        <topic  name="impression"  	messageType="org.fredward.model.Impression"	 partitions="3"  />
+        <topic  name="click"  		messageType="org.fredward.model.Click"  	 partitions="5"  />
+        <topic  name="sale"  		messageType="org.fredward.model.Sale"  		 partitions="7"  />
+
+    </component>
+
+</root>

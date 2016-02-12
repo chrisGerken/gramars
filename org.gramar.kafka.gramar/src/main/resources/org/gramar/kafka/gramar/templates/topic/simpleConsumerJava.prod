@@ -1,0 +1,90 @@
+package <c:get select="$topic/@topicApiPkg" />;
+
+import java.nio.ByteBuffer;
+
+import kafka.message.MessageAndOffset;
+import kafka.utils.VerifiableProperties;
+
+<c:if test="$topic/@keyImport">
+import <c:get select="$topic/@keyImport" />;
+</c:if>
+<c:if test="$topic/@messageImport">
+import <c:get select="$topic/@messageImport" />;
+</c:if>
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />;
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />;
+import <c:get select="$component/@exceptionPkg" />.PartitionConsumerException;
+import <c:get select="$component/@kafkaBasePkg" />.AbstractSimpleConsumer;
+
+/**
+ * <c:get select="$topic/@simpleConsumerJava" /> provides an iterator-link access to the messages on a single partition 
+ * of topic <c:get select="$topic/@name" />.
+ * <pre>
+ * Usage:
+ * 
+ *     <c:get select="$topic/@simpleConsumerJava" /> consumer = new <c:get select="$topic/@simpleConsumerJava" />("localhost", 9092, 2, "group-two");
+ *     
+ *     while (consumer.hasNext()) {
+ *         <c:get select="$topic/@messageJava" /> <c:get select="c:lowercaseFirst($topic/@messageJava)" /> = consumer.next();
+ *     }
+ *     
+ *     consumer.close();
+ *</pre>     
+ */
+public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpleConsumer {
+
+	private <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" /> keyCoder = new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(new VerifiableProperties());
+	private <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" /> messageCoder = new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />(new VerifiableProperties());
+	
+	  /**
+	   * Creates a simple consumer that reads from a single partition for topic <c:get select="$topic/@name" />
+	   * 
+	   * @param csBrokerList A String containing a comma-separated list of hosts
+	   *  (e.g. 'host1,host2').  The hosts have running Kafka brokers.
+	   * @param groupId Client group name.  Used to manage last-read offsets for partitions.
+	   */
+	public <c:get select="$topic/@simpleConsumerJava" />(String csBrokerList, int port, int partition, String groupName) {
+		super(csBrokerList, port, <c:get select="$topic/@infoJava" />.topicName, partition, groupName);
+	}
+
+	/**
+	 * Returns the next message from the partition
+	 * 
+	 * @return <c:get select="$topic/@messageJava" />
+	 */
+	public <c:get select="$topic/@messageJava" /> next() {
+
+		ByteBuffer payload = super.nextMessage().message().payload();
+        byte[] bytes = new byte[payload.limit()];
+        payload.get(bytes);
+        return messageCoder.fromBytes(bytes);
+        
+	}
+
+    /**
+	  * Returns the next meta-message from the partition.  The meta-message is able to answer the key, 
+	  * message, topic, partition and offset for the message.
+	  * 
+	  * @return <c:get select="$topic/@metamessageJava" />
+	  */
+	public <c:get select="$topic/@metamessageJava" /> nextMetaMessage() {
+
+		ByteBuffer buf;
+		byte[] bytes;
+		MessageAndOffset mao = super.nextMessage();
+		
+		buf = mao.message().payload();
+        bytes = new byte[buf.limit()];
+        buf.get(bytes);
+        <c:get select="$topic/@messageJava" /> message = messageCoder.fromBytes(bytes);
+		
+		buf = mao.message().key();
+        bytes = new byte[buf.limit()];
+        buf.get(bytes);
+        <c:get select="$topic/@keyJava" /> key = keyCoder.fromBytes(bytes);
+
+		return new <c:get select="$topic/@metamessageJava" />(key, message, <c:get select="$topic/@infoJava" />.topicName, partition, mao.offset());
+        
+	}
+		
+}

@@ -1,0 +1,73 @@
+package <c:get select="$topic/@topicApiPkg" />;
+
+import java.util.Properties;
+
+import kafka.javaapi.producer.Producer;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig;
+
+
+<c:if test="$topic/@keyImport">
+import <c:get select="$topic/@keyImport" />;
+</c:if>
+<c:if test="$topic/@messageImport">
+import <c:get select="$topic/@messageImport" />;
+</c:if>
+
+/**
+ * <c:get select="$topic/@producerJava" /> provides a strongly-typed API for writing to topic <c:get select="$topic/@name" />.
+ * <pre>
+ * Usage:
+ * 
+ *     <c:get select="$topic/@producerJava" /> producer = new <c:get select="$topic/@producerJava" />("localhost:9092");
+ *     
+<c:if test="$topic/@nokey='false'">
+ *     <c:get select="$topic/@keyJava" /> key = ...
+</c:if>
+ *     <c:get select="$topic/@messageJava" /> message = ...
+ *
+ *     producer.send(<c:if test="$topic/@nokey='false'">key,</c:if>message);
+ *     
+ *     producer.close();
+ 
+ *</pre>     
+ */
+public class <c:get select="$topic/@producerJava" /> {
+	
+  private final Producer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> producer;
+<c:if test="$topic/@nokey='true'">
+  private Long key = 0L;
+</c:if>
+
+  /**
+   * Construct a <c:get select="$topic/@producerJava" /> to write messages to topic <c:get select="$topic/@name" />.
+   * 
+   * @param csBrokerList A String containing a comma-separated list of hosts and ports (e.g. 'host1:9092,host2:9092')
+   */
+public <c:get select="$topic/@producerJava" />(String csBrokerList) {
+	  
+	  Properties props = new Properties();
+	  props.put("metadata.broker.list", csBrokerList);
+<c:if test="$topic/@partitioner='true'" >
+	  props.put("partitioner.class","<c:get select="$topic/@topicApiPkg" />.<c:get select="$topic/@partitionerJava" />");
+</c:if>
+	  props.put("producer.type", "sync");
+	  props.put("serializer.class","<c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />");
+	  props.put("key.serializer.class","<c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />");
+	  props.put("request.required.acks", "1");
+	  producer = new Producer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(new ProducerConfig(props));
+
+  }
+  
+  public void send(<c:if test="$topic/@nokey='false'"><c:get select="$topic/@keyJava" /> key, </c:if><c:get select="$topic/@messageJava" /> value) {
+<c:if test="$topic/@nokey='true'">
+	  key++;
+</c:if>
+	  producer.send(new KeyedMessage<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(<c:get select="$topic/@infoJava" />.topicName, key, value));
+  }
+  
+  public void close() {
+	  producer.close();
+  }
+
+}

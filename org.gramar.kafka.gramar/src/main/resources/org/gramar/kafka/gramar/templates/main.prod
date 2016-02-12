@@ -1,0 +1,277 @@
+
+<c:setVariable select="/*" var="root" />
+
+
+*** Begin custom model updates for root (3)
+
+*** End custom model updates for root (3)
+
+
+<c:iterate select="$root/component" var="component">
+    <c:set select="$component" name="sourceProject"><c:get select="$component/@name" /></c:set>
+    <c:set select="$component" name="exceptionPkg"><c:get select="$component/@basePackage" />.common.exception</c:set>
+    <c:set select="$component" name="exceptionDir"><c:get select="translate($component/@exceptionPkg,'.','/')" /></c:set>
+    <c:set select="$component" name="kafkaBasePkg"><c:get select="$component/@basePackage" />.common.internal</c:set>
+    <c:set select="$component" name="kafkaBaseDir"><c:get select="translate($component/@kafkaBasePkg,'.','/')" /></c:set>
+    <c:set select="$component" name="serializationPkg"><c:get select="$component/@basePackage" />.serialization</c:set>
+    <c:set select="$component" name="serializationDir"><c:get select="translate($component/@serializationPkg,'.','/')" /></c:set>
+
+    *** Begin custom model updates for component (4)
+
+    *** End custom model updates for component (4)
+
+
+    <c:iterate select="$component/topic" var="topic">
+        <c:set select="$topic" name="topicApiPkg"><c:get select="$component/@basePackage" />.topic.<c:get select="$topic/@name" /></c:set>
+        <c:set select="$topic" name="topicApiDir"><c:get select="translate($topic/@topicApiPkg,'.','/')" /></c:set>
+        <c:set select="$topic" name="highLevelConsumerJava"><c:get select="c:uppercaseFirst($topic/@name)" />HighLevelConsumer</c:set>
+        <c:set select="$topic" name="metamessageJava"><c:get select="c:uppercaseFirst($topic/@name)" />MetaMessage</c:set>
+        <c:set select="$topic" name="partitionerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Partitioner</c:set>
+        <c:set select="$topic" name="producerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Producer</c:set>
+        <c:set select="$topic" name="simpleConsumerJava"><c:get select="c:uppercaseFirst($topic/@name)" />SimpleConsumer</c:set>
+        <c:set select="$topic" name="createtopicSh">create<c:get select="$topic/@name" />Topic</c:set>
+        <c:set select="$topic" name="partitionerTestJava"><c:get select="c:uppercaseFirst($topic/@name)" />TopicTest</c:set>
+        <c:set select="$topic" name="infoJava"><c:get select="c:uppercaseFirst($topic/@name)" />Info</c:set>
+
+        *** Begin custom model updates for topic (53)
+
+        <c:set select="$topic" name="nokey">false</c:set>
+        <c:if test="not($topic/@keyType)" >
+	        <c:set select="$topic" name="nokey">true</c:set>
+	        <c:set select="$topic" name="keyType">Long</c:set>
+	        <c:set select="$topic" name="partitioner">false</c:set>
+        </c:if>
+
+		<c:choose select="$topic/@keyType">
+		
+		<c:when test=" 'Long' ">
+        <c:set select="$topic" name="keyJava">Long</c:set>
+		</c:when>
+		
+		<c:when test=" 'String' ">
+        <c:set select="$topic" name="keyJava">String</c:set>
+		</c:when>
+		
+		<c:otherwise>		
+        <c:set select="$topic" name="keyJava"><c:get select="className($topic/@keyType)" /></c:set>
+        <c:set select="$topic" name="keyImport"><c:get select="$topic/@keyType" /></c:set>
+		</c:otherwise>
+		
+		</c:choose>
+
+		<c:if test="not($component/type[@name=$topic/@keyJava])" >
+			<c:addElement select="$component" name="type" var="type" />
+			<c:set select="$type" name="name"><c:get select="$topic/@keyJava"/></c:set>
+			<c:if test="$topic/@keyImport">
+				<c:set select="$type" name="typeImport"><c:get select="$topic/@keyImport"/></c:set>
+			</c:if>
+		</c:if>		
+
+		<c:choose select="$topic/@messageType">
+		
+		<c:when test=" 'Long' ">
+        <c:set select="$topic" name="messageJava">Long</c:set>
+		</c:when>
+		
+		<c:when test=" 'String' ">
+        <c:set select="$topic" name="messageJava">String</c:set>
+		</c:when>
+		
+		<c:otherwise>		
+        <c:set select="$topic" name="messageJava"><c:get select="c:className($topic/@messageType)" /></c:set>
+        <c:set select="$topic" name="messageImport"><c:get select="$topic/@messageType" /></c:set>
+		</c:otherwise>
+		
+		</c:choose>
+
+		<c:if test="not($component/type[@name=$topic/@messageJava])" >
+			<c:addElement select="$component" name="type" var="type" />
+			<c:set select="$type" name="name"><c:get select="$topic/@messageJava"/></c:set>
+			<c:if test="$topic/@messageImport">
+				<c:set select="$type" name="typeImport"><c:get select="$topic/@messageImport"/></c:set>
+			</c:if>
+		</c:if>		
+
+		<c:if test="$topic/@partitioner='true'" >
+			<c:addElement select="$topic" name="partition" />
+		</c:if>
+        *** End custom model updates for topic (53)
+
+
+        <c:iterate select="$topic/partition" var="partition">
+
+            *** Begin custom model updates for partition (57)
+
+            *** End custom model updates for partition (57)
+
+
+            *** Begin custom model post updates for partition (57)
+
+            *** End custom model post updates for partition (57)
+
+
+        </c:iterate> 
+
+        *** Begin custom model post updates for topic (53)
+
+        *** End custom model post updates for topic (53)
+
+
+    </c:iterate> 
+
+    <c:iterate select="$component/dependency" var="dependency">
+
+        *** Begin custom model updates for dependency (54)
+
+        *** End custom model updates for dependency (54)
+
+
+        *** Begin custom model post updates for dependency (54)
+
+        *** End custom model post updates for dependency (54)
+
+
+    </c:iterate> 
+
+    <c:iterate select="$component/type" var="type">
+
+        *** Begin custom model updates for type (55)
+
+        <c:set select="$type" name="coderJava"><c:get select="$type/@name" />Coder</c:set>
+
+        *** End custom model updates for type (55)
+
+
+        *** Begin custom model post updates for type (55)
+
+        *** End custom model post updates for type (55)
+
+
+    </c:iterate> 
+
+    *** Begin custom model post updates for component (4)
+
+    *** End custom model post updates for component (4)
+
+
+</c:iterate> 
+
+*** Begin custom model post updates for root (3)
+
+*** End custom model post updates for root (3)
+
+
+
+*******************************
+
+
+
+*** Begin custom pre-generation actions for root (3)
+
+*** End custom pre-generation actions for root (3)
+
+
+*** Begin custom generation updates for root (3)
+
+*** End custom generation updates for root (3)
+
+
+<c:iterate select="$root/component" var="component">
+
+    *** Begin custom pre-generation actions for component (4)
+
+    *** End custom pre-generation actions for component (4)
+
+    <c:project name="{$component/@sourceProject}" />
+    <c:folder path="{$component/@sourceProject}/src/main/java" />
+    <c:folder path="{$component/@sourceProject}/src/main/resources" />
+    <c:folder path="{$component/@sourceProject}/src/test/java" />
+    <c:folder path="{$component/@sourceProject}/src/test/resources" />
+
+    <c:file path="{$component/@sourceProject}/pom.xml" template="templates/component/pomXml.prod" replace="false" />
+
+    <c:file path="{$component/@sourceProject}/src/main/java/{$component/@exceptionDir}/OffsetOutOfRangeException.java" template="templates/component/offsetoutofrangeexception.prod" replace="true" />
+
+    <c:file path="{$component/@sourceProject}/src/main/java/{$component/@exceptionDir}/OldMessageException.java" template="templates/component/oldmessageexception.prod" replace="true" />
+
+    <c:file path="{$component/@sourceProject}/src/main/java/{$component/@exceptionDir}/PartitionConsumerException.java" template="templates/component/partitionconsumerexception.prod" replace="true" />
+
+    <c:file path="{$component/@sourceProject}/src/main/java/{$component/@kafkaBaseDir}/AbstractSimpleConsumer.java" template="templates/component/abstractsimpleconsumer.prod" replace="true" />
+
+
+    *** Begin custom generation updates for component (4)
+
+    *** End custom generation updates for component (4)
+
+
+    <c:iterate select="$component/topic" var="topic">
+
+        *** Begin custom pre-generation actions for topic (53)
+
+        *** End custom pre-generation actions for topic (53)
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@highLevelConsumerJava}.java" template="templates/topic/highLevelConsumerJava.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@metamessageJava}.java" template="templates/topic/metamessageJava.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@producerJava}.java" template="templates/topic/producerJava.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@simpleConsumerJava}.java" template="templates/topic/simpleConsumerJava.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/scripts/create{c:uppercaseFirst($topic/@name)}Topic.sh" template="templates/topic/createtopicSh.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/src/test/java/{$topic/@topicApiDir}/{$topic/@partitionerTestJava}.java" template="templates/topic/testJava.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@infoJava}.java" template="templates/topic/infoJava.prod" replace="true" />
+
+
+        *** Begin custom generation updates for topic (53)
+
+        *** End custom generation updates for topic (53)
+
+
+        <c:iterate select="$topic/partition" var="partition">
+
+            *** Begin custom pre-generation actions for partition (57)
+
+            *** End custom pre-generation actions for partition (57)
+
+            <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@partitionerJava}.java" template="templates/partition/partitionerJava.prod" replace="true" />
+
+
+            *** Begin custom generation updates for partition (57)
+
+            *** End custom generation updates for partition (57)
+
+        </c:iterate> 
+    </c:iterate> 
+
+    <c:iterate select="$component/dependency" var="dependency">
+
+        *** Begin custom pre-generation actions for dependency (54)
+
+        *** End custom pre-generation actions for dependency (54)
+
+
+        *** Begin custom generation updates for dependency (54)
+
+        *** End custom generation updates for dependency (54)
+
+    </c:iterate> 
+
+    <c:iterate select="$component/type" var="type">
+
+        *** Begin custom pre-generation actions for type (55)
+
+        *** End custom pre-generation actions for type (55)
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$component/@serializationDir}/{$type/@coderJava}.java" template="templates/type/coderJava.prod" replace="true" />
+
+
+        *** Begin custom generation updates for type (55)
+
+        *** End custom generation updates for type (55)
+
+    </c:iterate> 
+</c:iterate> 
+

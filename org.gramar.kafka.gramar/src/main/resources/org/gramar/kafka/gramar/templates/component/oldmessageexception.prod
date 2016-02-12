@@ -1,0 +1,9 @@
+package <c:get select="$component/@exceptionPkg" />;
+
+public class OldMessageException extends PartitionConsumerException {
+
+	public OldMessageException(String message) {
+		super(message);
+	}
+
+}

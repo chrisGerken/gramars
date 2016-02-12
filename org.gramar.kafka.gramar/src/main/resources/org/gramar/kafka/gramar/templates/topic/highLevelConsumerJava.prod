@@ -1,0 +1,139 @@
+package <c:get select="$topic/@topicApiPkg" />;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+<c:if test="$topic/@keyImport">
+import <c:get select="$topic/@keyImport" />;
+</c:if>
+<c:if test="$topic/@messageImport">
+import <c:get select="$topic/@messageImport" />;
+</c:if>
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />;
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />;
+
+import kafka.consumer.ConsumerConfig;
+import kafka.consumer.ConsumerIterator;
+import kafka.consumer.KafkaStream;
+import kafka.javaapi.consumer.ConsumerConnector;
+import kafka.message.MessageAndMetadata;
+import kafka.serializer.Decoder;
+import kafka.utils.VerifiableProperties;
+
+/**
+ * <c:get select="$topic/@highLevelConsumerJava" /> provides an iterator-like interface to be used to read from all
+ * partitions in topic <c:get select="$topic/@name" />.
+ * <pre>
+ * Usage:
+ * 
+ *     <c:get select="$topic/@highLevelConsumerJava" /> consumer = new <c:get select="$topic/@highLevelConsumerJava" />("localhost:2181","group-one");
+ *     
+ *     while (consumer.hasNext()) {
+ *         <c:get select="$topic/@messageJava" /> <c:get select="c:lowercaseFirst($topic/@messageType)" /> = consumer.next();
+ *     }
+ *     
+ *     consumer.close();
+ *</pre>     
+ */
+public class <c:get select="$topic/@highLevelConsumerJava" /> {
+	
+  private ConsumerConnector consumer;
+  private final String topic;
+  private String zookeeperConnect;
+  private String groupId;
+  ConsumerIterator<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> it = null;
+  
+  /**
+   * Creates a high-level consumer that reads from all partitions for topic <c:get select="$topic/@name" />
+   * 
+   * @param zookeeperConnect A String containing a comma-separated list of host/ports
+   *  (e.g. 'host1:2181,host2:2181').  The hosts have running Zookeeper nodes.
+   * @param groupId Client group name.  Used to manage last-read offsets for partitions.
+   */
+public <c:get select="$topic/@highLevelConsumerJava" />(String zookeeperConnect, String groupId) {
+	  topic = <c:get select="$topic/@infoJava" />.topicName;
+	  this.zookeeperConnect = zookeeperConnect;
+	  this.groupId = groupId;
+	  setup();
+  }
+  
+  /**
+   * Returns the next message from the topic.
+   * 
+   * @return <c:get select="$topic/@messageJava" />
+   */
+  public <c:get select="$topic/@messageJava" /> next() {
+	  return nextMetaMessage().getMessage();
+  }
+  
+  /**
+   * Returns the next meta-message from the topic.  The meta-message is able to answer the key, 
+   * message, topic, partition and offset for the message.
+   * 
+   * @return <c:get select="$topic/@metamessageJava" />
+   */
+  public <c:get select="$topic/@metamessageJava" /> nextMetaMessage() {
+	  MessageAndMetadata<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> meta = it.next();
+	  return new <c:get select="$topic/@metamessageJava" />(meta.key(), meta.message(), meta.topic(), meta.partition(), meta.offset());
+  }
+
+  /**
+   * Returns whether or not there is a message ready to be returned from the topic.
+   * 
+   * @return boolean
+   */
+  public boolean hasNext() {
+	  try {
+		return it.hasNext();
+	  } catch (Exception e) { }
+	  return false;
+  }
+  
+  /*
+   * Performs required housekeeping when this consumer is no longer needed.
+   */
+  public void close() {
+	  it.allDone();
+	  consumer.commitOffsets();
+	  consumer.shutdown();
+  }
+  
+  private void setup() {
+
+	consumer = kafka.consumer.Consumer.createJavaConsumerConnector(createConsumerConfig());
+  
+    // Request a single connection that gathers messages from all partitions 
+	Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
+    topicCountMap.put(topic, new Integer(1));
+    
+    // Construct the encoders/decoders for the message key and values
+    Decoder<<c:get select="$topic/@keyJava" />> keyDecoder = new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(new VerifiableProperties());
+    Decoder<<c:get select="$topic/@messageJava" />> messageDecoder = new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />(new VerifiableProperties());
+
+	// Configure and request the desired streams using the topic map, encoder and decoder
+    Map<String, List<KafkaStream<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>>> consumerMap = consumer.createMessageStreams(topicCountMap, keyDecoder, messageDecoder);
+
+	// We only get back one stream
+    KafkaStream<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> stream =  consumerMap.get(topic).get(0);
+    
+    // Capture the stream's iterator
+    it = stream.iterator();
+  }
+
+  private ConsumerConfig createConsumerConfig() {
+	  Properties props = new Properties();
+	  props.put("zookeeper.connect", zookeeperConnect);
+	  props.put("group.id", groupId);
+	  props.put("zookeeper.session.timeout.ms", "400");
+	  props.put("zookeeper.sync.time.ms", "200");
+	  props.put("auto.commit.enable", "true");
+	  props.put("auto.commit.interval.ms", "1000");
+	  props.put("socket.timeout.ms", "10000");
+	  props.put("consumer.timeout.ms", "1000");
+	  props.put("auto.offset.reset", "smallest");
+	  return new ConsumerConfig(props);
+  }
+
+}

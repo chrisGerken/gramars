@@ -1,0 +1,35 @@
+package <c:get select="$topic/@topicApiPkg" />;
+
+<c:if test="$topic/@keyImport">
+import <c:get select="$topic/@keyImport" />;
+</c:if>
+
+import kafka.producer.Partitioner;
+import kafka.utils.VerifiableProperties;
+
+/**
+ * <c:get select="$topic/@partitionerJava" /> is responsible for determining on which of the available partitions 
+ * a given message is to be written.  
+ */
+public class <c:get select="$topic/@partitionerJava" /> implements Partitioner {
+
+	public <c:get select="$topic/@partitionerJava" />(VerifiableProperties vp) {
+		
+	}
+
+	@Override
+	public int partition(Object obj, int partitions) {
+		<c:get select="$topic/@keyJava" /> key = (<c:get select="$topic/@keyJava" />) obj;
+
+		<c:userRegion>// Begin custom partitioner logic<c:initialCode> 
+		
+		int part = key.hashCode() % partitions;
+		if (part < 0) { part = 0; }
+
+		</c:initialCode>// End custom partitioner logic</c:userRegion>
+		
+		return part;
+	}
+	
+
+}
