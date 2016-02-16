@@ -198,6 +198,8 @@
 
     <c:file path="{$component/@sourceProject}/src/main/java/{$component/@kafkaBaseDir}/AbstractSimpleConsumer.java" template="templates/component/abstractsimpleconsumer.prod" replace="true" />
 
+    <c:file path="{$component/@sourceProject}/src/main/java/{$component/@kafkaBaseDir}/Admin.java" template="templates/component/admin.prod" replace="true" />
+
 
     *** Begin custom generation updates for component (4)
 

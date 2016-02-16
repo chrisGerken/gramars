@@ -7,22 +7,20 @@ import kafka.javaapi.PartitionMetadata;
 public class <c:get select="$topic/@infoJava" /> {
 
 	private String csBrokerList;
-	private int port;
 	
 	public static final String topicName = "<c:get select="$topic/@name" />";
 	
 	public <c:get select="$topic/@infoJava" />(String csBrokerList, int port) {
 		this.csBrokerList = csBrokerList;
-		this.port = port;
 	}
 
 	public void info() {
 		try {
-			<c:get select="$topic/@simpleConsumerJava" /> c = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, port, 0, "fred");
+			<c:get select="$topic/@simpleConsumerJava" /> c = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, 0, "fred");
 			List<PartitionMetadata> list = c.getMetaData().partitionsMetadata();
 			for (PartitionMetadata pmd : list) {
 				int part = pmd.partitionId();
-				<c:get select="$topic/@simpleConsumerJava" /> cs = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, port, part, "ignore");
+				<c:get select="$topic/@simpleConsumerJava" /> cs = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, part, "ignore");
 				long first = cs.requestEarliestAvailableOffset();
 				long last = cs.requestLatestAvailableOffset();
 				cs.close();
@@ -33,8 +31,5 @@ public class <c:get select="$topic/@infoJava" /> {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		new <c:get select="$topic/@infoJava" />("localhost",9092).info();
-	}
+
 }

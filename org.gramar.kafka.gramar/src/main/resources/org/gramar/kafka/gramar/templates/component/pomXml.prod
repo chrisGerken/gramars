@@ -85,8 +85,8 @@
 	    </dependency>
 	    <dependency>
 	    	<groupId>org.apache.kafka</groupId>
-	    	<artifactId>kafka_2.8.0</artifactId>
-	    	<version>0.8.1.1</version>
+	    	<artifactId>kafka_2.10</artifactId>
+	    	<version>0.8.2.2.3.2.8-1</version>
 	    	<exclusions>
 	    		<exclusion>
 	    			<artifactId>log4j</artifactId>

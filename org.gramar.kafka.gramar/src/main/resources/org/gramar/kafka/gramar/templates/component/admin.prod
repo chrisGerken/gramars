@@ -1,0 +1,52 @@
+package <c:get select="$component/@kafkaBasePkg" />;
+
+import java.util.Properties;
+
+import kafka.admin.AdminUtils;
+import kafka.utils.ZkUtils;
+
+import org.I0Itec.zkclient.ZkClient;
+import org.I0Itec.zkclient.ZkConnection;
+
+public class Admin {
+
+	private String servers;
+	
+	/**
+	 * Constructor taking a string containing a list of the ZooKeeper hosts and
+	 * ports (e.g. "host1:2181,host2:2181"). 
+	 * 
+	 * @param servers
+	 */
+	public Admin(String servers) {
+		this.servers = servers;
+	}
+
+	public ZkUtils getUtils() {
+		ZkClient zkClient = new ZkClient(servers);
+		ZkConnection zkConnection = new ZkConnection(servers);
+		ZkUtils zku = new ZkUtils(zkClient, zkConnection, false);
+		return zku;
+	}
+	
+	public void createTopic(String topicName, int partitions, int replicationFactor) {
+		Properties props = new Properties();
+		ZkUtils zku = getUtils();
+		AdminUtils.createTopic(zku, topicName, partitions, replicationFactor, props);
+		zku.close();
+	}
+	
+	public boolean topicExists(String topicName) {
+		ZkUtils zku = getUtils();
+		boolean result = AdminUtils.topicExists(zku, topicName);
+		zku.close();
+		return result;
+	}
+	
+	public void deleteTopic(String topicName) {
+		ZkUtils zku = getUtils();
+		AdminUtils.deleteTopic(zku, topicName);
+		zku.close();
+	}
+
+}

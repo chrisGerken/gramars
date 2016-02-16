@@ -1,6 +1,5 @@
 package <c:get select="$component/@kafkaBasePkg" />;
 
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,7 +10,10 @@ import java.util.StringTokenizer;
 
 import kafka.api.PartitionFetchInfo;
 import kafka.api.PartitionOffsetRequestInfo;
+import kafka.cluster.BrokerEndPoint;
 import kafka.common.ErrorMapping;
+import kafka.common.OffsetAndMetadata;
+import kafka.common.OffsetMetadata;
 import kafka.common.OffsetMetadataAndError;
 import kafka.common.OffsetOutOfRangeException;
 import kafka.common.TopicAndPartition;
@@ -29,9 +31,8 @@ import kafka.javaapi.TopicMetadataResponse;
 import kafka.javaapi.consumer.SimpleConsumer;
 import kafka.javaapi.message.ByteBufferMessageSet;
 import kafka.message.MessageAndOffset;
-import kafka.network.RequestChannel.RequestLogger;
 
-import <c:get select="$component/@exceptionPkg" />.*;
+import org.fredward.ad.source.common.exception.*;
 
 public class AbstractSimpleConsumer {
 	
@@ -41,8 +42,11 @@ public class AbstractSimpleConsumer {
 	// List of (at least some of the) brokers in the Kafka cluster 
 	private List<String> seedBrokers = new ArrayList<String>();
 	
+	// List of the ports corresponding to the hosts in seedBrokers
+	private List<Integer> ports = new ArrayList<Integer>();
+	
 	// The port the brokers listen on
-	private int port;
+//	private int port;
 
 	// The topic from which to read
 	protected String topic;
@@ -69,7 +73,9 @@ public class AbstractSimpleConsumer {
 	
 	private SimpleConsumer simpleConsumer = null;
 	
-	private String leadBroker = null;
+	// The host, port, etc. of the broker operating the primary replica for 
+	// the current partition
+	private BrokerEndPoint leadBroker = null;
 	
 	private MessageAndOffset nextMessageAndOffset = null;
 	
@@ -99,9 +105,8 @@ public class AbstractSimpleConsumer {
 	// The system time in milliseconds after which the next auto commit will happen.  Calculated on each commit for the next commit.
 	private long nextCommitTime = 0L;
 	
-	public AbstractSimpleConsumer(String csBrokerList, int port, String topic, int partition, String groupName) {
-		this.seedBrokers = parse(csBrokerList);
-		this.port = port;
+	public AbstractSimpleConsumer(String csBrokerList, String topic, int partition, String groupName) {
+		parse(csBrokerList);
 		this.topic = topic;
 		this.partition = partition;
 		this.groupName = groupName;
@@ -109,13 +114,16 @@ public class AbstractSimpleConsumer {
 //        determineFirstUnread();
 	}
 
-	private List<String> parse(String csBrokerList) {
-		List<String> list = new ArrayList<String>();
+	private void parse(String csBrokerList) {
 		StringTokenizer st = new StringTokenizer(csBrokerList, ", \t\n");
 		while (st.hasMoreTokens()) {
-			list.add(st.nextToken());
+			String hostPort = st.nextToken();
+			StringTokenizer st1 = new StringTokenizer(hostPort, ":");
+			seedBrokers.add(st1.nextToken());
+			int port = 9092;
+			try { port = Integer.parseInt(st1.nextToken()); } catch (Throwable t) {  }
+			ports.add(port);
 		}
-		return list;
 	}
 
 	public boolean hasNext() {
@@ -214,7 +222,7 @@ public class AbstractSimpleConsumer {
     
     private SimpleConsumer getSimpleConsumer() throws PartitionConsumerException {
     	if (simpleConsumer==null) { 
-    		simpleConsumer = new SimpleConsumer(getLeadBroker(), port, timeout, 64 * 1024, clientName);
+    		simpleConsumer = new SimpleConsumer(getLeadBroker().host(), getLeadBroker().port(), timeout, 64 * 1024, clientName);
     	}
     	return simpleConsumer;
     }
@@ -235,7 +243,12 @@ public class AbstractSimpleConsumer {
     	}
     }
     
-    private String getLeadBroker() throws PartitionConsumerException {
+    /**
+     * Return cached information about the lead broker for this partition. 
+     * @return BrokerEndPoint describing the lead broker
+     * @throws PartitionConsumerException
+     */
+    private BrokerEndPoint getLeadBroker() throws PartitionConsumerException {
     	if (leadBroker==null) {
     		leadBroker = findNewLeadBroker();
     	}
@@ -281,13 +294,12 @@ public class AbstractSimpleConsumer {
      */
 	private void commitOffset(long offset) throws PartitionConsumerException {
     	
-        Map<TopicAndPartition, OffsetMetadataAndError> requestInfo = new HashMap<TopicAndPartition, OffsetMetadataAndError>();
+        Map<TopicAndPartition, OffsetAndMetadata> requestInfo = new HashMap<TopicAndPartition, OffsetAndMetadata>();
         TopicAndPartition topicAndPartition = new TopicAndPartition(topic, partition);
-        OffsetMetadataAndError omae = new OffsetMetadataAndError(offset, consumerMetadata, ErrorMapping.NoError());
-        requestInfo.put(topicAndPartition, omae);
-        
-    	OffsetCommitRequest request = new OffsetCommitRequest(groupName, requestInfo, (short) 0, 0, clientName);
-    	
+        OffsetMetadata omd = new OffsetMetadata(offset, consumerMetadata);
+        OffsetAndMetadata oamd = new OffsetAndMetadata(omd, System.currentTimeMillis(), System.currentTimeMillis());
+        requestInfo.put(topicAndPartition, oamd);
+    	OffsetCommitRequest request = new OffsetCommitRequest(groupName, requestInfo, 0, clientName, (short) 0);
     	getSimpleConsumer().commitOffsets(request);
 
 	}
@@ -345,7 +357,7 @@ public class AbstractSimpleConsumer {
         for (String seed : seedBrokers) {
             SimpleConsumer consumer = null;
             try {
-                consumer = new SimpleConsumer(seed, port, timeout, 64 * 1024, "leaderLookup");
+                consumer = new SimpleConsumer(seed, portForSeed(seed), timeout, 64 * 1024, "leaderLookup");
                 List<String> topics = Collections.singletonList(topic);
                 TopicMetadataRequest req = new TopicMetadataRequest(topics);
                 TopicMetadataResponse resp = consumer.send(req);
@@ -363,12 +375,17 @@ public class AbstractSimpleConsumer {
 
     }
  
-    private String findNewLeadBroker() throws PartitionConsumerException {
+    /**
+     * Find the lead broker for the current partition.
+     * @return The BrokerEndPoint representing the broker running the primary replica for this partition
+     * @throws PartitionConsumerException
+     */
+    private BrokerEndPoint findNewLeadBroker() throws PartitionConsumerException {
 
         for (String seed : seedBrokers) {
             SimpleConsumer consumer = null;
             try {
-                consumer = new SimpleConsumer(seed, port, timeout, 64 * 1024, "leaderLookup");
+                consumer = new SimpleConsumer(seed, portForSeed(seed), timeout, 64 * 1024, "leaderLookup");
                 List<String> topics = Collections.singletonList(topic);
                 TopicMetadataRequest req = new TopicMetadataRequest(topics);
                 TopicMetadataResponse resp = consumer.send(req);
@@ -379,7 +396,7 @@ public class AbstractSimpleConsumer {
                         if (part.partitionId() == partition) {
 
                             replicaBrokers.clear();
-                            for (kafka.cluster.Broker replica : part.replicas()) {
+                            for (BrokerEndPoint replica : part.replicas()) {
                                 replicaBrokers.add(replica.host());
                             }
 
@@ -387,7 +404,7 @@ public class AbstractSimpleConsumer {
                             	throw new PartitionConsumerException("Can't find leader for topic ('"+topic+"') and partition ("+partition+")");
                             }
                             
-                            return part.leader().host();
+                            return part.leader();
                         }
                     }
                 }
@@ -401,6 +418,15 @@ public class AbstractSimpleConsumer {
        	throw new PartitionConsumerException("Can't find metadata for topic ('"+topic+"') and partition ("+partition+")");
 
     }
+
+	private int portForSeed(String seed) {
+		for (int i = 0; i < seedBrokers.size(); i++) {
+			if (seed.equals(seedBrokers.get(i))) {
+				return ports.get(i);
+			}
+		}
+		return 9092;
+	}
 
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;

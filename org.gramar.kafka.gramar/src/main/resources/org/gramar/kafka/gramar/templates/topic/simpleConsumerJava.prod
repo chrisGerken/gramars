@@ -22,7 +22,7 @@ import <c:get select="$component/@kafkaBasePkg" />.AbstractSimpleConsumer;
  * <pre>
  * Usage:
  * 
- *     <c:get select="$topic/@simpleConsumerJava" /> consumer = new <c:get select="$topic/@simpleConsumerJava" />("localhost", 9092, 2, "group-two");
+ *     <c:get select="$topic/@simpleConsumerJava" /> consumer = new <c:get select="$topic/@simpleConsumerJava" />("localhost:9092", 2, "group-two");
  *     
  *     while (consumer.hasNext()) {
  *         <c:get select="$topic/@messageJava" /> <c:get select="c:lowercaseFirst($topic/@messageJava)" /> = consumer.next();
@@ -39,12 +39,12 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 	  /**
 	   * Creates a simple consumer that reads from a single partition for topic <c:get select="$topic/@name" />
 	   * 
-	   * @param csBrokerList A String containing a comma-separated list of hosts
-	   *  (e.g. 'host1,host2').  The hosts have running Kafka brokers.
+	   * @param csBrokerList A String containing a comma-separated list of hosts and ports
+	   *  (e.g. 'host1:9092,host2:9092').  The hosts have running Kafka brokers.
 	   * @param groupId Client group name.  Used to manage last-read offsets for partitions.
 	   */
-	public <c:get select="$topic/@simpleConsumerJava" />(String csBrokerList, int port, int partition, String groupName) {
-		super(csBrokerList, port, <c:get select="$topic/@infoJava" />.topicName, partition, groupName);
+	public <c:get select="$topic/@simpleConsumerJava" />(String csBrokerList, int partition, String groupName) {
+		super(csBrokerList, <c:get select="$topic/@infoJava" />.topicName, partition, groupName);
 	}
 
 	/**
