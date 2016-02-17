@@ -133,6 +133,32 @@
 
     </c:iterate> 
 
+    <c:iterate select="$component/bean" var="bean">
+
+        *** Begin custom model updates for bean (54.b)
+
+        <c:set select="$bean" name="beanClass"><c:get select="c:className($bean/@type)" /></c:set>
+        <c:set select="$bean" name="beanPkg"><c:get select="c:packageName($bean/@type)" /></c:set>
+        <c:set select="$bean" name="beanDir"><c:get select="translate($bean/@beanPkg,'.','/')" /></c:set>
+
+		<c:iterate select="$bean/field" var="field" >
+
+            <c:set select="$field" name="var">_<c:get select="$field/@name" /></c:set>
+            <c:set select="$field" name="getter">get<c:get select="c:uppercaseFirst($field/@name)" /></c:set>
+            <c:set select="$field" name="setter">set<c:get select="c:uppercaseFirst($field/@name)" /></c:set>
+		
+		</c:iterate>
+
+        *** End custom model updates for bean (54.b)
+
+
+        *** Begin custom model post updates for bean (54.b)
+
+        *** End custom model post updates for bean (54.b)
+
+
+    </c:iterate> 
+
     <c:iterate select="$component/type" var="type">
 
         *** Begin custom model updates for type (55)
@@ -275,5 +301,16 @@
         *** End custom generation updates for type (55)
 
     </c:iterate> 
+    
+    <c:iterate select="$component/bean" var="bean">
+
+		<c:log severity="error">type <c:get select="$bean/@type" /></c:log>
+		<c:log severity="error">class <c:get select="$bean/@beanClass" /></c:log>
+		<c:log severity="error">pkg <c:get select="$bean/@beanPkg" /></c:log>
+		<c:log severity="error">dir <c:get select="$bean/@beanDir" /></c:log>
+        <c:file path="{$component/@sourceProject}/src/main/java/{$bean/@beanDir}/{$bean/@beanClass}.java" template="templates/bean/typeJava.prod" replace="true" />
+
+    </c:iterate> 
+    
 </c:iterate> 
 

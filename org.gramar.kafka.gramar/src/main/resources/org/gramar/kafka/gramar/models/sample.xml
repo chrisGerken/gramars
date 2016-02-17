@@ -19,6 +19,15 @@
         <!--  version :  -->
         <dependency  groupId=""  artifact=""  version="" />
 
+        <!--  type : A fully-qualified message type or key type  -->
+		<bean  type="" >
+
+	        <!--  name : The (variable) name of the attribute -->
+	        <!--  type : Yhe java type of the attribute (one of String, Long, Integer, Double Boolean, Date) -->
+			<field name=""  type="" 	/> 
+
+		</bean>
+
     </component>
 
 </root>

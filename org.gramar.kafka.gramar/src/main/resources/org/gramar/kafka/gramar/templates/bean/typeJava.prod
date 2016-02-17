@@ -1,0 +1,174 @@
+package <c:get select="$bean/@beanPkg" />;
+
+<c:userRegion>// Begin imports<c:initialCode> 
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+</c:initialCode>// End imports</c:userRegion> 
+
+public class <c:get select="$bean/@beanClass" /> implements Serializable {
+
+<c:iterate select="$bean/field" var="field">
+	private <c:get select="$field/@type"/> <c:get select="$field/@var"/>;
+</c:iterate>	
+
+	private static final long serialVersionUID = 1L;
+
+	public <c:get select="$bean/@beanClass" />() {
+
+	}
+
+	public <c:get select="$bean/@beanClass" />(<c:iterate select="$bean/field" var="field" delimiter=", "><c:get select="$field/@type"/> <c:get select="$field/@var"/></c:iterate>) {	
+<c:iterate select="$bean/field" var="field">
+		this.<c:get select="$field/@var"/> = <c:get select="$field/@var"/>;
+</c:iterate>	
+	}
+
+	public <c:get select="$bean/@beanClass" />(<c:get select="$bean/@beanClass" /> original) {	
+<c:iterate select="$bean/field" var="field">
+		this.<c:get select="$field/@var"/> = original.<c:get select="$field/@getter"/>();
+</c:iterate>	
+	}
+<c:iterate select="$bean/field" var="field">
+
+	public <c:get select="$field/@type"/> <c:get select="$field/@getter"/>() { 
+		return <c:get select="$field/@var"/>;
+	}
+	
+	public void <c:get select="$field/@setter"/>(<c:get select="$field/@type"/> value) {
+		this.<c:get select="$field/@var"/> = value;
+	}
+</c:iterate>	
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+<c:iterate select="$bean/field" var="field">
+
+<c:choose select="$field/@type" >
+<c:when test=" 'String' ">
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+			out.writeInt(<c:get select="$field/@var"/>.length());
+			out.write(<c:get select="$field/@var"/>.getBytes());
+		}
+</c:when>
+<c:when test=" 'Integer' ">
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+			out.writeInt(<c:get select="$field/@var"/>);
+		}
+</c:when>
+<c:when test=" 'Date' ">
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+			out.writeLong(<c:get select="$field/@var"/>.getTime());
+		}
+</c:when>
+<c:when test=" 'Long' ">
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+			out.writeLong(<c:get select="$field/@var"/>);
+		}
+</c:when>
+<c:when test=" 'Double' ">
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+			out.writeDouble(<c:get select="$field/@var"/>);
+		}
+</c:when>
+<c:when test=" 'Boolean' ">
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+			out.writeBoolean(<c:get select="$field/@var"/>);
+		}
+</c:when>
+</c:choose>
+</c:iterate>	
+
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+<c:iterate select="$bean/field" var="field">
+
+<c:choose select="$field/@type" >
+<c:when test=" 'String' ">
+		if (in.readBoolean()) {
+			byte b[] = new byte[in.readInt()];
+			in.read(b);
+			<c:get select="$field/@var"/> = new String(b);
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:when>
+<c:when test=" 'Integer' ">
+		if (in.readBoolean()) {
+			<c:get select="$field/@var"/> = in.readInt();
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:when>
+<c:when test=" 'Date' ">
+		if (in.readBoolean()) {
+			<c:get select="$field/@var"/> = new Date(in.readLong());
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:when>
+<c:when test=" 'Long' ">
+		if (in.readBoolean()) {
+			<c:get select="$field/@var"/> = in.readLong();
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:when>
+<c:when test=" 'Double' ">
+		if (in.readBoolean()) {
+			<c:get select="$field/@var"/> = in.readDouble();
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:when>
+<c:when test=" 'Boolean' ">
+		if (in.readBoolean()) {
+			<c:get select="$field/@var"/> = in.readBoolean();
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:when>
+</c:choose>
+</c:iterate>	
+
+	}
+	
+	@Override
+	public String toString() {
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("<c:get select="$bean/@beanClass" /> [<c:iterate select="$bean/field" var="field" delimiter="; "><c:get select="$field/@name"/> = " + <c:get select="$field/@var"/> + "</c:iterate>]");
+		return sb.toString();
+		
+	}
+
+<c:userRegion>// Begin custom methods<c:initialCode> 
+
+
+</c:initialCode>// End custom methods</c:userRegion> 
+	
+}

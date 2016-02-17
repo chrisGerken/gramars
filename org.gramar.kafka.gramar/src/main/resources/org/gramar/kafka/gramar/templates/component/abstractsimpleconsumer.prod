@@ -32,7 +32,7 @@ import kafka.javaapi.consumer.SimpleConsumer;
 import kafka.javaapi.message.ByteBufferMessageSet;
 import kafka.message.MessageAndOffset;
 
-import org.fredward.ad.source.common.exception.*;
+import <c:get select="$component/@exceptionPkg" />.*;
 
 public class AbstractSimpleConsumer {
 	
