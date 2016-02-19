@@ -2,9 +2,16 @@ package <c:get select="$topic/@topicApiPkg" />;
 
 import java.util.Properties;
 
-import kafka.javaapi.producer.Producer;
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
+
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />;
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />;
 
 
 <c:if test="$topic/@keyImport">
@@ -34,7 +41,7 @@ import <c:get select="$topic/@messageImport" />;
  */
 public class <c:get select="$topic/@producerJava" /> {
 	
-  private final Producer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> producer;
+  private final KafkaProducer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> producer;
 <c:if test="$topic/@nokey='true'">
   private Long key = 0L;
 </c:if>
@@ -71,7 +78,7 @@ public <c:get select="$topic/@producerJava" />(String csBrokerList) {
 //	  reconnect.backoff.ms	The amount of time to wait before attempting to reconnect to a given host. This avoids repeatedly connecting to a host in a tight loop. This backoff applies to all requests sent by the consumer to the broker.	long	50	[0,...]	low
 //	  retry.backoff.ms	The amount of time to wait before attempting to retry a failed fetch request to a given topic partition. This avoids repeated fetching-and-failing in a tight loop.	long	100	[0,...]	low
 
-	  producer = new Producer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(new ProducerConfig(props));
+	  producer = new KafkaProducer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(props, new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(), new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />());
 
   }
   
@@ -79,7 +86,21 @@ public <c:get select="$topic/@producerJava" />(String csBrokerList) {
 <c:if test="$topic/@nokey='true'">
 	  key++;
 </c:if>
-	  producer.send(new KeyedMessage<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(<c:get select="$topic/@infoJava" />.topicName, key, value));
+
+	Callback callback = new Callback() {
+		@Override
+		public void onCompletion(RecordMetadata arg0, Exception arg1) {
+			if (arg0 != null) {
+				System.out.println("Written to partition "+arg0.partition());
+			} else {
+				System.out.println(arg1.toString());
+			}
+		}
+	};  
+
+	producer.send(new ProducerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(<c:get select="$topic/@infoJava" />.topicName, key, value), callback);
+    producer.flush();
+
   }
   
   public void close() {

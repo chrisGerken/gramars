@@ -25,6 +25,7 @@
         <c:set select="$topic" name="topicApiPkg"><c:get select="$component/@basePackage" />.topic.<c:get select="$topic/@name" /></c:set>
         <c:set select="$topic" name="topicApiDir"><c:get select="translate($topic/@topicApiPkg,'.','/')" /></c:set>
         <c:set select="$topic" name="highLevelConsumerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Consumer</c:set>
+        <c:set select="$topic" name="newConsumerJava"><c:get select="c:uppercaseFirst($topic/@name)" />NewConsumer</c:set>
         <c:set select="$topic" name="metamessageJava"><c:get select="c:uppercaseFirst($topic/@name)" />MetaMessage</c:set>
         <c:set select="$topic" name="partitionerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Partitioner</c:set>
         <c:set select="$topic" name="producerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Producer</c:set>
@@ -238,7 +239,9 @@
 
         *** End custom pre-generation actions for topic (53)
 
-        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@highLevelConsumerJava}.java" template="templates/topic/ConsumerJava.prod" replace="true" />
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@highLevelConsumerJava}.java" template="templates/topic/highLevelConsumerJava.prod" replace="true" />
+
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@newConsumerJava}.java" template="templates/topic/ConsumerJava.prod" replace="true" />
 
         <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@metamessageJava}.java" template="templates/topic/metamessageJava.prod" replace="true" />
 
@@ -304,10 +307,6 @@
     
     <c:iterate select="$component/bean" var="bean">
 
-		<c:log severity="error">type <c:get select="$bean/@type" /></c:log>
-		<c:log severity="error">class <c:get select="$bean/@beanClass" /></c:log>
-		<c:log severity="error">pkg <c:get select="$bean/@beanPkg" /></c:log>
-		<c:log severity="error">dir <c:get select="$bean/@beanDir" /></c:log>
         <c:file path="{$component/@sourceProject}/src/main/java/{$bean/@beanDir}/{$bean/@beanClass}.java" template="templates/bean/typeJava.prod" replace="true" />
 
     </c:iterate> 

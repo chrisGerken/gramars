@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
+import kafka.serializer.Decoder;
+
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 
@@ -14,7 +16,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import <c:get select="$type/@typeImport" />;
 </c:if>
 
-public class <c:get select="$type/@coderJava" /> implements Serializer<<c:get select="$type/@name" />>, Deserializer<<c:get select="$type/@name" />> {
+public class <c:get select="$type/@coderJava" /> implements Serializer<<c:get select="$type/@name" />>, Deserializer<<c:get select="$type/@name" />>, Decoder<<c:get select="$type/@name" />> {
 
 	public <c:get select="$type/@coderJava" />() {
 		
@@ -50,6 +52,11 @@ public class <c:get select="$type/@coderJava" /> implements Serializer<<c:get se
 	@Override
 	public void configure(Map arg0, boolean arg1) {
 		
+	}
+
+	@Override
+	public <c:get select="$type/@name" /> fromBytes(byte[] b) {
+		return deserialize("", b);
 	}
 
 }

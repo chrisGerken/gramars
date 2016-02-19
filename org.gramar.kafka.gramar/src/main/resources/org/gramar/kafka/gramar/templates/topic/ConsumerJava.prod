@@ -25,12 +25,12 @@ import com.eso.kafka.topic.records.RecordsInfo;
 import com.eso.kafka.topic.records.RecordsMetaMessage;
 
 /**
- * <c:get select="$topic/@highLevelConsumerJava" /> provides an iterator-like interface to be used to read from all
+ * <c:get select="$topic/@newConsumerJava" /> provides an iterator-like interface to be used to read from all
  * partitions in topic records.
  * <pre>
  * Usage:
  * 
- *     <c:get select="$topic/@highLevelConsumerJava" /> consumer = new <c:get select="$topic/@highLevelConsumerJava" />("localhost:9092","group-one");
+ *     <c:get select="$topic/@newConsumerJava" /> consumer = new <c:get select="$topic/@newConsumerJava" />("localhost:9092","group-one");
  *     
  *     while (consumer.hasNext()) {
  *         <c:get select="$topic/@messageJava" /> <c:get select="$topic/@messageType" /> = consumer.next();
@@ -40,7 +40,7 @@ import com.eso.kafka.topic.records.RecordsMetaMessage;
  *
  *</pre>     
  */
-public class <c:get select="$topic/@highLevelConsumerJava" /> {
+public class <c:get select="$topic/@newConsumerJava" /> {
 	
 	private String groupId;
 	private String brokerList;
@@ -55,7 +55,7 @@ public class <c:get select="$topic/@highLevelConsumerJava" /> {
    *  (e.g. 'host1:9092,host2:9092') running Kafka brokers.
    * @param groupId Client group name.  Used to manage last-read offsets for partitions.
    */
-public <c:get select="$topic/@highLevelConsumerJava" />(String brokerList, String groupId) {
+public <c:get select="$topic/@newConsumerJava" />(String brokerList, String groupId) {
 	  this.brokerList = brokerList;
 	  this.groupId = groupId;
 	  setup();
