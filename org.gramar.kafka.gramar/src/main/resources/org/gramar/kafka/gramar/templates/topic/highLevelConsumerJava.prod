@@ -109,8 +109,8 @@ public <c:get select="$topic/@highLevelConsumerJava" />(String zookeeperConnect,
     topicCountMap.put(topic, new Integer(1));
     
     // Construct the encoders/decoders for the message key and values
-    Decoder<<c:get select="$topic/@keyJava" />> keyDecoder = new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(new VerifiableProperties());
-    Decoder<<c:get select="$topic/@messageJava" />> messageDecoder = new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />(new VerifiableProperties());
+    Decoder<<c:get select="$topic/@keyJava" />> keyDecoder = new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />();
+    Decoder<<c:get select="$topic/@messageJava" />> messageDecoder = new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />();
 
 	// Configure and request the desired streams using the topic map, encoder and decoder
     Map<String, List<KafkaStream<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>>> consumerMap = consumer.createMessageStreams(topicCountMap, keyDecoder, messageDecoder);

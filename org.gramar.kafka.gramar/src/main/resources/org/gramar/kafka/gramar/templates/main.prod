@@ -24,7 +24,7 @@
     <c:iterate select="$component/topic" var="topic">
         <c:set select="$topic" name="topicApiPkg"><c:get select="$component/@basePackage" />.topic.<c:get select="$topic/@name" /></c:set>
         <c:set select="$topic" name="topicApiDir"><c:get select="translate($topic/@topicApiPkg,'.','/')" /></c:set>
-        <c:set select="$topic" name="highLevelConsumerJava"><c:get select="c:uppercaseFirst($topic/@name)" />HighLevelConsumer</c:set>
+        <c:set select="$topic" name="highLevelConsumerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Consumer</c:set>
         <c:set select="$topic" name="metamessageJava"><c:get select="c:uppercaseFirst($topic/@name)" />MetaMessage</c:set>
         <c:set select="$topic" name="partitionerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Partitioner</c:set>
         <c:set select="$topic" name="producerJava"><c:get select="c:uppercaseFirst($topic/@name)" />Producer</c:set>
@@ -238,7 +238,7 @@
 
         *** End custom pre-generation actions for topic (53)
 
-        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@highLevelConsumerJava}.java" template="templates/topic/highLevelConsumerJava.prod" replace="true" />
+        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@highLevelConsumerJava}.java" template="templates/topic/ConsumerJava.prod" replace="true" />
 
         <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@metamessageJava}.java" template="templates/topic/metamessageJava.prod" replace="true" />
 

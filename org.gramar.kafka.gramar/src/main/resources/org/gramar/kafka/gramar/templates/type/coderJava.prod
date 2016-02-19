@@ -5,33 +5,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 
-import kafka.serializer.Decoder;
-import kafka.serializer.Encoder;
-import kafka.utils.VerifiableProperties;
+import org.apache.kafka.common.serialization.Deserializer;
+import org.apache.kafka.common.serialization.Serializer;
 
 <c:if test="$type/@typeImport">
 import <c:get select="$type/@typeImport" />;
 </c:if>
 
-public class <c:get select="$type/@coderJava" /> implements Decoder<<c:get select="$type/@name" />> , Encoder<<c:get select="$type/@name" />> {
+public class <c:get select="$type/@coderJava" /> implements Serializer<<c:get select="$type/@name" />>, Deserializer<<c:get select="$type/@name" />> {
 
-	public <c:get select="$type/@coderJava" />(VerifiableProperties vp) {
+	public <c:get select="$type/@coderJava" />() {
 		
 	}
-	
-	@Override
-	public <c:get select="$type/@name" /> fromBytes(byte[] b) {
-		try {
-			return (<c:get select="$type/@name" />) new ObjectInputStream(new ByteArrayInputStream(b)).readObject();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
 
-	@Override
-	public byte[] toBytes(<c:get select="$type/@name" /> obj) {
+	public byte[] serialize(String topic, <c:get select="$type/@name" /> obj) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -44,4 +33,24 @@ public class <c:get select="$type/@coderJava" /> implements Decoder<<c:get selec
 		}
 	}
 
+	@Override
+	public <c:get select="$type/@name" /> deserialize(String topic, byte[] b) {
+		try {
+			return (<c:get select="$type/@name" />) new ObjectInputStream(new ByteArrayInputStream(b)).readObject();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void close() {
+		
+	}
+
+	@Override
+	public void configure(Map arg0, boolean arg1) {
+		
+	}
+
 }
+

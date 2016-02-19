@@ -47,14 +47,30 @@ public class <c:get select="$topic/@producerJava" /> {
 public <c:get select="$topic/@producerJava" />(String csBrokerList) {
 	  
 	  Properties props = new Properties();
-	  props.put("metadata.broker.list", csBrokerList);
 <c:if test="$topic/@partitioner='true'" >
 	  props.put("partitioner.class","<c:get select="$topic/@topicApiPkg" />.<c:get select="$topic/@partitionerJava" />");
 </c:if>
-	  props.put("producer.type", "sync");
+	  props.put("bootstrap.servers", csBrokerList);
 	  props.put("serializer.class","<c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />");
 	  props.put("key.serializer.class","<c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />");
-	  props.put("request.required.acks", "1");
+	  props.put("acks", "1");  // "0", "1", "all"
+	  props.put("buffer.memory", 8000);   // 33554432
+	  props.put("compression.type", "none");
+	  props.put("retries", 0);
+	  props.put("batch.size", 0);   //  0=disabled; 16384
+	  props.put("linger.ms", 0);
+	  props.put("max.block.ms", 1000);  // 60000
+	  props.put("max.request.size", 5000);     // 1048576
+	  props.put("request.timeout.ms", 5000);   // 30000
+	  props.put("timeout.ms", 1000);   // 30000
+	  props.put("block.on.buffer.full", false);    // true
+	  props.put("metadata.fetch.timeout.ms", 10000);  //  60000
+
+//	  max.in.flight.requests.per.connection	The maximum number of unacknowledged requests the client will send on a single connection before blocking. Note that if this setting is set to be greater than 1 and there are failed sends, there is a risk of message re-ordering due to retries (i.e., if retries are enabled).	int	5	[1,...]	low
+//	  metadata.max.age.ms	The period of time in milliseconds after which we force a refresh of metadata even if we haven't seen any partition leadership changes to proactively discover any new brokers or partitions.	long	300000	[0,...]	low
+//	  reconnect.backoff.ms	The amount of time to wait before attempting to reconnect to a given host. This avoids repeatedly connecting to a host in a tight loop. This backoff applies to all requests sent by the consumer to the broker.	long	50	[0,...]	low
+//	  retry.backoff.ms	The amount of time to wait before attempting to retry a failed fetch request to a given topic partition. This avoids repeated fetching-and-failing in a tight loop.	long	100	[0,...]	low
+
 	  producer = new Producer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(new ProducerConfig(props));
 
   }

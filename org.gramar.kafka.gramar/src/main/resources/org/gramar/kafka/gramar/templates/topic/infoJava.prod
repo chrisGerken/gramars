@@ -10,7 +10,7 @@ public class <c:get select="$topic/@infoJava" /> {
 	
 	public static final String topicName = "<c:get select="$topic/@name" />";
 	
-	public <c:get select="$topic/@infoJava" />(String csBrokerList, int port) {
+	public <c:get select="$topic/@infoJava" />(String csBrokerList) {
 		this.csBrokerList = csBrokerList;
 	}
 

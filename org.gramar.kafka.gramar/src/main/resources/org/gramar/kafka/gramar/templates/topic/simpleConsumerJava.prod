@@ -33,8 +33,8 @@ import <c:get select="$component/@kafkaBasePkg" />.AbstractSimpleConsumer;
  */
 public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpleConsumer {
 
-	private <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" /> keyCoder = new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(new VerifiableProperties());
-	private <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" /> messageCoder = new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />(new VerifiableProperties());
+	private <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" /> keyCoder = new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />();
+	private <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" /> messageCoder = new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />();
 	
 	  /**
 	   * Creates a simple consumer that reads from a single partition for topic <c:get select="$topic/@name" />
@@ -57,7 +57,7 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 		ByteBuffer payload = super.nextMessage().message().payload();
         byte[] bytes = new byte[payload.limit()];
         payload.get(bytes);
-        return messageCoder.fromBytes(bytes);
+        return messageCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName, bytes);
         
 	}
 
@@ -76,12 +76,12 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 		buf = mao.message().payload();
         bytes = new byte[buf.limit()];
         buf.get(bytes);
-        <c:get select="$topic/@messageJava" /> message = messageCoder.fromBytes(bytes);
+        <c:get select="$topic/@messageJava" /> message = messageCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName, bytes);
 		
 		buf = mao.message().key();
         bytes = new byte[buf.limit()];
         buf.get(bytes);
-        <c:get select="$topic/@keyJava" /> key = keyCoder.fromBytes(bytes);
+        <c:get select="$topic/@keyJava" /> key = keyCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName,bytes);
 
 		return new <c:get select="$topic/@metamessageJava" />(key, message, <c:get select="$topic/@infoJava" />.topicName, partition, mao.offset());
         

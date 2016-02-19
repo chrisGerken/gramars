@@ -1,0 +1,146 @@
+package <c:get select="$topic/@topicApiPkg" />;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+<c:if test="$topic/@keyImport">
+import <c:get select="$topic/@keyImport" />;
+</c:if>
+<c:if test="$topic/@messageImport">
+import <c:get select="$topic/@messageImport" />;
+</c:if>
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />;
+import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />;
+
+import com.eso.kafka.serialization.LongCoder;
+import com.eso.kafka.serialization.LogEntryCoder;
+import com.eso.kafka.topic.records.RecordsInfo;
+import com.eso.kafka.topic.records.RecordsMetaMessage;
+
+/**
+ * <c:get select="$topic/@highLevelConsumerJava" /> provides an iterator-like interface to be used to read from all
+ * partitions in topic records.
+ * <pre>
+ * Usage:
+ * 
+ *     <c:get select="$topic/@highLevelConsumerJava" /> consumer = new <c:get select="$topic/@highLevelConsumerJava" />("localhost:9092","group-one");
+ *     
+ *     while (consumer.hasNext()) {
+ *         <c:get select="$topic/@messageJava" /> <c:get select="$topic/@messageType" /> = consumer.next();
+ *     }
+ *     
+ *     consumer.close();
+ *
+ *</pre>     
+ */
+public class <c:get select="$topic/@highLevelConsumerJava" /> {
+	
+	private String groupId;
+	private String brokerList;
+	
+	private KafkaConsumer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> consumer;
+	private Iterator<ConsumerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>> iterator = null;
+  
+  /**
+   * Creates a high-level consumer that reads from all partitions for topic records
+   * 
+   * @param zookeeperConnect A String containing a comma-separated list of host/ports
+   *  (e.g. 'host1:9092,host2:9092') running Kafka brokers.
+   * @param groupId Client group name.  Used to manage last-read offsets for partitions.
+   */
+public <c:get select="$topic/@highLevelConsumerJava" />(String brokerList, String groupId) {
+	  this.brokerList = brokerList;
+	  this.groupId = groupId;
+	  setup();
+  }
+  
+  /**
+   * Returns the next message from the topic.
+   * 
+   * @return <c:get select="$topic/@messageJava" />
+   */
+  public <c:get select="$topic/@messageJava" /> next() {
+	  return nextRecord().value();
+  }
+  
+  /**
+   * Returns the next meta-message from the topic.  The meta-message is able to answer the key, 
+   * message, topic, partition and offset for the message.
+   * 
+   * @return <c:get select="$topic/@metamessageJava" />
+   */
+  public <c:get select="$topic/@metamessageJava" /> nextMetaMessage() {
+	  ConsumerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> record = nextRecord();
+	  return new <c:get select="$topic/@metamessageJava" />(record.key(), record.value(), record.topic(), record.partition(), record.offset());
+  }
+
+  /**
+   * Returns whether or not there is a message ready to be returned from the topic.
+   * 
+   * @return boolean
+   */
+  public boolean hasNext() {
+	  try {
+		return getIterator().hasNext();
+	  } catch (Exception e) { }
+	  return false;
+  }
+  
+  /**
+   * Get the next record from the consumer
+   */
+  public ConsumerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> nextRecord() {
+	  if ((iterator==null) || (!iterator.hasNext())) {
+		  iterator = consumer.poll(100).iterator();  // 100 ms
+	  }
+	  return getIterator().next();
+  }
+   
+  /**
+   * Reload the iterator if necessary
+   */
+  public Iterator<ConsumerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>> getIterator() {
+	  if ((iterator==null) || (!iterator.hasNext())) {
+		  iterator = consumer.poll(100).iterator();  // 100 ms
+	  }
+	  return iterator;
+  }
+  
+  /*
+   * Performs required housekeeping when this consumer is no longer needed.
+   */
+  public void close() {
+	  consumer.commitSync();
+	  consumer.close();
+  }
+  
+  private void setup() {
+	  
+	  consumer = new KafkaConsumer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(getProperties(), new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(), new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />());
+	  consumer.subscribe(Arrays.asList(RecordsInfo.topicName));
+
+  }
+
+  private Properties getProperties() {
+	 Properties props = new Properties();
+
+     props.put("bootstrap.servers", brokerList);
+     props.put("group.id", groupId);
+     props.put("enable.auto.commit", "true");
+     props.put("auto.commit.interval.ms", "1000");
+     props.put("session.timeout.ms", "30000");
+     props.put("key.deserializer", "<c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />");
+     props.put("value.deserializer", "<c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />");	  
+     props.put("auto.offset.reset", "earliest");
+	  
+     return props;
+  }
+
+}
