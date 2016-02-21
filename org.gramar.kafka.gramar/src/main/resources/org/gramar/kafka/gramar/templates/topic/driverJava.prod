@@ -1,0 +1,98 @@
+package <c:get select="$component/@driversPkg" />;
+
+import <c:get select="$topic/@topicApiPkg" />.<c:get select="$topic/@infoJava" />;
+import <c:get select="$topic/@topicApiPkg" />.<c:get select="$topic/@producerJava" />;
+import <c:get select="$topic/@topicApiPkg" />.<c:get select="$topic/@newConsumerJava" />;
+import <c:get select="$topic/@topicApiPkg" />.<c:get select="$topic/@metamessageJava" />;
+
+import <c:get select="$component/@kafkaBasePkg" />.Admin;
+
+<c:if test="$topic/@keyImport">
+import <c:get select="$topic/@keyImport" />;
+</c:if>
+<c:if test="$topic/@messageImport">
+import <c:get select="$topic/@messageImport" />;
+</c:if>
+
+public class <c:get select="$topic/@driverJava" /> {
+
+	private static String csBrokerList = "localhost:9092";
+	private static String zkList = "localhost:2181";
+
+	public static void main(String[] args) {
+	
+	
+	}
+	
+	public static void createTopic() {
+
+		Admin admin = new Admin(zkList);
+		
+		boolean exists = admin.topicExists(<c:get select="$topic/@infoJava" />.topicName);
+
+		System.out.println("Topic "+<c:get select="$topic/@infoJava" />.topicName+" exists? "+exists);
+
+		if (!exists) {
+			admin.createTopic(<c:get select="$topic/@infoJava" />.topicName, 3, 1);
+			System.out.println("Topic created");
+		}
+		
+	}
+
+	public static void writeMessages() {
+
+		Admin admin = new Admin(zkList);
+		boolean exists = admin.topicExists(<c:get select="$topic/@infoJava" />.topicName);
+		if (!exists) {
+			System.out.println("Topic "+<c:get select="$topic/@infoJava" />.topicName+" hasn't been created yet");
+			return;
+		}
+		
+<c:if test="$topic/@nokey='false'">
+		<c:get select="$topic/@keyJava" /> key;
+</c:if>
+		<c:get select="$topic/@messageJava" /> value;
+		<c:get select="$topic/@producerJava" /> producer = new <c:get select="$topic/@producerJava" />(csBrokerList);
+
+		for (long i = 0; i<100; i++) {
+<c:choose>
+<c:when test="$topic/@nokey='true'">
+</c:when>		
+<c:when test="$topic/@keyType='Long'">
+			key = System.currentTimeMillis();
+</c:when>		
+<c:when test="$topic/@keyType='String'">
+			key = "somekey";
+</c:when>
+<c:otherwise>
+			key = new <c:get select="$topic/@keyJava" />();
+</c:otherwise>
+</c:choose>		
+			value = new <c:get select="$topic/@messageJava" />();
+			producer.send(<c:if test="$topic/@nokey='false'">key, </c:if>value);
+		}
+
+	}
+
+	public static void readMessages() {
+
+		Admin admin = new Admin(zkList);
+		boolean exists = admin.topicExists(<c:get select="$topic/@infoJava" />.topicName);
+		if (!exists) {
+			System.out.println("Topic "+<c:get select="$topic/@infoJava" />.topicName+" hasn't been created yet");
+			return;
+		}
+
+		int count = 0;
+		<c:get select="$topic/@newConsumerJava" /> consumer = new <c:get select="$topic/@newConsumerJava" />(zkList, "driver_grp01");
+		while (consumer.hasNext()) {
+			count++;
+			<c:get select="$topic/@metamessageJava" /> meta = consumer.nextMetaMessage();
+			System.out.println(meta.toString());
+		}
+		System.out.println("Read "+count+" message(s)");
+		consumer.close();
+		
+	}
+
+}

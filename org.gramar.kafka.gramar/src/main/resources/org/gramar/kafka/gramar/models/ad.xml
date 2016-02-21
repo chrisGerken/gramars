@@ -1,7 +1,7 @@
 
 <root>
 
-    <component  name="ad-source"  basePackage="org.fredward.ad.source" groupId="fredward.net"  version="1.0.0-SNAPSHOT">
+    <component  name="ad-source"  basePackage="org.fredward.ad.source" groupId="fredward.net"  version="1.0.0-SNAPSHOT" drivers="true">
 
         <topic  name="impression"  	messageType="org.fredward.model.Impression"	 partitions="3"  />
         <topic  name="click"  		messageType="org.fredward.model.Click"  	 partitions="5"  />
