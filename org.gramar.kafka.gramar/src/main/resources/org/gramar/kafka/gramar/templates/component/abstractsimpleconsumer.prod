@@ -265,6 +265,20 @@ public class AbstractSimpleConsumer {
     	}
     	return leadBroker;
     }
+    
+    
+    /**
+     * Return the next unread offset for the partition.  This method takes into account
+     * the raw (actual committed offset) with respect to the earliest available offset, 
+     * latest available offset and startAt* options.
+       
+     * @return BrokerEndPoint describing the lead broker
+     * @throws PartitionConsumerException
+     */
+    public Long getFirstUnread() {
+    	determineFirstUnread();
+    	return firstUnread;
+    }
 
 	private void determineFirstUnread() {
 		
@@ -300,7 +314,7 @@ public class AbstractSimpleConsumer {
 		
 	}
 
-    /*
+    /**
      * Commits the given offset as being the offset of the next message to be read. 
      */
 	private void commitOffset(long offset) throws PartitionConsumerException {
@@ -315,10 +329,10 @@ public class AbstractSimpleConsumer {
 
 	}
 
-    /*
+    /**
      * Retrieves the previously committed offset. If no offset has been committed, yet, a -1 is returned.
      */
-	private long retrieveOffset() throws PartitionConsumerException {
+	public long retrieveOffset() throws PartitionConsumerException {
     	
         List<TopicAndPartition> requestInfo = new ArrayList<TopicAndPartition>();
         TopicAndPartition topicAndPartition = new TopicAndPartition(topic, partition);

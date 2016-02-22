@@ -93,7 +93,7 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 	  * 
 	  * @return RecordsMetaMessage
 	  */
-	public RecordsMetaMessage metaMessage(long offset) {
+	public <c:get select="$topic/@metamessageJava" /> metaMessage(long offset) {
 
 		ByteBuffer buf;
 		byte[] bytes;

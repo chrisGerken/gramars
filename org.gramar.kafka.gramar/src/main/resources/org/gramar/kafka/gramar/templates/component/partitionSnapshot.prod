@@ -1,0 +1,61 @@
+package <c:get select="$component/@kafkaBasePkg" />;
+
+public class PartitionSnapshot {
+
+	private String 	topic;
+	private int 	partition;
+	private Long 	earliestOffset;
+	private Long 	latestOffset;
+	private String 	groupId;
+	private Long 	committedOffset;
+	private Long 	nextUnreadOffset;
+	
+	public PartitionSnapshot(String topic, int partition, long earliestOffset,
+			long latestOffset, String groupId, long committedOffset, long nextUnreadOffset) {
+		super();
+		this.topic = topic;
+		this.partition = partition;
+		this.earliestOffset = earliestOffset;
+		this.latestOffset = latestOffset;
+		this.groupId = groupId;
+		this.committedOffset = committedOffset;
+		this.nextUnreadOffset = nextUnreadOffset;
+	}
+	
+	public PartitionSnapshot(String topic, int partition, long earliestOffset, long latestOffset) {
+		super();
+		this.topic = topic;
+		this.partition = partition;
+		this.earliestOffset = earliestOffset;
+		this.latestOffset = latestOffset;
+	}
+	
+	public String getTopic() {
+		return topic;
+	}
+	
+	public int getPartition() {
+		return partition;
+	}
+	
+	public Long getEarliestOffset() {
+		return earliestOffset;
+	}
+	
+	public Long getLatestOffset() {
+		return latestOffset;
+	}
+	
+	public String getGroupId() {
+		return groupId;
+	}
+	
+	public Long getCommittedOffset() {
+		return committedOffset;
+	}
+	
+	public Long getNextUnreadOffset() {
+		return nextUnreadOffset;
+	}
+	
+}

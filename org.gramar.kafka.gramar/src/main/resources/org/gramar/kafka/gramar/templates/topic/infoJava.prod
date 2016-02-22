@@ -2,6 +2,8 @@ package <c:get select="$topic/@topicApiPkg" />;
 
 import java.util.List;
 
+import com.eso.kafka.common.internal.PartitionSnapshot;
+
 import kafka.javaapi.PartitionMetadata;
 
 public class <c:get select="$topic/@infoJava" /> {
@@ -14,19 +16,35 @@ public class <c:get select="$topic/@infoJava" /> {
 		this.csBrokerList = csBrokerList;
 	}
 
-	public void info() {
+	public PartitionSnapshot[] partitions(String groupId) {
+		PartitionSnapshot snapshot[] = new PartitionSnapshot[0];
 		try {
-			<c:get select="$topic/@simpleConsumerJava" /> c = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, 0, "fred");
+			<c:get select="$topic/@simpleConsumerJava" /> c = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, 0, "__nobody");
 			List<PartitionMetadata> list = c.getMetaData().partitionsMetadata();
+			snapshot = new PartitionSnapshot[list.size()];
 			for (PartitionMetadata pmd : list) {
 				int part = pmd.partitionId();
-				<c:get select="$topic/@simpleConsumerJava" /> cs = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, part, "ignore");
+				<c:get select="$topic/@simpleConsumerJava" /> cs = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, part, groupId);
 				long first = cs.requestEarliestAvailableOffset();
 				long last = cs.requestLatestAvailableOffset();
+				long firstUnread = cs.getFirstUnread();
+				long committed = cs.retrieveOffset();
+				snapshot[part] = new PartitionSnapshot(topicName, part, first, last, groupId, committed, firstUnread);
 				cs.close();
-				System.out.println("["+part+"] "+first+" --> "+last+"; leader: "+pmd.leader().id());
 			}
 			c.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return snapshot;
+	}
+
+	public void info(String groupId) {
+		try {
+			PartitionSnapshot snapshot[] = partitions(groupId);
+			for (PartitionSnapshot s : snapshot) {
+				System.out.println("["+s.getPartition()+"] "+s.getEarliestOffset()+" --> "+s.getLatestOffset()+"; next unread: "+s.getNextUnreadOffset());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
