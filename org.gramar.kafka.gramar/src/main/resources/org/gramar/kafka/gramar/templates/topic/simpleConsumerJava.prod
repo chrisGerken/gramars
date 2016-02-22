@@ -86,5 +86,31 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 		return new <c:get select="$topic/@metamessageJava" />(key, message, <c:get select="$topic/@infoJava" />.topicName, partition, mao.offset());
         
 	}
+	
+    /**
+	  * Returns the meta-message for the specified offset in the partition.  The meta-message is able to answer the key, 
+	  * message, topic, partition and offset for the message.
+	  * 
+	  * @return RecordsMetaMessage
+	  */
+	public RecordsMetaMessage metaMessage(long offset) {
+
+		ByteBuffer buf;
+		byte[] bytes;
+		MessageAndOffset mao = requestSpecificOffset(offset);
+		
+		buf = mao.message().payload();
+        bytes = new byte[buf.limit()];
+        buf.get(bytes);
+        <c:get select="$topic/@messageJava" /> message = messageCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName, bytes);
+		
+		buf = mao.message().key();
+        bytes = new byte[buf.limit()];
+        buf.get(bytes);
+        <c:get select="$topic/@keyJava" /> key = keyCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName,bytes);
+
+		return new <c:get select="$topic/@metamessageJava" />(key, message, <c:get select="$topic/@infoJava" />.topicName, partition, mao.offset());
+        
+	}
 		
 }

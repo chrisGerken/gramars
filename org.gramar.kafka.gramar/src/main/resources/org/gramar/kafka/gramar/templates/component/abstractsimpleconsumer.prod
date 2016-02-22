@@ -133,6 +133,17 @@ public class AbstractSimpleConsumer {
 		return nextMessageAndOffset != null;
 	}
 	
+	public void autoCommitOff() {
+		autoCommitInterval = 0L;
+	}
+	
+	protected MessageAndOffset requestSpecificOffset(long offset) {
+		nextMessageAndOffset = null;
+		messageSetIterator = null;
+		firstUnread = offset;
+		return nextMessage();
+	}
+	
 	protected MessageAndOffset nextMessage() {
 		for (int attempt = 0; attempt < fetchRetries; attempt++) {
 			try {
