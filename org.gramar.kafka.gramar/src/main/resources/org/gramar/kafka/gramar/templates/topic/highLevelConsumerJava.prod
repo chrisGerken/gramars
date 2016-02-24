@@ -21,6 +21,7 @@ import kafka.javaapi.consumer.ConsumerConnector;
 import kafka.message.MessageAndMetadata;
 import kafka.serializer.Decoder;
 import kafka.utils.VerifiableProperties;
+import kafka.consumer.ConsumerTimeoutException;
 
 /**
  * <c:get select="$topic/@highLevelConsumerJava" /> provides an iterator-like interface to be used to read from all
@@ -65,7 +66,12 @@ public <c:get select="$topic/@highLevelConsumerJava" />(String zookeeperConnect,
    * @return <c:get select="$topic/@messageJava" />
    */
   public <c:get select="$topic/@messageJava" /> next() {
-	  return nextMetaMessage().getMessage();
+      try {
+		  return nextMetaMessage().getMessage();
+	  } catch (ConsumerTimeoutException e) {
+	  
+	  }
+	  return null;
   }
   
   /**
@@ -75,8 +81,12 @@ public <c:get select="$topic/@highLevelConsumerJava" />(String zookeeperConnect,
    * @return <c:get select="$topic/@metamessageJava" />
    */
   public <c:get select="$topic/@metamessageJava" /> nextMetaMessage() {
-	  MessageAndMetadata<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> meta = it.next();
-	  return new <c:get select="$topic/@metamessageJava" />(meta.key(), meta.message(), meta.topic(), meta.partition(), meta.offset());
+      try {
+		  MessageAndMetadata<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> meta = it.next();
+		  return new <c:get select="$topic/@metamessageJava" />(meta.key(), meta.message(), meta.topic(), meta.partition(), meta.offset());
+	  } catch (ConsumerTimeoutException e) {
+	  }
+	  return null;
   }
 
   /**

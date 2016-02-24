@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import kafka.consumer.ConsumerTimeoutException;
 
 <c:if test="$topic/@keyImport">
 import <c:get select="$topic/@keyImport" />;
@@ -67,7 +68,12 @@ public <c:get select="$topic/@newConsumerJava" />(String brokerList, String grou
    * @return <c:get select="$topic/@messageJava" />
    */
   public <c:get select="$topic/@messageJava" /> next() {
-	  return nextRecord().value();
+      try {
+		  return nextRecord().value();
+	  } catch (ConsumerTimeoutException e) {
+	  
+	  }
+	  return null;
   }
   
   /**
@@ -77,8 +83,13 @@ public <c:get select="$topic/@newConsumerJava" />(String brokerList, String grou
    * @return <c:get select="$topic/@metamessageJava" />
    */
   public <c:get select="$topic/@metamessageJava" /> nextMetaMessage() {
-	  ConsumerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> record = nextRecord();
-	  return new <c:get select="$topic/@metamessageJava" />(record.key(), record.value(), record.topic(), record.partition(), record.offset());
+      try {
+	  	ConsumerRecord<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />> record = nextRecord();
+	  	return new <c:get select="$topic/@metamessageJava" />(record.key(), record.value(), record.topic(), record.partition(), record.offset());
+	  } catch (ConsumerTimeoutException e) {
+	  
+	  }
+	  return null;
   }
 
   /**

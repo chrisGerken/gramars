@@ -91,7 +91,7 @@ public <c:get select="$topic/@producerJava" />(String csBrokerList) {
 		@Override
 		public void onCompletion(RecordMetadata arg0, Exception arg1) {
 			if (arg0 != null) {
-				System.out.println("Written to partition "+arg0.partition());
+//				System.out.println("Written to partition "+arg0.partition());
 			} else {
 				System.out.println(arg1.toString());
 			}
