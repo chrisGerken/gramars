@@ -251,6 +251,7 @@
 	    		<c:folder path="{$component/@driversProject}/src/test/resources" />
 			    <c:file path="{$component/@driversProject}/src/main/resources/log4j.properties" template="templates/component/log4j.properties.prod" replace="true" />
 			    <c:file path="{$component/@driversProject}/pom.xml" template="templates/component/driversPomXml.prod" replace="false" />
+			    <c:file path="{$component/@driversProject}/.gitignore" template="templates/component/gitignore.prod" replace="false" />
 			    <c:iterate select="$component/topic" var="topic">
 				    <c:file path="{$component/@driversProject}/src/main/java/{$component/@driversDir}/{$topic/@driverJava}.java" template="templates/topic/driverJava.prod" replace="false" />
 				</c:iterate>	
@@ -281,6 +282,8 @@
 	
 	        <c:file path="{$component/@sourceProject}/src/main/java/{$topic/@topicApiDir}/{$topic/@infoJava}.java" template="templates/topic/infoJava.prod" replace="true" />
 	
+		    <c:file path="{$component/@sourceProject}/.gitignore" template="templates/component/gitignore.prod" replace="false" />
+
 	
 	        *** Begin custom generation updates for topic (53)
 			

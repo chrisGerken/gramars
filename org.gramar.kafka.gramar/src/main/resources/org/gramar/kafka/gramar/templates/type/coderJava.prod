@@ -1,5 +1,7 @@
 package <c:get select="$component/@serializationPkg" />;
 
+<c:userRegion>// Begin imports<c:initialCode>		
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,36 +14,54 @@ import kafka.serializer.Decoder;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 
+</c:initialCode>// End imports</c:userRegion>
+
 <c:if test="$type/@typeImport">
 import <c:get select="$type/@typeImport" />;
 </c:if>
 
 public class <c:get select="$type/@coderJava" /> implements Serializer<<c:get select="$type/@name" />>, Deserializer<<c:get select="$type/@name" />>, Decoder<<c:get select="$type/@name" />> {
 
+			<c:userRegion>// Begin declarations<c:initialCode>		
+
+			</c:initialCode>// End declarations</c:userRegion>
+
 	public <c:get select="$type/@coderJava" />() {
 		
 	}
 
 	public byte[] serialize(String topic, <c:get select="$type/@name" /> obj) {
+
+			<c:userRegion>// Begin serialization logic<c:initialCode>		
 		try {
+			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(obj);
 			oos.close();
 			byte[] b = baos.toByteArray();
 			return b;
+
 		} catch (IOException e) {
 			return new byte[0];
 		}
+			
+			</c:initialCode>// End serialization logic</c:userRegion>
 	}
 
 	@Override
 	public <c:get select="$type/@name" /> deserialize(String topic, byte[] b) {
+
+			<c:userRegion>// Begin deserialization logic<c:initialCode>		
+			
 		try {
 			return (<c:get select="$type/@name" />) new ObjectInputStream(new ByteArrayInputStream(b)).readObject();
 		} catch (Exception e) {
 			return null;
 		}
+			
+			</c:initialCode>// End deserialization logic</c:userRegion>
+	
 	}
 
 	@Override
@@ -51,6 +71,10 @@ public class <c:get select="$type/@coderJava" /> implements Serializer<<c:get se
 
 	@Override
 	public void configure(Map arg0, boolean arg1) {
+
+			<c:userRegion>// Begin configuration logic<c:initialCode>		
+
+			</c:initialCode>// End configuration logic</c:userRegion>
 		
 	}
 
