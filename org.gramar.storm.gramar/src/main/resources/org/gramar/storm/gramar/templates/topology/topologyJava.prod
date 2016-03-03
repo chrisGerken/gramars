@@ -49,7 +49,7 @@ public class <c:get select="$topology/@topologyJava" /> {
     private static Config config = null;
     static List<String> TARGETS = Arrays.asList(new String[] {<c:iterate select="$topology/environment" var="environment" delimiter=", ">"<c:get select="$environment/@name" />"</c:iterate>});
 
-    private static ILocalCluster localCluster = new LocalCluster();
+    private static ILocalCluster localCluster;
     private static final Logger log = Logger.getLogger(<c:get select="$topology/@topologyJava" />.class);
 
     public static void main(String[] args) throws Exception {
@@ -219,6 +219,9 @@ public class <c:get select="$topology/@topologyJava" /> {
     }
     
     private static ILocalCluster getLocalCluster() {
+    	if (localCluster==null) {
+    		localCluster = new LocalCluster();
+    	}
     	return localCluster;
     }
     
