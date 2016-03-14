@@ -5,7 +5,7 @@
     <!--  mavenGroupId : The groupId for the maven artifacts to be created -->
     <!--  basePackage : The name prefix for all Java packages -->
     <!--  provider : The name of the person, prganization or company that owns this transformation tool -->
-    <topology  label=""  mavenGroupId=""  basePackage=""  provider="">
+    <topology  label=""  mavenGroupId=""  basePackage=""  provider="" title="" >
 
         <!--  label : A multi-token, displayable name for the bolt -->
         <!--  instances : The number of instances of this bolt to be constructed at runtime -->
@@ -27,6 +27,12 @@
                 </fieldRef>
 
             </reads>
+
+            <!--  from : The id of an other component -->
+            <in  from="" />
+
+            <!--  to : The id of an other component -->
+            <out  to="" />
 
         </bolt>
 
@@ -60,6 +66,10 @@
         <environment  name=""  runLocally=""  default="">
 
         </environment>
+
+        <!--  id : The unique id of the component  -->
+        <!--  kind : one of "kafka"                 -->
+        <other  id=""   kind=""  style="shape=box, fillcolor=skyblue1" lineStyle="penwidth=3, style=dashed, color=slateblue1" />
 
     </topology>
 

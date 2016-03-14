@@ -8,6 +8,18 @@
 
 *** Begin custom model updates for root (3)
 
+<c:loadContent var="others">
+
+<others>
+	<other kind="Kafka"  style="shape=box, fillcolor=grey86" lineStyle="penwidth=3, style=dashed, color=grey14" />
+	<other kind="HDFS"   style="shape=box, fillcolor=aquamarine3" lineStyle="penwidth=3, style=dashed, color=aquamarine4" />
+</others>
+
+</c:loadContent>
+
+<c:setVariable select="$others/others" var="others" />
+
+
 *** End custom model updates for root (3)
 
 <c:iterate select="$root/topology" var="topology">
@@ -39,6 +51,10 @@
 
     *** Begin custom model updates for topology (4)
 
+	<c:if test="not($topology/@title)" >
+	    <c:set select="$topology" name="title"><c:get select="$topology/@label" /></c:set>
+	</c:if>
+
     *** End custom model updates for topology (4)
 
 
@@ -50,6 +66,7 @@
         <c:set select="$bolt" name="iBoltJava">I<c:get select="$bolt/@name" />Bolt</c:set>
         <c:set select="$bolt" name="isComponent">true</c:set>
         <c:set select="$bolt" name="componentKind">bolt</c:set>
+        <c:set select="$bolt" name="gvLabel">"<c:get select="$bolt/@label"/> (<c:get select="$bolt/@instances"/>)"</c:set>
 
         *** Begin custom model updates for bolt (276)
 
@@ -126,6 +143,7 @@
         <c:set select="$spout" name="spoutLogicJava"><c:get select="$spout/@name" />SpoutLogic</c:set>
         <c:set select="$spout" name="isComponent">true</c:set>
         <c:set select="$spout" name="componentKind">spout</c:set>
+        <c:set select="$spout" name="gvLabel">"<c:get select="$spout/@label"/> (<c:get select="$spout/@instances"/>)"</c:set>
 
         *** Begin custom model updates for spout (277)
 
@@ -217,6 +235,17 @@
     *** Begin custom model post updates for topology (4)
 
     *** End custom model post updates for topology (4)
+
+    <c:iterate select="$topology/other" var="other">
+        <c:set select="$other" name="gvLabel">"<c:get select="$other/@kind"/>: <c:get select="$other/@id"/>"</c:set>
+
+		<c:if test="$other/@style">
+		    <c:if test="not($others/other[@kind=$other/@kind])">
+		    	<c:copyElement select="$other" toSelect="$others"  name="other" />
+		    </c:if>
+		</c:if> 
+
+    </c:iterate> 
 
 
 </c:iterate> 
