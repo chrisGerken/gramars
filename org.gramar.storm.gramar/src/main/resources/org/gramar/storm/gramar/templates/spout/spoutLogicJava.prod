@@ -9,6 +9,7 @@ import <c:get select="$topology/@utilPkg" />.<c:get select="$topology/@iLoggerJa
 
 import org.apache.log4j.Logger;
 
+import backtype.storm.Config;
 import backtype.storm.task.TopologyContext;
 
 import java.io.Serializable;
@@ -94,6 +95,16 @@ public class <c:get select="$spout/@spoutLogicJava" /> implements Serializable {
 
 
 			</c:initialCode>// End fail() logic</c:userRegion> 
+
+    }
+
+    public static int determineParallelismHint(Config c) {
+
+			// Begin dph() logic 
+
+    	return (Integer) c.get("<c:get select="$spout/@name" />.parallelismHint");
+
+			// End dph() logic 
 
     }
 

@@ -62,7 +62,7 @@
 			</c:when>
 			
 			<c:otherwise>		
-	        <c:set select="$topic" name="keyJava"><c:get select="className($topic/@keyType)" /></c:set>
+	        <c:set select="$topic" name="keyJava"><c:get select="c:className($topic/@keyType)" /></c:set>
 	        <c:set select="$topic" name="keyImport"><c:get select="$topic/@keyType" /></c:set>
 			</c:otherwise>
 			

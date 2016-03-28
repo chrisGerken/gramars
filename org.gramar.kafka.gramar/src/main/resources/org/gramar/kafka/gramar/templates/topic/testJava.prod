@@ -31,15 +31,14 @@ public class <c:get select="$topic/@partitionerTestJava" /> {
 		
 		<c:userRegion>// Begin custom partitioner test logic<c:initialCode> 
 		
-		Properties props = new Properties();
-		<c:get select="$topic/@partitionerJava" /> partitioner = new <c:get select="$topic/@partitionerJava" />(new VerifiableProperties(props)); 
+		<c:get select="$topic/@partitionerJava" /> partitioner = new <c:get select="$topic/@partitionerJava" />(); 
 
 		if (true) { throw new RuntimeException("Test case not yet implemented"); }
 		
 		<c:get select="$topic/@keyJava" /> key = null;
-		int partition = partitioner.partition(key, 7);
+//		int partition = partitioner.partition(key, 7);
 		
-		assertTrue("Wrong partition: "+partition, (partition == 3));
+//		assertTrue("Wrong partition: "+partition, (partition == 3));
 
 		</c:initialCode>// End custom partitioner test logic</c:userRegion>
 

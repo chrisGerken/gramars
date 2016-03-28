@@ -2,6 +2,7 @@ package <c:get select="$topology/@topologyPkg" />;
 
 	<c:userRegion>// Begin imports<c:initialCode>
 
+import <c:get select="$topology/@logicPkg" />.*;
 import <c:get select="$topology/@spoutPkg" />.*;
 import <c:get select="$topology/@boltPkg" />.*;
 <c:iterate select="c:unique( $topology/bolt/reads[@grouping='custom'] , '@customGrouping' )" var="reads" >
@@ -171,11 +172,11 @@ public class <c:get select="$topology/@topologyJava" /> {
 <c:iterate select="$topology/*[@isComponent='true']" var="component">
 
 <c:if test="$component/@componentKind='spout'">
-        parallelismHint = (Integer)config.get("<c:get select="$component/@name" />.parallelismHint");
+        parallelismHint = <c:get select="$component/@spoutLogicJava" />.determineParallelismHint(config);
         builder.setSpout("<c:get select="$component/@name" />", new <c:get select="$component/@spoutJava" />(), parallelismHint);
 </c:if>
 <c:if test="$component/@componentKind='bolt'">
-        parallelismHint = (Integer)config.get("<c:get select="$component/@name" />.parallelismHint");
+        parallelismHint = <c:get select="$component/@boltLogicJava" />.determineParallelismHint(config);
         boltDeclarer = builder.setBolt("<c:get select="$component/@name" />", new <c:get select="$component/@boltJava" />(), parallelismHint);
 <c:iterate select="$component/reads" var="reads">
 <c:setVariable select="$topology/*/emits[@stream=$reads/@stream]" var="emits" />

@@ -54,7 +54,11 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 	 */
 	public <c:get select="$topic/@messageJava" /> next() {
 
-		ByteBuffer payload = super.nextMessage().message().payload();
+		MessageAndOffset mao = super.nextMessage();
+		
+		if (mao == null) { return null; }
+
+		ByteBuffer payload = mao.message().payload();
         byte[] bytes = new byte[payload.limit()];
         payload.get(bytes);
         return messageCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName, bytes);
@@ -72,6 +76,8 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 		ByteBuffer buf;
 		byte[] bytes;
 		MessageAndOffset mao = super.nextMessage();
+		
+		if (mao == null) { return null; }
 		
 		buf = mao.message().payload();
         bytes = new byte[buf.limit()];

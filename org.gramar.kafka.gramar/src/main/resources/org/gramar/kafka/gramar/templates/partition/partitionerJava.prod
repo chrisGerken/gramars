@@ -4,8 +4,10 @@ package <c:get select="$topic/@topicApiPkg" />;
 import <c:get select="$topic/@keyImport" />;
 </c:if>
 
-import kafka.producer.Partitioner;
-import kafka.utils.VerifiableProperties;
+import java.util.Map;
+
+import org.apache.kafka.common.Cluster;
+import org.apache.kafka.clients.producer.Partitioner;
 
 /**
  * <c:get select="$topic/@partitionerJava" /> is responsible for determining on which of the available partitions 
@@ -13,22 +15,43 @@ import kafka.utils.VerifiableProperties;
  */
 public class <c:get select="$topic/@partitionerJava" /> implements Partitioner {
 
-	public <c:get select="$topic/@partitionerJava" />(VerifiableProperties vp) {
+	private int partitions = -1;
+	
+	public <c:get select="$topic/@partitionerJava" />() {
+		
+	}
+
+
+	@Override
+	public void configure(Map<String, ?> configs) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public int partition(Object obj, int partitions) {
-		<c:get select="$topic/@keyJava" /> key = (<c:get select="$topic/@keyJava" />) obj;
+	public int partition(String topic, Object obj, byte[] keyBytes,
+			Object value, byte[] valueBytes, Cluster cluster) {
 
-		<c:userRegion>// Begin custom partitioner logic<c:initialCode> 
+			<c:userRegion>// Begin custom partitioner logic<c:initialCode> 
+
+		<c:get select="$topic/@keyJava" /> key = (<c:get select="$topic/@keyJava" />) obj;
+		
+		if (partitions < 0) {
+			partitions = cluster.availablePartitionsForTopic(topic).size();
+		}
 		
 		int part = key.hashCode() % partitions;
 		if (part < 0) { part = 0; }
 
-		</c:initialCode>// End custom partitioner logic</c:userRegion>
+			</c:initialCode>// End custom partitioner logic</c:userRegion>
 		
 		return part;
+	}
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

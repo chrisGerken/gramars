@@ -10,6 +10,7 @@ import <c:get select="$topology/@utilPkg" />.<c:get select="$topology/@iLoggerJa
 
 import org.apache.log4j.Logger;
 
+import backtype.storm.Config;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
 
@@ -55,6 +56,16 @@ public class <c:get select="$bolt/@boltLogicJava" /> implements Serializable {
 
 
 			</c:initialCode>// End cleanup() logic</c:userRegion> 
+
+    }
+
+    public static int determineParallelismHint(Config c) {
+
+			// Begin dph() logic 
+
+    	return (Integer) c.get("<c:get select="$bolt/@name" />.parallelismHint");
+
+			// End dph() logic 
 
     }
 
