@@ -20,11 +20,6 @@ import <c:get select="$topic/@messageImport" />;
 import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />;
 import <c:get select="$component/@serializationPkg" />.<c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />;
 
-import com.eso.kafka.serialization.LongCoder;
-import com.eso.kafka.serialization.LogEntryCoder;
-import com.eso.kafka.topic.records.RecordsInfo;
-import com.eso.kafka.topic.records.RecordsMetaMessage;
-
 /**
  * <c:get select="$topic/@newConsumerJava" /> provides an iterator-like interface to be used to read from all
  * partitions in topic records.
@@ -135,7 +130,7 @@ public <c:get select="$topic/@newConsumerJava" />(String brokerList, String grou
   private void setup() {
 	  
 	  consumer = new KafkaConsumer<<c:get select="$topic/@keyJava" />, <c:get select="$topic/@messageJava" />>(getProperties(), new <c:get select="$component/type[@name=$topic/@keyJava]/@coderJava" />(), new <c:get select="$component/type[@name=$topic/@messageJava]/@coderJava" />());
-	  consumer.subscribe(Arrays.asList(RecordsInfo.topicName));
+	  consumer.subscribe(Arrays.asList(<c:get select="$topic/@infoJava" />.topicName));
 
   }
 
