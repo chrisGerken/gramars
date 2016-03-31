@@ -149,6 +149,9 @@ public class AbstractSimpleConsumer {
 			try {
 				MessageAndOffset mao = nextMessage0();
 				long now = System.currentTimeMillis();
+				if (nextCommitTime == 0L) {
+		        	nextCommitTime = now + autoCommitInterval;
+				}
 		    	if ((autoCommitInterval > 0L) && (nextOffsetToReturn!=null) && (now < nextCommitTime)) {
 		        	commitOffset(nextOffsetToReturn);
 		        	nextCommitTime = now + autoCommitInterval;
