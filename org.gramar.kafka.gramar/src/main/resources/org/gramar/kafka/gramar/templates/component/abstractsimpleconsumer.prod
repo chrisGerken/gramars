@@ -317,6 +317,15 @@ public class AbstractSimpleConsumer {
 		
 	}
 
+
+    /**
+     * Commits the current offset as being the offset of the next message to be read. 
+     */
+	public void commitOffset() throws PartitionConsumerException {
+		if (nextOffsetToReturn==null) { return; }
+    	commitOffset(nextOffsetToReturn);
+	}
+
     /**
      * Commits the given offset as being the offset of the next message to be read. 
      */
