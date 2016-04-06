@@ -61,11 +61,11 @@ public class <c:get select="$bolt/@boltLogicJava" /> implements Serializable {
 
     public static int determineParallelismHint(Config c) {
 
-			// Begin dph() logic 
+			<c:userRegion>// Begin dph() logic<c:initialCode> 
 
     	return (Integer) c.get("<c:get select="$bolt/@name" />.parallelismHint");
 
-			// End dph() logic 
+			</c:initialCode>// End dph() logic</c:userRegion> 
 
     }
 

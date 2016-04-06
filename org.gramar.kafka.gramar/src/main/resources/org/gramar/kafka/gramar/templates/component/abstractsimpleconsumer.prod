@@ -219,7 +219,7 @@ public class AbstractSimpleConsumer {
             short code = fetchResponse.errorCode(topic, partition);
             if (code == ErrorMapping.OffsetOutOfRangeCode())  {
                 // We asked for an invalid offset. For simple case ask for the last element to reset
-                firstUnread = retrieveOffset();
+                firstUnread = requestEarliestAvailableOffset();
                 cleanConsumer();
                 throw new OffsetOutOfRangeException();
             }
@@ -329,7 +329,7 @@ public class AbstractSimpleConsumer {
     /**
      * Commits the given offset as being the offset of the next message to be read. 
      */
-	private void commitOffset(long offset) throws PartitionConsumerException {
+	public void commitOffset(long offset) throws PartitionConsumerException {
     	
         Map<TopicAndPartition, OffsetAndMetadata> requestInfo = new HashMap<TopicAndPartition, OffsetAndMetadata>();
         TopicAndPartition topicAndPartition = new TopicAndPartition(topic, partition);

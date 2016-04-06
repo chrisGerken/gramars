@@ -2,6 +2,7 @@ package <c:get select="$topic/@topicApiPkg" />;
 
 import java.util.List;
 
+import com.eso.kafka.common.exception.PartitionConsumerException;
 import com.eso.kafka.common.internal.PartitionSnapshot;
 
 import kafka.javaapi.PartitionMetadata;
@@ -14,6 +15,10 @@ public class <c:get select="$topic/@infoJava" /> {
 	
 	public <c:get select="$topic/@infoJava" />(String csBrokerList) {
 		this.csBrokerList = csBrokerList;
+	}
+
+	public int partitionCount() {
+		return partitions("ignore").length;
 	}
 
 	public PartitionSnapshot[] partitions(String groupId) {
@@ -37,6 +42,19 @@ public class <c:get select="$topic/@infoJava" /> {
 			e.printStackTrace();
 		}
 		return snapshot;
+	}
+
+	public void resetOffsets(String groupId) {
+		int partitions = partitionCount();
+		for (int i = 0; i < partitions; i++) {
+			try {
+				<c:get select="$topic/@simpleConsumerJava" /> cs = new <c:get select="$topic/@simpleConsumerJava" />(csBrokerList, i, groupId);
+				cs.commitOffset(0);
+				cs.close();
+			} catch (PartitionConsumerException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void info(String groupId) {

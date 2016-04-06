@@ -79,15 +79,25 @@ public class <c:get select="$topic/@simpleConsumerJava" /> extends AbstractSimpl
 		
 		if (mao == null) { return null; }
 		
-		buf = mao.message().payload();
-        bytes = new byte[buf.limit()];
-        buf.get(bytes);
-        <c:get select="$topic/@messageJava" /> message = messageCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName, bytes);
+		<c:get select="$topic/@messageJava" /> message = null;
+		try {
+			buf = mao.message().payload();
+	        bytes = new byte[buf.limit()];
+	        buf.get(bytes);
+	        message = messageCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName, bytes);
+		} catch (Exception e) {
 		
-		buf = mao.message().key();
-        bytes = new byte[buf.limit()];
-        buf.get(bytes);
-        <c:get select="$topic/@keyJava" /> key = keyCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName,bytes);
+		}
+
+		<c:get select="$topic/@keyJava" /> key = null;						
+		try {
+			buf = mao.message().key();
+        	bytes = new byte[buf.limit()];
+    	    buf.get(bytes);
+	        key = keyCoder.deserialize(<c:get select="$topic/@infoJava" />.topicName,bytes);
+		} catch (Exception e) {
+		
+		}
 
 		return new <c:get select="$topic/@metamessageJava" />(key, message, <c:get select="$topic/@infoJava" />.topicName, partition, mao.offset());
         
