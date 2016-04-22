@@ -158,7 +158,7 @@ public class AbstractSimpleConsumer {
 		    	}
 
 				return mao;
-			} catch (PartitionConsumerException e) {
+			} catch (Exception e) {
 			}
 		}
 		return null;
@@ -220,6 +220,8 @@ public class AbstractSimpleConsumer {
             if (code == ErrorMapping.OffsetOutOfRangeCode())  {
                 // We asked for an invalid offset. For simple case ask for the last element to reset
                 firstUnread = requestEarliestAvailableOffset();
+                nextOffsetToReturn = firstUnread;
+                commitOffset(firstUnread); 
                 cleanConsumer();
                 throw new OffsetOutOfRangeException();
             }
