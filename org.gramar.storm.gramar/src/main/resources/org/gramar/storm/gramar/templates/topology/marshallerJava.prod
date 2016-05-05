@@ -3,7 +3,9 @@ package <c:get select="$topology/@utilPkg" />;
 	<c:userRegion>// Begin imports<c:initialCode>
 
 import java.util.Date;
+import java.util.ArrayList;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -20,58 +22,123 @@ public class Marshaller {
 <c:iterate select="$topology/type" var="type" >
 	public static <c:get select="$type/@typeJava" /> as<c:get select="$type/@typeJava" />(Tuple tuple) {
 		return new <c:get select="$type/@typeJava" />(<c:iterate select="$type/field" var="field" delimiter=", ">
-<c:choose select="$field/@type" >
-<c:when test=" 'String' ">					tuple.getString(<c:get select="$field/@index"/>)</c:when>
-<c:when test=" 'Integer' ">					tuple.getInteger(<c:get select="$field/@index"/>)</c:when>
-<c:when test=" 'Date' ">					new Date(tuple.getLong(<c:get select="$field/@index"/>))</c:when>
-<c:when test=" 'Long' ">					tuple.getLong(<c:get select="$field/@index"/>)</c:when>
-<c:when test=" 'Double' ">					tuple.getDouble(<c:get select="$field/@index"/>)</c:when>
-<c:when test=" 'Boolean' ">					tuple.getBoolean(<c:get select="$field/@index"/>)</c:when>
+<c:choose >
+<c:when test=" $field/@type = 'String' ">					tuple.getString(<c:get select="$field/@index"/>)</c:when>
+<c:when test=" $field/@type = 'Integer' ">					tuple.getInteger(<c:get select="$field/@index"/>)</c:when>
+<c:when test=" $field/@type = 'Date' ">					new Date(tuple.getLong(<c:get select="$field/@index"/>))</c:when>
+<c:when test=" $field/@type = 'Long' ">					tuple.getLong(<c:get select="$field/@index"/>)</c:when>
+<c:when test=" $field/@type = 'Double' ">					tuple.getDouble(<c:get select="$field/@index"/>)</c:when>
+<c:when test=" $field/@type = 'Boolean' ">					tuple.getBoolean(<c:get select="$field/@index"/>)</c:when>
+<c:when test=" $field/@list = 'true' ">					(<c:get select="$field/@type"/>) tuple.getValue(<c:get select="$field/@index"/>)</c:when>
+<c:otherwise>					(<c:get select="$field/@actualType"/>) tuple.getValue(<c:get select="$field/@index"/>)</c:otherwise>
 </c:choose>
 </c:iterate>);	
 	}
 
 	public static <c:get select="$type/@typeJava" /> as<c:get select="$type/@typeJava" />(JSONObject json) throws DataException {
-		try { json = json.getJSONObject("<c:get select="$type/@typeJava" />"); } 
-		catch (Throwable t) {
-			throw new DataException("Invalid JSON structure for <c:get select="$type/@typeJava" /> constructor");
-		}
-		<c:get select="$type/@typeJava" /> bean = new <c:get select="$type/@typeJava" />();
+		try { 
+			<c:get select="$type/@typeJava" /> bean = new <c:get select="$type/@typeJava" />();
 <c:iterate select="$type/field" var="field">
-<c:choose select="$field/@type" >
+<c:choose select="$field/@actualType" >
 <c:when test=" 'String' ">
-		if (json.has("<c:get select="$field/@name"/>")) {
-			try { bean.<c:get select="$field/@setter"/>(json.getString("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
-		}
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(json.getString("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+            	JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+	            for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(jarr.getString(i)); } catch (Throwable t) {}
+        	    }
+</c:if>
+			}
 </c:when>
 <c:when test=" 'Integer' ">
-		if (json.has("<c:get select="$field/@name"/>")) {
-			try { bean.<c:get select="$field/@setter"/>(json.getInt("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
-		}
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(json.getInt("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+        	    JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+            	for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(jarr.getInt(i)); } catch (Throwable t) {}
+            	}	
+</c:if>
+			}
 </c:when>
 <c:when test=" 'Date' ">
-		if (json.has("<c:get select="$field/@name"/>")) {
-			try { bean.<c:get select="$field/@setter"/>(new Date(json.getLong("<c:get select="$field/@name"/>"))); } catch (Throwable t) {}
-		}
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(new Date(json.getLong("<c:get select="$field/@name"/>"))); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+        	    JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+            	for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(new Date(jarr.getLong(i))); } catch (Throwable t) {}
+            	}
+</c:if>
+			}
 </c:when>
 <c:when test=" 'Long' ">
-		if (json.has("<c:get select="$field/@name"/>")) {
-			try { bean.<c:get select="$field/@setter"/>(json.getLong("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
-		}
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(json.getLong("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+            	JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+            	for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(jarr.getLong(i)); } catch (Throwable t) {}
+            	}
+</c:if>
+			}
 </c:when>
 <c:when test=" 'Double' ">
-		if (json.has("<c:get select="$field/@name"/>")) {
-			try { bean.<c:get select="$field/@setter"/>(json.getDouble("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
-		}
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(json.getDouble("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+            	JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+            	for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(jarr.getDouble(i)); } catch (Throwable t) {}
+            	}
+</c:if>
+			}
 </c:when>
 <c:when test=" 'Boolean' ">
-		if (json.has("<c:get select="$field/@name"/>")) {
-			try { bean.<c:get select="$field/@setter"/>(json.getBoolean("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
-		}
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(json.getBoolean("<c:get select="$field/@name"/>")); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+            	JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+            	for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(jarr.getBoolean(i)); } catch (Throwable t) {}
+            	}
+</c:if>
+			}
 </c:when>
+<c:otherwise>
+			if (json.has("<c:get select="$field/@name"/>")) {
+<c:if test="$field/@list='false'">
+				try { bean.<c:get select="$field/@setter"/>(as<c:get select="$field/@actualType" />(json.getJSONObject("<c:get select="$field/@name"/>"))); } catch (Throwable t) {}
+</c:if>
+<c:if test="$field/@list='true'">
+            	JSONArray jarr = json.getJSONArray("<c:get select="$field/@name"/>");
+            	for (int i = 0; i < jarr.length(); i++) {
+					try { bean.<c:get select="$field/@adder"/>(as<c:get select="$field/@actualType" />(jarr.getJSONObject(i))); } catch (Throwable t) {}
+            	}
+</c:if>
+			}
+</c:otherwise>
 </c:choose>
 </c:iterate>	
-		return bean;
+
+			return bean;
+
+		} catch (Throwable t) {
+			throw new DataException("Invalid JSON structure for <c:get select="$type/@typeJava" /> constructor");
+		}
 	}
 
 	public static Values asValues(<c:get select="$type/@typeJava" /> bean) {
@@ -83,22 +150,59 @@ public class Marshaller {
 		JSONObject json = new JSONObject();
 
 		try { 
- <c:iterate select="$type/field" var="field">
+<c:iterate select="$type/field" var="field">
+<c:if test="$field/@list='false'">
+<c:if test="not($topology/type[@name=$field/@actualType])">
  			if (bean.<c:get select="$field/@getter"/>() != null) {
+<c:choose select="$field/@actualType">
+<c:when test=" 'Date' ">
+ 				json.putOpt("<c:get select="$field/@name"/>", bean.<c:get select="$field/@getter"/>().getTime());
+</c:when>
+<c:otherwise>
  				json.putOpt("<c:get select="$field/@name"/>", bean.<c:get select="$field/@getter"/>());
+</c:otherwise>
+</c:choose>
  			}
- </c:iterate>			
+</c:if>
+<c:if test="$topology/type[@name=$field/@actualType]">
+ 			if (bean.<c:get select="$field/@getter"/>() != null) {
+ 				json.putOpt("<c:get select="$field/@name"/>", asJson(bean.<c:get select="$field/@getter"/>()));
+ 			}
+</c:if>
+</c:if>
+<c:if test="$field/@list='true'">
+<c:if test="not($topology/type[@name=$field/@actualType])">
+ 			if (bean.<c:get select="$field/@getter"/>() != null) {
+ 			    JSONArray jarr = new JSONArray();
+ 			    for (<c:get select="$field/@actualType"/> el: bean.<c:get select="$field/@getter"/>()) {
+<c:choose select="$field/@actualType">
+<c:when test=" 'Date' ">
+ 					jarr.put(el.getTime());			    
+</c:when>
+<c:otherwise>
+ 					jarr.put(el);			    
+</c:otherwise>
+</c:choose>
+ 			    }
+ 				json.putOpt("<c:get select="$field/@name"/>", jarr);
+ 			}
+</c:if>
+<c:if test="$topology/type[@name=$field/@actualType]">
+ 			if (bean.<c:get select="$field/@getter"/>() != null) {
+ 			    JSONArray jarr = new JSONArray();
+ 			    for (<c:get select="$field/@actualType"/> el: bean.<c:get select="$field/@getter"/>()) {
+ 					jarr.put(asJson(el));			    
+ 			    }
+ 				json.putOpt("<c:get select="$field/@name"/>", jarr);
+ 			}
+</c:if>
+</c:if>
+</c:iterate>			
  		} catch (JSONException e) {
  			throw new DataException("JSON error when persisting <c:get select="$type/@typeJava" /> to JSON",e);
  		}
- 		
- 		JSONObject result = new JSONObject();
-		try { 		
-			result.put("<c:get select="$type/@typeJava" />", json);
- 		} catch (JSONException e) {
- 			throw new DataException("JSON error when persisting <c:get select="$type/@typeJava" /> to JSON",e);
- 		}
-		return result;
+
+		return json;
 	}
 
 	public static String asJsonString(<c:get select="$type/@typeJava" /> bean) {

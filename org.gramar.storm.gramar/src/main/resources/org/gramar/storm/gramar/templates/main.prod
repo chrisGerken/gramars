@@ -193,11 +193,26 @@
             <c:set select="$field" name="var">_<c:get select="$field/@name" /></c:set>
             <c:set select="$field" name="getter">get<c:get select="c:uppercaseFirst($field/@name)" /></c:set>
             <c:set select="$field" name="setter">set<c:get select="c:uppercaseFirst($field/@name)" /></c:set>
+            <c:set select="$field" name="adder">addTo<c:get select="c:uppercaseFirst($field/@name)" /></c:set>
 
             *** Begin custom model updates for field (284)
 
 			<c:set select="$field" name="index"><c:get select="$index" /></c:set>
 			<c:setVariable select=" number($index + 1) " var="index" />
+
+			<c:if test="not($field/@list)" >
+				<c:set select="$field" name="list">false</c:set>
+			</c:if>
+			
+			<c:set select="$field" name="actualType"><c:get select="$field/@type" /></c:set>
+			<c:set select="$field" name="kind">prim</c:set>
+			<c:if test="$topology/type[@name=$field/@actualType]">
+				<c:set select="$field" name="kind">bean</c:set>
+            </c:if>
+			<c:if test="$field/@list='true'" >
+				<c:set select="$field" name="type">ArrayList<<c:get select="$field/@type" />></c:set>
+				<c:set select="$field" name="kind"><c:get select="$field/@kind" />list</c:set>
+			</c:if>
 
             *** End custom model updates for field (284)
 

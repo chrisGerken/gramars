@@ -44,19 +44,37 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 	public void <c:get select="$field/@setter"/>(<c:get select="$field/@type"/> value) {
 		this.<c:get select="$field/@var"/> = value;
 	}
+<c:if test="$field/@list='true'">
+	
+	public void <c:get select="$field/@adder"/>(<c:get select="$field/@actualType"/> value) {
+	    if (<c:get select="$field/@var"/> == null) {
+	    	<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+	    }
+		this.<c:get select="$field/@var"/>.add(value);
+	}
+</c:if>
 </c:iterate>	
 
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+	protected void writeObject(java.io.ObjectOutputStream out) throws IOException {
 <c:iterate select="$type/field" var="field">
 
-<c:choose select="$field/@type" >
+<c:choose select="$field/@actualType" >
 <c:when test=" 'String' ">
 		if (<c:get select="$field/@var"/> == null) {
 			out.writeBoolean(false);
 		} else {
 			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
 			out.writeInt(<c:get select="$field/@var"/>.length());
 			out.write(<c:get select="$field/@var"/>.getBytes());
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				out.writeInt(<c:get select="$field/@var"/>.get(i).length());
+				out.write(<c:get select="$field/@var"/>.get(i).getBytes());
+			}
+</c:if>
 		}
 </c:when>
 <c:when test=" 'Integer' ">
@@ -64,7 +82,15 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 			out.writeBoolean(false);
 		} else {
 			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
 			out.writeInt(<c:get select="$field/@var"/>);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				out.writeInt(<c:get select="$field/@var"/>.get(i));
+			}
+</c:if>
 		}
 </c:when>
 <c:when test=" 'Date' ">
@@ -72,7 +98,15 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 			out.writeBoolean(false);
 		} else {
 			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
 			out.writeLong(<c:get select="$field/@var"/>.getTime());
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				out.writeLong(<c:get select="$field/@var"/>.get(i).getTime());
+			}
+</c:if>
 		}
 </c:when>
 <c:when test=" 'Long' ">
@@ -80,7 +114,15 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 			out.writeBoolean(false);
 		} else {
 			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
 			out.writeLong(<c:get select="$field/@var"/>);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				out.writeLong(<c:get select="$field/@var"/>.get(i));
+			}
+</c:if>
 		}
 </c:when>
 <c:when test=" 'Double' ">
@@ -88,7 +130,15 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 			out.writeBoolean(false);
 		} else {
 			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
 			out.writeDouble(<c:get select="$field/@var"/>);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				out.writeDouble(<c:get select="$field/@var"/>.get(i));
+			}
+</c:if>
 		}
 </c:when>
 <c:when test=" 'Boolean' ">
@@ -96,62 +146,161 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 			out.writeBoolean(false);
 		} else {
 			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
 			out.writeBoolean(<c:get select="$field/@var"/>);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				out.writeBoolean(<c:get select="$field/@var"/>.get(i));
+			}
+</c:if>
 		}
 </c:when>
+<c:otherwise>
+		if (<c:get select="$field/@var"/> == null) {
+			out.writeBoolean(false);
+		} else {
+			out.writeBoolean(true);
+<c:if test=" $field/@list='false' ">
+			<c:get select="$field/@var"/>.writeObject(out);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			out.writeInt(<c:get select="$field/@var"/>.size());
+			for (int i = 0; i < <c:get select="$field/@var"/>.size(); i++) {
+				<c:get select="$field/@var"/>.get(i).writeObject(out);
+			}
+</c:if>
+		}
+</c:otherwise>
 </c:choose>
 </c:iterate>	
 
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	protected void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 <c:iterate select="$type/field" var="field">
 
-<c:choose select="$field/@type" >
+<c:choose select="$field/@actualType" >
 <c:when test=" 'String' ">
 		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
 			byte b[] = new byte[in.readInt()];
 			in.read(b);
 			<c:get select="$field/@var"/> = new String(b);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				byte b[] = new byte[in.readInt()];
+				in.read(b);
+				<c:get select="$field/@var"/>.add(new String(b));
+			}
+</c:if>
 		} else {
 			<c:get select="$field/@var"/> = null;
 		}
 </c:when>
 <c:when test=" 'Integer' ">
 		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
 			<c:get select="$field/@var"/> = in.readInt();
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				<c:get select="$field/@var"/>.add(in.readInt());
+			}
+</c:if>
 		} else {
 			<c:get select="$field/@var"/> = null;
 		}
 </c:when>
 <c:when test=" 'Date' ">
 		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
 			<c:get select="$field/@var"/> = new Date(in.readLong());
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				<c:get select="$field/@var"/>.add(new Date(in.readLong()));
+			}
+</c:if>
 		} else {
 			<c:get select="$field/@var"/> = null;
 		}
 </c:when>
 <c:when test=" 'Long' ">
 		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
 			<c:get select="$field/@var"/> = in.readLong();
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				<c:get select="$field/@var"/>.add(in.readLong());
+			}
+</c:if>
 		} else {
 			<c:get select="$field/@var"/> = null;
 		}
 </c:when>
 <c:when test=" 'Double' ">
 		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
 			<c:get select="$field/@var"/> = in.readDouble();
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				<c:get select="$field/@var"/>.add(in.readDouble());
+			}
+</c:if>
 		} else {
 			<c:get select="$field/@var"/> = null;
 		}
 </c:when>
 <c:when test=" 'Boolean' ">
 		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
 			<c:get select="$field/@var"/> = in.readBoolean();
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				<c:get select="$field/@var"/>.add(in.readBoolean());
+			}
+</c:if>
 		} else {
 			<c:get select="$field/@var"/> = null;
 		}
 </c:when>
+<c:otherwise>
+		if (in.readBoolean()) {
+<c:if test=" $field/@list='false' ">
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			<c:get select="$field/@var"/>.readObject(in);
+</c:if>
+<c:if test=" $field/@list='true' ">
+			int i = in.readInt();
+			<c:get select="$field/@var"/> = new <c:get select="$field/@type"/>();
+			for (int j = 0; j < i; j++) {
+				<c:get select="$field/@actualType"/> obj = new <c:get select="$field/@actualType"/>();
+				obj.readObject(in);
+				<c:get select="$field/@var"/>.add(obj);
+			}
+</c:if>
+		} else {
+			<c:get select="$field/@var"/> = null;
+		}
+</c:otherwise>
 </c:choose>
 </c:iterate>	
 
@@ -161,7 +310,24 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 	public String toString() {
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<c:get select="$type/@typeJava" /> [<c:iterate select="$type/field" var="field" delimiter="; "><c:get select="$field/@name"/> = " + <c:get select="$field/@var"/> + "</c:iterate>]");
+		sb.append("<c:get select="$type/@typeJava" /> [");
+<c:iterate select="$type/field" var="field" >		
+<c:choose select=" $field/@list " >
+<c:when test=" 'false' ">
+		sb.append("<c:get select="$field/@name"/>= " + <c:get select="$field/@var"/> + "; ");
+</c:when>		
+<c:when test=" 'true' ">
+		sb.append("<c:get select="$field/@name"/>= [");
+		String delim = "";
+		for (<c:get select="$field/@actualType"/> el: <c:get select="$field/@getter"/>()) {
+			sb.append(delim+el);
+			delim = ", ";
+		}
+		sb.append("]; ");
+</c:when>		
+</c:choose>
+</c:iterate>		
+		sb.append("]");
 		return sb.toString();
 		
 	}
@@ -215,7 +381,7 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 
 	public static <c:get select="$type/@typeJava" /> sample() {
 	
-		return new <c:get select="$type/@typeJava" />(<c:iterate select="$type/field" var="field" delimiter=", "><c:choose select="$field/@type" ><c:when test=" 'String' ">"Howdy"</c:when><c:when test=" 'Integer' ">0</c:when><c:when test=" 'Date' ">new Date()</c:when><c:when test=" 'Long' ">1L</c:when><c:when test=" 'Double' ">3.1415</c:when><c:when test=" 'Boolean' ">false</c:when></c:choose></c:iterate>);
+		return new <c:get select="$type/@typeJava" />(<c:iterate select="$type/field" var="field" delimiter=", "><c:choose select="$field/@type" ><c:when test=" 'String' ">"Howdy"</c:when><c:when test=" 'Integer' ">0</c:when><c:when test=" 'Date' ">new Date()</c:when><c:when test=" 'Long' ">1L</c:when><c:when test=" 'Double' ">3.1415</c:when><c:when test=" 'Boolean' ">false</c:when><c:otherwise>null</c:otherwise></c:choose></c:iterate>);
 	
 	}
 

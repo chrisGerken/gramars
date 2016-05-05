@@ -54,7 +54,8 @@
 
             <!--  name : The single-token name of the property -->
             <!--  type : One of String, Integer, Long, Double, Boolean, Date -->
-            <field  name=""  type="">
+            <!--  list : Boolean value indicating whether this field is really a list of the given type -->
+            <field  name=""  type=""  list="false" >
 
             </field>
 
