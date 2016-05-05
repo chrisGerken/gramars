@@ -2,8 +2,8 @@ package <c:get select="$topic/@topicApiPkg" />;
 
 import java.util.List;
 
-import com.eso.kafka.common.exception.PartitionConsumerException;
-import com.eso.kafka.common.internal.PartitionSnapshot;
+import <c:get select="$component/@exceptionPkg" />.PartitionConsumerException;
+import <c:get select="$component/@kafkaBasePkg" />.PartitionSnapshot;
 
 import kafka.javaapi.PartitionMetadata;
 
