@@ -25,8 +25,12 @@
 <c:iterate select="$root/topology" var="topology">
     <c:set select="$topology" name="artifactIdPrefix"><c:get select="translate(c:lower-case($topology/@label),' ','-')" /></c:set>
     <c:set select="$topology" name="name"><c:get select="c:camelCase($topology/@label)" /></c:set>
-    <c:set select="$topology" name="allProject"><c:get select="$topology/@artifactIdPrefix" /></c:set>
-    <c:set select="$topology" name="stormProject"><c:get select="$topology/@artifactIdPrefix" />-storm</c:set>
+    <c:if test="not($topology/@allProject)" >
+	    <c:set select="$topology" name="allProject"><c:get select="$topology/@artifactIdPrefix" /></c:set>
+	</c:if>
+    <c:if test="not($topology/@stormProject)" >
+	    <c:set select="$topology" name="stormProject"><c:get select="$topology/@artifactIdPrefix" />-storm</c:set>
+	</c:if>
     <c:set select="$topology" name="utilPkg"><c:get select="$topology/@basePackage" />.util</c:set>
     <c:set select="$topology" name="utilDir"><c:get select="translate($topology/@utilPkg,'.','/')" /></c:set>
     <c:set select="$topology" name="mockPkg"><c:get select="$topology/@basePackage" />.mock</c:set>
@@ -313,6 +317,8 @@
     <c:file path="{$topology/@stormProject}/.classpath" template="templates/topology/stormClasspath.prod" replace="false" />
 
     <c:file path="{$topology/@stormProject}/.project" template="templates/topology/stormProject.prod" replace="true" />
+
+    <c:file path="{$topology/@stormProject}/.gitignore" template="templates/topology/stormGitIgnore.prod" replace="true" />
 
     <c:file path="{$topology/@stormProject}/{$topology/@name}Topology" template="templates/topology/topologyGraphviz.prod" replace="true" />
 

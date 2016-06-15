@@ -1,5 +1,6 @@
 # properties for runtime target "<c:get select="$environment/@name" />"
 
+environment.name=<c:get select="$environment/@name" />
 topology.name=<c:get select="$topology/@name" />
 topology.run.locally=<c:get select="$environment/@runLocally" />
 topology.message.timeout.secs=120
