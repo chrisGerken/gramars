@@ -309,6 +309,10 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 	@Override
 	public String toString() {
 
+<c:if test="$type/field[@list='true']">
+		String delim = "";
+</c:if>
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("<c:get select="$type/@typeJava" /> [");
 <c:iterate select="$type/field" var="field" >		
@@ -318,7 +322,7 @@ public class <c:get select="$type/@typeJava" /> implements Serializable, Compara
 </c:when>		
 <c:when test=" 'true' ">
 		sb.append("<c:get select="$field/@name"/>= [");
-		String delim = "";
+		delim = "";
 		for (<c:get select="$field/@actualType"/> el: <c:get select="$field/@getter"/>()) {
 			sb.append(delim+el);
 			delim = ", ";
