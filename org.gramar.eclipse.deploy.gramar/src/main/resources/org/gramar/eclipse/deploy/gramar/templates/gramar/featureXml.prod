@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="<c:get select="$gramar/@featureProject" />"
+      label="<c:get select="$gramar/@label" />"
+      version="<c:get select="$updateSite/@version" />"
+      provider-name="<c:get select="$gramar/@provider" />">
+
+   <c:userRegion><description url="http://www.example.com/description"><c:initialCode>
+
+Gramar: <c:get select="$gramar/@label" />
+
+<c:get select="$gramar/@id" />
+
+   </c:initialCode></description></c:userRegion>
+
+   <c:userRegion><copyright url="http://www.example.com/copyright"><c:initialCode>
+
+Place copyright information here, if applicable
+
+   </c:initialCode></copyright></c:userRegion>
+
+   <c:userRegion><license url="http://www.example.com/license"><c:initialCode>
+
+Place license information here, if applicable
+
+   </c:initialCode></license></c:userRegion>
+
+   <plugin
+         id="<c:get select="$gramar/@pluginProject" />"
+         download-size="0"
+         install-size="0"
+         version="<c:get select="$updateSite/@version" />"/>
+
+</feature>

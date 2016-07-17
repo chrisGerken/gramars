@@ -1,0 +1,143 @@
+
+<c:if test="not(c:isVariableDefined('root'))">
+    <c:setVariable select="/*" var="root" />
+</c:if>
+
+*******************************
+
+
+
+
+
+*** Begin custom model updates for root (3)
+
+*** End custom model updates for root (3)
+
+
+
+<c:iterate select="$root/updateSite" var="updateSite">
+
+    <c:set select="$updateSite" name="siteProject"><c:get select="$updateSite/@name" /></c:set>
+
+
+    *** Begin custom model updates for updateSite (4)
+
+    *** End custom model updates for updateSite (4)
+
+
+
+    <c:iterate select="$updateSite/gramar" var="gramar">
+
+        <c:set select="$gramar" name="pluginProject"><c:get select="$gramar/@id" />.plugin</c:set>
+        <c:set select="$gramar" name="featureProject"><c:get select="$gramar/@id" />.feature</c:set>
+
+
+        *** Begin custom model updates for gramar (263)
+
+        *** End custom model updates for gramar (263)
+
+
+        *** Begin custom model post updates for gramar (263)
+
+        *** End custom model post updates for gramar (263)
+
+
+    </c:iterate> 
+
+    *** Begin custom model post updates for updateSite (4)
+
+    *** End custom model post updates for updateSite (4)
+
+
+</c:iterate> 
+
+*** Begin custom model post updates for root (3)
+
+*** End custom model post updates for root (3)
+
+
+
+
+*******************************
+
+
+
+
+*** Begin custom pre-generation actions for root (3)
+
+*** End custom pre-generation actions for root (3)
+
+
+*** Begin custom generation updates for root (3)
+
+*** End custom generation updates for root (3)
+
+
+<c:iterate select="$root/updateSite" var="updateSite">
+
+
+    *** Begin custom pre-generation actions for updateSite (4)
+
+    *** End custom pre-generation actions for updateSite (4)
+
+    <c:project name="{$updateSite/@siteProject}" />
+
+    <c:file path="{$updateSite/@siteProject}/.project" template="templates/updateSite/project.prod" replace="true" />
+
+
+    <c:file path="{$updateSite/@siteProject}/site.xml" template="templates/updateSite/siteXml.prod" replace="true" />
+
+
+    *** Begin custom generation updates for updateSite (4)
+
+    *** End custom generation updates for updateSite (4)
+
+
+    <c:iterate select="$updateSite/gramar" var="gramar">
+
+
+        *** Begin custom pre-generation actions for gramar (263)
+
+        *** End custom pre-generation actions for gramar (263)
+
+        <c:project name="{$gramar/@pluginProject}" />
+        <c:project name="{$gramar/@featureProject}" />
+
+        <c:folder path="{$gramar/@pluginProject}/gramars" />
+
+        <c:folder path="{$gramar/@pluginProject}/src" />
+
+        <c:file path="{$gramar/@pluginProject}/.project" template="templates/gramar/pluginProject.prod" replace="true" />
+
+
+        <c:file path="{$gramar/@pluginProject}/plugin.xml" template="templates/gramar/pluginXml.prod" replace="false" />
+
+
+        <c:file path="{$gramar/@featureProject}/.project" template="templates/gramar/featureProject.prod" replace="true" />
+
+
+        <c:file path="{$gramar/@featureProject}/feature.xml" template="templates/gramar/featureXml.prod" replace="false" />
+
+
+        <c:file path="{$gramar/@featureProject}/build.properties" template="templates/gramar/featureBuildProperties.prod" replace="false" />
+
+
+        <c:file path="{$gramar/@pluginProject}/build.properties" template="templates/gramar/pluginBuildProperties.prod" replace="false" />
+
+        *** Begin custom generation updates for gramar (263)
+
+		<x:copyFile  target="a" source="b" replace="c" srcContext="workspace" />
+
+		<c:copyFile  target="{$gramar/@pluginProject}/gramars/{$gramar/@id}-{$gramar/@version}.jar" src="{$gramar/@id}/target/{$gramar/@id}-{$gramar/@version}.jar" replace="true" srcContext="workspace" />
+
+
+        *** End custom generation updates for gramar (263)
+
+
+    </c:iterate> 
+
+</c:iterate> 
+
+
+
+*******************************

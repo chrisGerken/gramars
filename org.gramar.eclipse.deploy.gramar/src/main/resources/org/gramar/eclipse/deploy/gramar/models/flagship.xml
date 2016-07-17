@@ -1,0 +1,19 @@
+
+
+
+<root>
+
+    <updateSite  name="org.zippy.updatesite"  version="2.0.0">
+
+        <gramar  id="org.gramar.storm.gramar"  provider="gramar.org"  version="1.0.0-SNAPSHOT"  label="Complete Storm topology ex. business logic"  />
+
+        <gramar  id="org.gramar.maven.gramar"  provider="gramar.org"  version="1.0.0-SNAPSHOT"  label="Simple maven-ized Java project"  />
+
+        <gramar  id="org.gramar.kafka.gramar"  provider="gramar.org"  version="1.0.0-SNAPSHOT"  label="Complete Kafka multi-topic component"  />
+
+        <gramar  id="org.gramar.eclipse.deploy.gramar"  provider="gramar.org"  version="1.0.0-SNAPSHOT"  label="Plugin, feature and update site projects for eclipse deployment of gramars"  />
+
+    </updateSite>
+
+
+</root>

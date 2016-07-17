@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+<c:iterate select="$updateSite/gramar" var="gramar" >
+   <feature url="features/<c:get select="$gramar/@featureProject" />_<c:get select="$updateSite/@version" />.jar" id="<c:get select="$gramar/@featureProject" />" version="<c:get select="$updateSite/@version" />">
+      <category name="<c:get select="$gramar/@label" />"/>
+   </feature>
+   <category-def name="<c:get select="$gramar/@label" />" label="<c:get select="$gramar/@id" />"/>
+</c:iterate>   
+</site>

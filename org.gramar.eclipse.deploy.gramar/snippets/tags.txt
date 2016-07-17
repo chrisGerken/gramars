@@ -1,0 +1,44 @@
+"getter" snippets for defined tokens (input and calculated)
+
+
+Snippets for updateSite
+
+
+	<c:get select="$updateSite/@name" />
+
+	<c:get select="$updateSite/@siteProject" />
+
+	<c:get select="$updateSite/@version" />
+
+
+    <c:iterate select="$root/updateSite" var="updateSite"  > 
+	    
+
+Snippets for root
+
+
+	    
+
+Snippets for gramar
+
+
+	<c:get select="$gramar/@pluginProject" />
+
+	<c:get select="$gramar/@id" />
+
+	<c:get select="$gramar/@provider" />
+
+	<c:get select="$gramar/@version" />
+
+	<c:get select="$gramar/@label" />
+
+	<c:get select="$gramar/@featureProject" />
+
+
+    <c:iterate select="$updateSite/gramar" var="gramar"  > 
+	    
+
+
+
+
+

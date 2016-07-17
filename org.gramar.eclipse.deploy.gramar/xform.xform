@@ -1,0 +1,416 @@
+
+<xform id="2" nextID="269" provider="gramar.org" version="1.0.0" xformDir="org/gramar/eclipse/deploy/gramar" xformId="org.gramar.eclipse.deploy.gramar" xformProject="org.gramar.eclipse.deploy.gramar">
+	<group id="4" indent="    " name="updateSite" parentId="3" root="false">
+		<createProject id="250" locationExpr="" name="{$updateSite/@siteProject}" oLocation="" oPath="com.gerken.xaa.updateSite" projectExpr="{$updateSite/@siteProject}" purpose="site" replace="false">
+		</createProject>
+		<createFile binary="false" changeableName="false" folderExpr="" id="251" nameExpr=".project" oPath=".project" path="{$updateSite/@siteProject}/.project" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="project" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000221" template="templates/updateSite/project.prod">
+		</createFile>
+		<createFile binary="false" changeableName="false" folderExpr="" id="254" nameExpr="site.xml" oPath="site.xml" path="{$updateSite/@siteProject}/site.xml" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="siteXml" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000224" template="templates/updateSite/siteXml.prod">
+		</createFile>
+		<token derived="false" desc="Name of the artifact collection to be generated" formula="" id="" name="name">
+			<desc>The plugin ID for the update site</desc>
+			</token>
+		<token derived="true" desc="Token representing the new generated name for project com.gerken.xaa.updateSite" formula="{$updateSite/@name}" id="" name="siteProject">
+		</token>
+		<token derived="false" desc="" formula="" name="version">
+			<desc>The update site version</desc>
+			</token>
+		</group>
+	<group id="3" indent="" name="root" parentId="" root="true">
+		</group>
+	<replacement newString="{$gramar/@pluginProject}" oldString="com.gerken.xaa.mpe">
+		</replacement>
+	<replacement newString="{$updateSite/@siteProject}" oldString="com.gerken.xaa.updateSite">
+		</replacement>
+	<group id="263" indent="        " name="gramar" parentId="4">
+		<createProject id="5" locationExpr="" name="{$gramar/@pluginProject}" oLocation="" oPath="com.gerken.xaa.mpe" projectExpr="{$gramar/@pluginProject}" purpose="plugin-project">
+		</createProject>
+		<createFolder folderExpr="/gramars" id="234" oPath="/gramars" path="{$gramar/@pluginProject}/gramars" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="/gramars">
+		</createFolder>
+		<createFile binary="false" changeableName="false" folderExpr="" id="7" nameExpr=".project" oPath=".project" path="{$gramar/@pluginProject}/.project" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginProject" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000003" template="templates/gramar/pluginProject.prod">
+		</createFile>
+		<createFile binary="false" changeableName="false" folderExpr="" id="10" nameExpr="plugin.xml" oPath="plugin.xml" path="{$gramar/@pluginProject}/plugin.xml" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginXml" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginXml.prod">
+		</createFile>
+		<token derived="true" desc="Token representing the new generated name for project com.gerken.xaa.mpe" formula="{$gramar/@id}.plugin" id="" name="pluginProject">
+		</token>
+		<token derived="false" desc="" formula="" name="id">
+			<desc>The gramar ID of the gramar to be deployed</desc>
+			</token>
+		<token derived="false" desc="" formula="" name="provider">
+			<desc>The person or organization who authored the gramar</desc>
+			</token>
+		<token derived="false" desc="" formula="" name="version">
+			<desc>The version of the gramar (not the deployment plugin)</desc>
+			</token>
+		<token derived="false" desc="" formula="" name="label">
+			<desc>A short, descriptive label for the gramar </desc>
+			</token>
+		<createProject id="264" locationExpr="" name="{$gramar/@featureProject}" oLocation="" oPath="com.gerken.xaa.mpe" projectExpr="{$gramar/@featureProject}" purpose="feature-project"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="265" nameExpr=".project" oPath=".project" path="{$gramar/@featureProject}/.project" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureProject" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000003" template="templates/gramar/featureProject.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="266" nameExpr="feature.xml" oPath="plugin.xml" path="{$gramar/@featureProject}/feature.xml" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureXml" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/featureXml.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="267" nameExpr="build.properties" oPath="plugin.xml" path="{$gramar/@featureProject}/build.properties" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureBuildProperties" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/featureBuildProperties.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="268" nameExpr="build.properties" oPath="plugin.xml" path="{$gramar/@pluginProject}/build.properties" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginBuildProperties" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginBuildProperties.prod"/>
+		<token derived="true" desc="" formula="{$gramar/@id}.feature" name="featureProject"/>
+		<createFolder folderExpr="/src" id="240" oPath="/src" path="{$gramar/@pluginProject}/src" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="/src">
+		</createFolder>
+		</group>
+	<ignored>
+		<createFolder folderExpr="/bin" id="224" oPath="/bin" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin">
+		</createFolder>
+		<createFolder folderExpr="/bin/com" id="225" oPath="/bin/com" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken" id="226" oPath="/bin/com/gerken" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa" id="227" oPath="/bin/com/gerken/xaa" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa/mpe" id="228" oPath="/bin/com/gerken/xaa/mpe" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa/mpe">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa/mpe/constraint" id="229" oPath="/bin/com/gerken/xaa/mpe/constraint" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa/mpe/constraint">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa/mpe/core" id="230" oPath="/bin/com/gerken/xaa/mpe/core" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa/mpe/core">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa/mpe/domain" id="231" oPath="/bin/com/gerken/xaa/mpe/domain" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa/mpe/domain">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa/mpe/editor" id="232" oPath="/bin/com/gerken/xaa/mpe/editor" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa/mpe/editor">
+		</createFolder>
+		<createFolder folderExpr="/bin/com/gerken/xaa/mpe/wizards" id="233" oPath="/bin/com/gerken/xaa/mpe/wizards" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin/com/gerken/xaa/mpe/wizards">
+		</createFolder>
+		<createFile binary="true" changeableName="true" folderExpr="/features" id="255" nameExpr="com.gerken.xaa.feature_1.6.19.jar" oPath="features/com.gerken.xaa.feature_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaaFeature_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000225">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/plugins" id="256" nameExpr="com.gerken.xaa.constants_1.6.19.jar" oPath="plugins/com.gerken.xaa.constants_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaaConstants_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000226">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/plugins" id="257" nameExpr="com.gerken.xaa.model_1.6.19.jar" oPath="plugins/com.gerken.xaa.model_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaaModel_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000227">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/plugins" id="258" nameExpr="com.gerken.xaa.mpe_1.6.19.jar" oPath="plugins/com.gerken.xaa.mpe_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaaMpe_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000228">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/plugins" id="259" nameExpr="com.gerken.xaa.refactor_1.6.19.jar" oPath="plugins/com.gerken.xaa.refactor_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaaRefactor_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000229">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/plugins" id="260" nameExpr="com.gerken.xaa.wizard_1.6.19.jar" oPath="plugins/com.gerken.xaa.wizard_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaaWizard_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000230">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/plugins" id="261" nameExpr="com.gerken.xaa_1.6.19.jar" oPath="plugins/com.gerken.xaa_1.6.19.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="comGerkenXaa_1619Jar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000231">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="" id="252" nameExpr="artifacts.jar" oPath="artifacts.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="artifactsJar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000222">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="" id="253" nameExpr="content.jar" oPath="content.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="contentJar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000223">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe" id="159" nameExpr="Activator.java" oPath="src/com/gerken/xaa/mpe/Activator.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="activatorJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000155">
+			<javaPkg name="com.gerken.xaa.mpe" purpose="mpeSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="160" nameExpr="Constraint.java" oPath="src/com/gerken/xaa/mpe/constraint/Constraint.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="constraintJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000156">
+			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="161" nameExpr="ConstraintContext.java" oPath="src/com/gerken/xaa/mpe/constraint/ConstraintContext.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="constraintcontextJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000157">
+			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="162" nameExpr="ConstraintFailure.java" oPath="src/com/gerken/xaa/mpe/constraint/ConstraintFailure.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="constraintfailureJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000158">
+			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="163" nameExpr="ConstraintManager.java" oPath="src/com/gerken/xaa/mpe/constraint/ConstraintManager.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="constraintmanagerJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000159">
+			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="164" nameExpr="ConstraintSet.java" oPath="src/com/gerken/xaa/mpe/constraint/ConstraintSet.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="constraintsetJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000160">
+			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="165" nameExpr="IConstraintListener.java" oPath="src/com/gerken/xaa/mpe/constraint/IConstraintListener.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="iconstraintlistenerJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000161">
+			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="166" nameExpr="AbstractDetailsSection.java" oPath="src/com/gerken/xaa/mpe/core/AbstractDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstractdetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000162">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="167" nameExpr="AbstractFormPage.java" oPath="src/com/gerken/xaa/mpe/core/AbstractFormPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstractformpageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000163">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="168" nameExpr="AbstractListSection.java" oPath="src/com/gerken/xaa/mpe/core/AbstractListSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstractlistsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000164">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="169" nameExpr="AbstractSection.java" oPath="src/com/gerken/xaa/mpe/core/AbstractSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstractsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000165">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="170" nameExpr="AbstractTextSection.java" oPath="src/com/gerken/xaa/mpe/core/AbstractTextSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstracttextsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000166">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="171" nameExpr="AbstractToolSection.java" oPath="src/com/gerken/xaa/mpe/core/AbstractToolSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstracttoolsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000167">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="172" nameExpr="AbstractTreeSection.java" oPath="src/com/gerken/xaa/mpe/core/AbstractTreeSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstracttreesectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000168">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="173" nameExpr="KeySorter.java" oPath="src/com/gerken/xaa/mpe/core/KeySorter.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="keysorterJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000169">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="174" nameExpr="ModelAccess.java" oPath="src/com/gerken/xaa/mpe/core/ModelAccess.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="modelaccessJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000170">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="175" nameExpr="ModelFormatter.java" oPath="src/com/gerken/xaa/mpe/core/ModelFormatter.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="modelformatterJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000171">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="176" nameExpr="ModelLoader.java" oPath="src/com/gerken/xaa/mpe/core/ModelLoader.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="modelloaderJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000172">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="177" nameExpr="SectionMessageAreaComposite.java" oPath="src/com/gerken/xaa/mpe/core/SectionMessageAreaComposite.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="sectionmessageareacompositeJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000173">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/core" id="178" nameExpr="SourcePage.java" oPath="src/com/gerken/xaa/mpe/core/SourcePage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="sourcepageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000174">
+			<javaPkg name="com.gerken.xaa.mpe.core" purpose="coreSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/domain" id="179" nameExpr="AbstractEnumeration.java" oPath="src/com/gerken/xaa/mpe/domain/AbstractEnumeration.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstractenumerationJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000175">
+			<javaPkg name="com.gerken.xaa.mpe.domain" purpose="domainSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/domain" id="180" nameExpr="PolymorphicKeysEnumeration.java" oPath="src/com/gerken/xaa/mpe/domain/PolymorphicKeysEnumeration.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="polymorphickeysenumerationJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000176">
+			<javaPkg name="com.gerken.xaa.mpe.domain" purpose="domainSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/domain" id="181" nameExpr="ProjectsEnumeration.java" oPath="src/com/gerken/xaa/mpe/domain/ProjectsEnumeration.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="projectsenumerationJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000177">
+			<javaPkg name="com.gerken.xaa.mpe.domain" purpose="domainSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="182" nameExpr="AbstractGroupTreeSection.java" oPath="src/com/gerken/xaa/mpe/editor/AbstractGroupTreeSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="abstractgrouptreesectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000178">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="183" nameExpr="ArtifactListDialog.java" oPath="src/com/gerken/xaa/mpe/editor/ArtifactListDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="artifactlistdialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000179">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="184" nameExpr="ArtifactListSection.java" oPath="src/com/gerken/xaa/mpe/editor/ArtifactListSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="artifactlistsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000180">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="185" nameExpr="ArtifactPage.java" oPath="src/com/gerken/xaa/mpe/editor/ArtifactPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="artifactpageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000181">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="186" nameExpr="ArtifactTextSection.java" oPath="src/com/gerken/xaa/mpe/editor/ArtifactTextSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="artifacttextsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000182">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="187" nameExpr="DestinationGroupDialog.java" oPath="src/com/gerken/xaa/mpe/editor/DestinationGroupDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="destinationgroupdialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000183">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="188" nameExpr="FileDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/FileDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="filedetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000184">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="189" nameExpr="GroupDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/GroupDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="groupdetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000185">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="190" nameExpr="GroupPage.java" oPath="src/com/gerken/xaa/mpe/editor/GroupPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="grouppageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000186">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="191" nameExpr="GroupTextSection.java" oPath="src/com/gerken/xaa/mpe/editor/GroupTextSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="grouptextsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000187">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="192" nameExpr="GroupTocSection.java" oPath="src/com/gerken/xaa/mpe/editor/GroupTocSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="grouptocsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000188">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="193" nameExpr="GroupTreeArtifactSection.java" oPath="src/com/gerken/xaa/mpe/editor/GroupTreeArtifactSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="grouptreeartifactsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000189">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="194" nameExpr="GroupTreeSection.java" oPath="src/com/gerken/xaa/mpe/editor/GroupTreeSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="grouptreesectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000190">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="195" nameExpr="GroupTreeTokenSection.java" oPath="src/com/gerken/xaa/mpe/editor/GroupTreeTokenSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="grouptreetokensectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000191">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="196" nameExpr="MarkupProposalListComboDialog.java" oPath="src/com/gerken/xaa/mpe/editor/MarkupProposalListComboDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="markupproposallistcombodialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000192">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="197" nameExpr="MarkupProposalListDialog.java" oPath="src/com/gerken/xaa/mpe/editor/MarkupProposalListDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="markupproposallistdialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000193">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="198" nameExpr="NamingDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/NamingDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="namingdetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000194">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="199" nameExpr="NewGroupDialog.java" oPath="src/com/gerken/xaa/mpe/editor/NewGroupDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="newgroupdialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000195">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="200" nameExpr="OriginDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/OriginDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="origindetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000196">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="201" nameExpr="OverviewPage.java" oPath="src/com/gerken/xaa/mpe/editor/OverviewPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="overviewpageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000197">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="202" nameExpr="OverviewToolslSection.java" oPath="src/com/gerken/xaa/mpe/editor/OverviewToolslSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="overviewtoolslsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000198">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="203" nameExpr="PackageDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/PackageDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="packagedetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000199">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="204" nameExpr="PackageListSection.java" oPath="src/com/gerken/xaa/mpe/editor/PackageListSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="packagelistsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000200">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="205" nameExpr="PackagePage.java" oPath="src/com/gerken/xaa/mpe/editor/PackagePage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="packagepageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000201">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="206" nameExpr="PackageToolsSection.java" oPath="src/com/gerken/xaa/mpe/editor/PackageToolsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="packagetoolssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000202">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="207" nameExpr="ProblemSection.java" oPath="src/com/gerken/xaa/mpe/editor/ProblemSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="problemsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000203">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="208" nameExpr="ReplacementDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/ReplacementDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="replacementdetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000204">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="209" nameExpr="ReplacementListSection.java" oPath="src/com/gerken/xaa/mpe/editor/ReplacementListSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="replacementlistsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000205">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="210" nameExpr="ReplacementPage.java" oPath="src/com/gerken/xaa/mpe/editor/ReplacementPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="replacementpageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000206">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="211" nameExpr="ReplacementToolsSection.java" oPath="src/com/gerken/xaa/mpe/editor/ReplacementToolsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="replacementtoolssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000207">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="212" nameExpr="TokenDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/TokenDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokendetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000208">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="213" nameExpr="TokenFromReplacementDialog.java" oPath="src/com/gerken/xaa/mpe/editor/TokenFromReplacementDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokenfromreplacementdialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000209">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="214" nameExpr="TokenListSection.java" oPath="src/com/gerken/xaa/mpe/editor/TokenListSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokenlistsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000210">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="215" nameExpr="TokenPage.java" oPath="src/com/gerken/xaa/mpe/editor/TokenPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokenpageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000211">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="216" nameExpr="TokenReplacementsDialog.java" oPath="src/com/gerken/xaa/mpe/editor/TokenReplacementsDialog.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokenreplacementsdialogJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000212">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="217" nameExpr="TokenTextSection.java" oPath="src/com/gerken/xaa/mpe/editor/TokenTextSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokentextsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000213">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="218" nameExpr="TokenToolsSection.java" oPath="src/com/gerken/xaa/mpe/editor/TokenToolsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokentoolssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000214">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="219" nameExpr="XaaEditor.java" oPath="src/com/gerken/xaa/mpe/editor/XaaEditor.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="xaaeditorJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000215">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="220" nameExpr="XformDetailsSection.java" oPath="src/com/gerken/xaa/mpe/editor/XformDetailsSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="xformdetailssectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000216">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/editor" id="221" nameExpr="XformTextSection.java" oPath="src/com/gerken/xaa/mpe/editor/XformTextSection.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="xformtextsectionJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000217">
+			<javaPkg name="com.gerken.xaa.mpe.editor" purpose="editorSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/wizards" id="222" nameExpr="NewXaaWizard.java" oPath="src/com/gerken/xaa/mpe/wizards/NewXaaWizard.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="newxaawizardJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000218">
+			<javaPkg name="com.gerken.xaa.mpe.wizards" purpose="wizardsSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/wizards" id="223" nameExpr="NewXaaWizardPage.java" oPath="src/com/gerken/xaa/mpe/wizards/NewXaaWizardPage.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="newxaawizardpageJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000219">
+			<javaPkg name="com.gerken.xaa.mpe.wizards" purpose="wizardsSrcPlugin">
+		</javaPkg>
+			</createFile>
+		<createFolder folderExpr="/html" id="235" oPath="/html" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/html">
+		</createFolder>
+		<createFolder folderExpr="/html/guide" id="236" oPath="/html/guide" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/html/guide">
+		</createFolder>
+		<createFolder folderExpr="/html/guide/mp_editor" id="237" oPath="/html/guide/mp_editor" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/html/guide/mp_editor">
+		</createFolder>
+		<createFolder folderExpr="/icons" id="238" oPath="/icons" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/icons">
+		</createFolder>
+		<createFolder folderExpr="/model" id="239" oPath="/model" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/model">
+		</createFolder>
+		<createFolder folderExpr="/src/com" id="241" oPath="/src/com" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken" id="242" oPath="/src/com/gerken" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa" id="243" oPath="/src/com/gerken/xaa" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa/mpe" id="244" oPath="/src/com/gerken/xaa/mpe" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa/mpe">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa/mpe/constraint" id="245" oPath="/src/com/gerken/xaa/mpe/constraint" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa/mpe/constraint">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa/mpe/core" id="246" oPath="/src/com/gerken/xaa/mpe/core" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa/mpe/core">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa/mpe/domain" id="247" oPath="/src/com/gerken/xaa/mpe/domain" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa/mpe/domain">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa/mpe/editor" id="248" oPath="/src/com/gerken/xaa/mpe/editor" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa/mpe/editor">
+		</createFolder>
+		<createFolder folderExpr="/src/com/gerken/xaa/mpe/wizards" id="249" oPath="/src/com/gerken/xaa/mpe/wizards" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/src/com/gerken/xaa/mpe/wizards">
+		</createFolder>
+		<createFolder folderExpr="/features" id="262" oPath="/features" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="/features">
+		</createFolder>
+		<createFolder folderExpr="/plugins" id="263" oPath="/plugins" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="/plugins">
+		</createFolder>
+		<createFile binary="false" changeableName="true" folderExpr="" id="11" nameExpr="tryme.jpage" oPath="tryme.jpage" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="trymeJpage" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000007">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="" id="9" nameExpr="contextHelp.xml" oPath="contextHelp.xml" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="contexthelpXml" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000005">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/gramars" id="150" nameExpr="com.gerken.xaa.gramar.gramar-1.0.0-SNAPSHOT.jar" oPath="gramars/com.gerken.xaa.gramar.gramar-1.0.0-SNAPSHOT.jar" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="comGerkenXaaGramarGramar-100-snapshotJar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000146">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/html/guide/mp_editor" id="151" nameExpr="Artifact.htm" oPath="html/guide/mp_editor/Artifact.htm" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="artifactHtm" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000147">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/html/guide/mp_editor" id="152" nameExpr="Group.htm" oPath="html/guide/mp_editor/Group.htm" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="groupHtm" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000148">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/html/guide/mp_editor" id="153" nameExpr="Overview.htm" oPath="html/guide/mp_editor/Overview.htm" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="overviewHtm" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000149">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/html/guide/mp_editor" id="154" nameExpr="Replacement.htm" oPath="html/guide/mp_editor/Replacement.htm" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="replacementHtm" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000150">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/html/guide/mp_editor" id="155" nameExpr="Token.htm" oPath="html/guide/mp_editor/Token.htm" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="tokenHtm" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000151">
+		</createFile>
+		<createFile binary="true" changeableName="true" folderExpr="/icons" id="156" nameExpr="sample.gif" oPath="icons/sample.gif" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="sampleGif" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000152">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/model" id="157" nameExpr="m2m.jet.txt" oPath="model/m2m.jet.txt" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="m2mJetTxt" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000153">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/model" id="158" nameExpr="persist.xml" oPath="model/persist.xml" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="persistXml" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000154">
+		</createFile>
+		<token derived="false" desc="" formula="" name="version">
+			<desc>The plugin version of the update site</desc>
+			</token>
+		<createFile binary="false" changeableName="false" folderExpr="" id="6" nameExpr=".classpath" oPath=".classpath" path="{$updateSite/@pluginProject}/.classpath" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="classpath" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000002" template="templates/updateSite/classpath.prod">
+		</createFile>
+		</ignored>
+	</xform>

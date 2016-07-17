@@ -1,0 +1,25 @@
+
+
+
+<root>
+
+
+    <!--  name : The plugin ID for the update site -->
+    <!--  version : The update site version -->
+    <updateSite  name=""  version="">
+
+
+        <!--  id : The gramar ID of the gramar to be deployed -->
+        <!--  provider : The person or organization who authored the gramar -->
+        <!--  version : The version of the gramar (not the deployment plugin) -->
+        <!--  label : A short, descriptive label for the gramar  -->
+        <gramar  id=""  provider=""  version=""  label="">
+
+
+        </gramar>
+
+
+    </updateSite>
+
+
+</root>
