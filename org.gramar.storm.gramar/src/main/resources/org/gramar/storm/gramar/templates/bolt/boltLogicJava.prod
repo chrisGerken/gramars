@@ -59,6 +59,14 @@ public class <c:get select="$bolt/@boltLogicJava" /> implements Serializable {
 
     }
 
+    public void tick() {
+
+			<c:userRegion>// Begin tick() logic<c:initialCode> 
+
+			</c:initialCode>// End tick() logic</c:userRegion> 
+
+    }
+
     public static int determineParallelismHint(Config c) {
 
 			<c:userRegion>// Begin dph() logic<c:initialCode> 

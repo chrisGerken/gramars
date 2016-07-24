@@ -8,6 +8,7 @@ import <c:get select="$topology/@utilPkg" />.<c:get select="$topology/@iLoggerJa
 
 import org.apache.log4j.Logger;
 
+import backtype.storm.Constants;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.IRichBolt;
@@ -68,6 +69,10 @@ public class <c:get select="$bolt/@boltJava" /> implements IRichBolt, <c:get sel
 	            return;
 	    	}
 </c:iterate>	
+	    	if (tuple.getSourceComponent().equals(Constants.SYSTEM_COMPONENT_ID) && 
+	    		tuple.getSourceStreamId().equals(Constants.SYSTEM_TICK_STREAM_ID)) {
+	    		logic.tick();
+	    	}
 //	    	throw new Exception("Message for <c:get select="$bolt/@boltJava" /> from unknown stream "+tuple.getSourceStreamId());
 		} catch (Exception e) { 
 			log.error("<c:get select="$bolt/@boltJava" /> execute() error", e); 
