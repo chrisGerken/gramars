@@ -59,7 +59,7 @@ public class <c:get select="$bolt/@boltLogicJava" /> implements Serializable {
 
     }
 
-    public void tick() {
+    public void tick(<c:get select="$bolt/@iBoltJava" /> bolt) {
 
 			<c:userRegion>// Begin tick() logic<c:initialCode> 
 

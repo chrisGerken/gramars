@@ -71,7 +71,7 @@ public class <c:get select="$bolt/@boltJava" /> implements IRichBolt, <c:get sel
 </c:iterate>	
 	    	if (tuple.getSourceComponent().equals(Constants.SYSTEM_COMPONENT_ID) && 
 	    		tuple.getSourceStreamId().equals(Constants.SYSTEM_TICK_STREAM_ID)) {
-	    		logic.tick();
+	    		logic.tick(this);
 	    	}
 //	    	throw new Exception("Message for <c:get select="$bolt/@boltJava" /> from unknown stream "+tuple.getSourceStreamId());
 		} catch (Exception e) { 
