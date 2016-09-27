@@ -83,6 +83,10 @@
 
             *** Begin custom model updates for emits (279)
 
+			<c:if test="not($emits/@hide)" >
+	            <c:set select="$emits" name="hide">false</c:set>
+			</c:if>
+
             *** End custom model updates for emits (279)
 
 
@@ -102,6 +106,10 @@
 
 			<c:if test="not($topology/*/emits[@stream=$reads/@stream]/@type)" >
 				<c:log severity="error">Bolt <c:get select="$bolt/@label"/> reads from ill-defined stream <c:get select="$reads/@stream" /></c:log>
+			</c:if>
+
+			<c:if test="not($reads/@hide)" >
+	            <c:set select="$reads" name="hide">false</c:set>
 			</c:if>
 
 			<c:if test="$reads/@grouping='custom'" >
@@ -163,6 +171,9 @@
 
             *** Begin custom model updates for emits (283)
 
+			<c:if test="not($emits/@hide)" >
+	            <c:set select="$emits" name="hide">false</c:set>
+			</c:if>
 			
             *** End custom model updates for emits (283)
 

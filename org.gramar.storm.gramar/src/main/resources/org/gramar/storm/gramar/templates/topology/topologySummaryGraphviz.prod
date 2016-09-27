@@ -17,7 +17,7 @@ Legalese [style=filled, fillcolor=floralwhite ,fontsize=20,color=black,label="{<
 "<c:get select="$bolt/@label"/> (<c:get select="$bolt/@instances"/>)"  [shape=ellipse, fillcolor=palegoldenrod] ;
 </c:iterate>
 
-<c:iterate select="$topology/*/emits" var="emits">
+<c:iterate select="$topology/*/emits[@hide='false']" var="emits">
 "<c:get select="$emits/../@label"/> (<c:get select="$emits/../@instances"/>)" -> <c:get select="$emits/@stream"/>  [penwidth=5];
 </c:iterate>
 
