@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: <c:get select="$gramar/@id" />
+Bundle-SymbolicName: <c:get select="$gramar/@pluginProject" />;singleton:=true
+Bundle-Version: <c:get select="$updateSite/@version" />
+Bundle-Activator: <c:get select="$gramar/@activatorPkg" />.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.gramar.eclipse.ui;bundle-version="0.9.38"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: gramars/<c:get select="$gramar/@id" />-<c:get select="$gramar/@version" />.jar,
+ .

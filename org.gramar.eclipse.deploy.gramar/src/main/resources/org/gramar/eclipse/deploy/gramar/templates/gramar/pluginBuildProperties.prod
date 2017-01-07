@@ -1,4 +1,6 @@
 source.. = src/
 output.. = bin/
-bin.includes = plugin.xml,\
+bin.includes = META-INF/,\
+               .,\
+               plugin.xml,\
                gramars/<c:get select="$gramar/@id" />-<c:get select="$gramar/@version" />.jar

@@ -34,6 +34,10 @@ Snippets for gramar
 
 	<c:get select="$gramar/@featureProject" />
 
+	<c:get select="$gramar/@activatorPkg" />
+
+	<c:get select="$gramar/@activatorDir" />
+
 
     <c:iterate select="$updateSite/gramar" var="gramar"  > 
 	    

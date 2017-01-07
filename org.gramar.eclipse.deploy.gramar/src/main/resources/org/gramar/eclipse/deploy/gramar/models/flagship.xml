@@ -3,7 +3,7 @@
 
 <root>
 
-    <updateSite  name="org.gramar.eclipse.gramars.updatesite"  version="0.9.6">
+    <updateSite  name="org.gramar.eclipse.gramars.updatesite"  version="0.9.8">
 
         <gramar  id="org.gramar.storm.gramar"  provider="gramar.org"  version="1.0.0-SNAPSHOT"  label="Complete Storm topology ex. business logic"  />
 

@@ -30,6 +30,8 @@
 
         <c:set select="$gramar" name="pluginProject"><c:get select="$gramar/@id" />.plugin</c:set>
         <c:set select="$gramar" name="featureProject"><c:get select="$gramar/@id" />.feature</c:set>
+        <c:set select="$gramar" name="activatorPkg"><c:get select="$gramar/@pluginProject" /></c:set>
+        <c:set select="$gramar" name="activatorDir"><c:get select="translate($gramar/@activatorPkg,'.','/')" /></c:set>
 
 
         *** Begin custom model updates for gramar (263)
@@ -110,19 +112,26 @@
         <c:file path="{$gramar/@pluginProject}/.project" template="templates/gramar/pluginProject.prod" replace="true" />
 
 
-        <c:file path="{$gramar/@pluginProject}/plugin.xml" template="templates/gramar/pluginXml.prod" replace="false" />
+        <c:file path="{$gramar/@pluginProject}/plugin.xml" template="templates/gramar/pluginXml.prod" replace="true" />
 
 
         <c:file path="{$gramar/@featureProject}/.project" template="templates/gramar/featureProject.prod" replace="true" />
 
 
-        <c:file path="{$gramar/@featureProject}/feature.xml" template="templates/gramar/featureXml.prod" replace="false" />
+        <c:file path="{$gramar/@featureProject}/feature.xml" template="templates/gramar/featureXml.prod" replace="true" />
 
 
-        <c:file path="{$gramar/@featureProject}/build.properties" template="templates/gramar/featureBuildProperties.prod" replace="false" />
+        <c:file path="{$gramar/@featureProject}/build.properties" template="templates/gramar/featureBuildProperties.prod" replace="true" />
 
 
-        <c:file path="{$gramar/@pluginProject}/build.properties" template="templates/gramar/pluginBuildProperties.prod" replace="false" />
+        <c:file path="{$gramar/@pluginProject}/build.properties" template="templates/gramar/pluginBuildProperties.prod" replace="true" />
+
+
+        <c:file path="{$updateSite/@pluginProject}/src/{$gramar/@activatorDir}/Activator.java" template="templates/gramar/activatorJava.prod" replace="true" />
+
+
+        <c:file path="{$gramar/@pluginProject}/META-INF/MANIFEST.MF" template="templates/gramar/pluginManifest.prod" replace="true" />
+
 
         *** Begin custom generation updates for gramar (263)
 

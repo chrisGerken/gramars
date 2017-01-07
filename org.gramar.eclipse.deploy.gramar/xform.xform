@@ -1,5 +1,5 @@
 
-<xform id="2" nextID="269" provider="gramar.org" version="1.0.0" xformDir="org/gramar/eclipse/deploy/gramar" xformId="org.gramar.eclipse.deploy.gramar" xformProject="org.gramar.eclipse.deploy.gramar">
+<xform id="2" nextID="270" provider="gramar.org" version="1.0.0" xformDir="org/gramar/eclipse/deploy/gramar" xformId="org.gramar.eclipse.deploy.gramar" xformProject="org.gramar.eclipse.deploy.gramar">
 	<group id="4" indent="    " name="updateSite" parentId="3" root="false">
 		<createProject id="250" locationExpr="" name="{$updateSite/@siteProject}" oLocation="" oPath="com.gerken.xaa.updateSite" projectExpr="{$updateSite/@siteProject}" purpose="site" replace="false">
 		</createProject>
@@ -29,7 +29,7 @@
 		</createFolder>
 		<createFile binary="false" changeableName="false" folderExpr="" id="7" nameExpr=".project" oPath=".project" path="{$gramar/@pluginProject}/.project" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginProject" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000003" template="templates/gramar/pluginProject.prod">
 		</createFile>
-		<createFile binary="false" changeableName="false" folderExpr="" id="10" nameExpr="plugin.xml" oPath="plugin.xml" path="{$gramar/@pluginProject}/plugin.xml" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginXml" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginXml.prod">
+		<createFile binary="false" changeableName="false" folderExpr="" id="10" nameExpr="plugin.xml" oPath="plugin.xml" path="{$gramar/@pluginProject}/plugin.xml" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginXml" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginXml.prod">
 		</createFile>
 		<token derived="true" desc="Token representing the new generated name for project com.gerken.xaa.mpe" formula="{$gramar/@id}.plugin" id="" name="pluginProject">
 		</token>
@@ -47,12 +47,22 @@
 			</token>
 		<createProject id="264" locationExpr="" name="{$gramar/@featureProject}" oLocation="" oPath="com.gerken.xaa.mpe" projectExpr="{$gramar/@featureProject}" purpose="feature-project"/>
 		<createFile binary="false" changeableName="false" folderExpr="" id="265" nameExpr=".project" oPath=".project" path="{$gramar/@featureProject}/.project" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureProject" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000003" template="templates/gramar/featureProject.prod"/>
-		<createFile binary="false" changeableName="false" folderExpr="" id="266" nameExpr="feature.xml" oPath="plugin.xml" path="{$gramar/@featureProject}/feature.xml" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureXml" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/featureXml.prod"/>
-		<createFile binary="false" changeableName="false" folderExpr="" id="267" nameExpr="build.properties" oPath="plugin.xml" path="{$gramar/@featureProject}/build.properties" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureBuildProperties" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/featureBuildProperties.prod"/>
-		<createFile binary="false" changeableName="false" folderExpr="" id="268" nameExpr="build.properties" oPath="plugin.xml" path="{$gramar/@pluginProject}/build.properties" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginBuildProperties" purposeAsTokenName="false" replace="false" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginBuildProperties.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="266" nameExpr="feature.xml" oPath="plugin.xml" path="{$gramar/@featureProject}/feature.xml" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureXml" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/featureXml.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="267" nameExpr="build.properties" oPath="plugin.xml" path="{$gramar/@featureProject}/build.properties" projectExpr="{$gramar/@featureProject}" projectId="264" purpose="featureBuildProperties" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/featureBuildProperties.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="268" nameExpr="build.properties" oPath="plugin.xml" path="{$gramar/@pluginProject}/build.properties" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginBuildProperties" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginBuildProperties.prod"/>
 		<token derived="true" desc="" formula="{$gramar/@id}.feature" name="featureProject"/>
 		<createFolder folderExpr="/src" id="240" oPath="/src" path="{$gramar/@pluginProject}/src" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="/src">
 		</createFolder>
+		<createFile binary="false" changeableName="false" folderExpr="/src/{$gramar/@activatorDir}" id="159" nameExpr="Activator.java" oPath="src/com/gerken/xaa/mpe/Activator.java" path="{$updateSite/@pluginProject}/src/{$gramar/@activatorDir}/Activator.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="activatorJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000155" template="templates/gramar/activatorJava.prod">
+			<javaPkg name="com.gerken.xaa.mpe" purpose="mpeSrcPlugin">
+		</javaPkg>
+			<folderExpr>/src/{$gramar/@activatorDir}</folderExpr>
+			</createFile>
+		<token derived="true" desc="" formula="{$gramar/@pluginProject}" name="activatorPkg">
+			<formula>{$gramar/@pluginProject}</formula>
+			</token>
+		<token derived="true" desc="" formula="{translate($gramar/@activatorPkg,&apos;.&apos;,&apos;/&apos;)}" name="activatorDir"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="269" nameExpr="META-INF/MANIFEST.MF" oPath="plugin.xml" path="{$gramar/@pluginProject}/META-INF/MANIFEST.MF" projectExpr="{$gramar/@pluginProject}" projectId="5" purpose="pluginManifest" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000006" template="templates/gramar/pluginManifest.prod"/>
 		</group>
 	<ignored>
 		<createFolder folderExpr="/bin" id="224" oPath="/bin" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="/bin">
@@ -93,10 +103,6 @@
 		</createFile>
 		<createFile binary="true" changeableName="true" folderExpr="" id="253" nameExpr="content.jar" oPath="content.jar" projectExpr="{$updateSite/@siteProject}" projectId="250" purpose="contentJar" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000223">
 		</createFile>
-		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe" id="159" nameExpr="Activator.java" oPath="src/com/gerken/xaa/mpe/Activator.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="activatorJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000155">
-			<javaPkg name="com.gerken.xaa.mpe" purpose="mpeSrcPlugin">
-		</javaPkg>
-			</createFile>
 		<createFile binary="false" changeableName="true" folderExpr="/src/com/gerken/xaa/mpe/constraint" id="160" nameExpr="Constraint.java" oPath="src/com/gerken/xaa/mpe/constraint/Constraint.java" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="constraintJava" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000156">
 			<javaPkg name="com.gerken.xaa.mpe.constraint" purpose="constraintSrcPlugin">
 		</javaPkg>
@@ -413,4 +419,5 @@
 		<createFile binary="false" changeableName="false" folderExpr="" id="6" nameExpr=".classpath" oPath=".classpath" path="{$updateSite/@pluginProject}/.classpath" projectExpr="{$updateSite/@pluginProject}" projectId="5" purpose="classpath" purposeAsTokenName="false" replace="true" src="org.gramar.eclipse.deploy/refimpl/art000002" template="templates/updateSite/classpath.prod">
 		</createFile>
 		</ignored>
+	<replacement newString="{$gramar/@activatorDir}" oldString="com/gerken/xaa/mpe"/>
 	</xform>
