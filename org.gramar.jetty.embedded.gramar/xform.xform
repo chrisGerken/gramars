@@ -1,0 +1,170 @@
+
+<xform id="2" nextID="95" provider="org.gramar" version="1.0.0" xformDir="org/gramar/jetty/embedded/gramar" xformId="org.gramar.jetty.embedded.gramar" xformProject="org.gramar.jetty.embedded.gramar">
+	<group id="4" indent="    " name="server" parentId="3" root="false">
+		<createProject id="5" locationExpr="" name="{$server/@srcProject}" oLocation="" oPath="why-http" projectExpr="{$server/@srcProject}" purpose="src">
+		</createProject>
+		<createFile binary="false" changeableName="false" folderExpr="" id="9" nameExpr="pom.xml" oPath="pom.xml" path="{$server/@srcProject}/pom.xml" projectExpr="{$server/@srcProject}" projectId="5" purpose="pom" purposeAsTokenName="false" replace="false" src="org.gramar.jetty.embedded/refimpl/art000005" template="templates/server/pom.prod">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/{$server/@rootDir}" id="13" nameExpr="{$server/@driver}.java" oPath="src/main/java/com/gerkenip/why/http/WhyHttp.java" path="{$server/@srcProject}/src/main/java/{$server/@rootDir}/{$server/@driver}.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="driver" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000009" template="templates/server/driver.prod">
+			<javaPkg name="com.gerkenip.why.http" purpose="root">
+		</javaPkg>
+			<folderExpr>/src/main/java/{$server/@rootDir}</folderExpr>
+			<nameExpr>{$server/@driver}.java</nameExpr>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/resources" id="28" nameExpr="{$server/@contextPath}.css" oPath="src/main/resources/why.css" path="{$server/@srcProject}/src/main/resources/{$server/@contextPath}.css" projectExpr="{$server/@srcProject}" projectId="5" purpose="css" purposeAsTokenName="false" replace="false" src="org.gramar.jetty.embedded/refimpl/art000024" template="templates/server/css.prod">
+			<javaPkg name="" purpose="srcMainResourcesSrc">
+		</javaPkg>
+			<nameExpr>{$server/@contextPath}.css</nameExpr>
+			</createFile>
+		<createFile binary="false" changeableName="false" folderExpr="/src/main/resources/sample" id="29" nameExpr="resource.html" oPath="src/main/resources/sample/resource.html" path="{$server/@srcProject}/src/main/resources/sample/resource.html" projectExpr="{$server/@srcProject}" projectId="5" purpose="resourceHtml" purposeAsTokenName="false" replace="false" src="org.gramar.jetty.embedded/refimpl/art000025" template="templates/server/resourceHtml.prod">
+			<javaPkg name="sample" purpose="sampleSrcMainResourcesSrc">
+		</javaPkg>
+			</createFile>
+		<token derived="false" desc="Name of the artifact collection to be generated" formula="" id="" name="name">
+		</token>
+		<token derived="false" desc="" formula="" name="basePackage"/>
+		<token derived="true" desc="Token representing the new generated name for project why-http" formula="{$server/@name}-http" id="" name="srcProject">
+		</token>
+		<token derived="true" formula="{$server/@basePackage}.servlet" name="servletPkg">
+			<formula>{$server/@basePackage}.servlet</formula>
+			</token>
+		<token derived="true" formula="{translate($server/@servletPkg,&apos;.&apos;,&apos;/&apos;)}" name="servletDir"/>
+		<token derived="true" formula="{$server/@basePackage}.access" name="rootPkg">
+			<formula>{$server/@basePackage}</formula>
+			</token>
+		<token derived="true" formula="{translate($server/@rootPkg,&apos;.&apos;,&apos;/&apos;)}" name="rootDir"/>
+		<token derived="true" desc="variable for WhyHttp" formula="{c:uppercaseFirst($server/@contextPath)}Http" name="driver">
+			<formula>{uppercaseFirst($server/@contextPath)}Http</formula>
+			</token>
+		<token derived="false" desc="" formula="" name="contextPath">
+			<desc>A single-level context path for the web app</desc>
+			</token>
+		<token derived="false" desc="" formula="" name="mavenGroup">
+			<desc>The maven group name for the artifact to be built</desc>
+			</token>
+		<createFile binary="false" changeableName="false" folderExpr="/src/main/resources" id="93" nameExpr="index.html" oPath="src/main/resources/sample/resource.html" path="{$server/@srcProject}/src/main/resources/index.html" projectExpr="{$server/@srcProject}" projectId="5" purpose="indexHtml" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000025" template="templates/server/indexHtml.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="94" nameExpr="readme.txt" oPath="pom.xml" path="{$server/@srcProject}/readme.txt" projectExpr="{$server/@srcProject}" projectId="5" purpose="readme" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000005" template="templates/server/readme.prod"/>
+		</group>
+	<group id="3" indent="" name="root" parentId="" root="true">
+		</group>
+	<replacement newString="{$server/@srcProject}" oldString="why-http">
+		</replacement>
+	<group id="92" indent="        " name="servlet" parentId="4">
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/{$server/@servletDir}" id="17" nameExpr="{$servlet/@servletJava}.java" oPath="src/main/java/com/gerkenip/why/http/servlet/HomeServlet.java" path="{$server/@srcProject}/src/main/java/{$server/@servletDir}/{$servlet/@servletJava}.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="servletJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000013" template="templates/servlet/servletJava.prod">
+			<javaPkg name="com.gerkenip.why.http.servlet" purpose="servlet">
+		</javaPkg>
+			<nameExpr>{$servlet/@servletJava}.java</nameExpr>
+			<folderExpr>/src/main/java/{$server/@servletDir}</folderExpr>
+			</createFile>
+		<token derived="false" desc="" formula="" name="name">
+			<desc>The name of the servlet</desc>
+			</token>
+		<token derived="true" desc="variable for HomeServlet" formula="{c:uppercaseFirst($servlet/@name)}Servlet" name="servletJava">
+			<formula>{uppercaseFirst($servlet/@name)}Servlet</formula>
+			</token>
+		</group>
+	<ignored>
+		<createFolder folderExpr="/.settings" id="57" oPath="/.settings" projectExpr="{$server/@srcProject}" projectId="5" purpose="/.settings">
+		</createFolder>
+		<createFolder folderExpr="/src" id="58" oPath="/src" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src">
+		</createFolder>
+		<createFolder folderExpr="/src/main" id="59" oPath="/src/main" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java" id="60" oPath="/src/main/java" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java/com" id="61" oPath="/src/main/java/com" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java/com">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java/com/gerkenip" id="62" oPath="/src/main/java/com/gerkenip" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java/com/gerkenip">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java/com/gerkenip/why" id="63" oPath="/src/main/java/com/gerkenip/why" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java/com/gerkenip/why">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java/com/gerkenip/why/http" id="64" oPath="/src/main/java/com/gerkenip/why/http" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java/com/gerkenip/why/http">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java/com/gerkenip/why/http/servlet" id="65" oPath="/src/main/java/com/gerkenip/why/http/servlet" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java/com/gerkenip/why/http/servlet">
+		</createFolder>
+		<createFolder folderExpr="/src/main/java/com/gerkenip/why/util" id="66" oPath="/src/main/java/com/gerkenip/why/util" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/java/com/gerkenip/why/util">
+		</createFolder>
+		<createFolder folderExpr="/src/main/resources" id="67" oPath="/src/main/resources" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/resources">
+		</createFolder>
+		<createFolder folderExpr="/src/main/resources/sample" id="68" oPath="/src/main/resources/sample" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/main/resources/sample">
+		</createFolder>
+		<createFolder folderExpr="/src/test" id="69" oPath="/src/test" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/test">
+		</createFolder>
+		<createFile binary="false" changeableName="false" folderExpr="" id="6" nameExpr=".classpath" oPath=".classpath" projectExpr="{$server/@srcProject}" projectId="5" purpose="classpath" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000002">
+		</createFile>
+		<createFile binary="false" changeableName="false" folderExpr="" id="8" nameExpr=".project" oPath=".project" projectExpr="{$server/@srcProject}" projectId="5" purpose="project" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000004">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/.settings" id="10" nameExpr="org.eclipse.core.resources.prefs" oPath=".settings/org.eclipse.core.resources.prefs" projectExpr="{$server/@srcProject}" projectId="5" purpose="orgEclipseCoreResourcesPrefs" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000006">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/.settings" id="11" nameExpr="org.eclipse.jdt.core.prefs" oPath=".settings/org.eclipse.jdt.core.prefs" projectExpr="{$server/@srcProject}" projectId="5" purpose="orgEclipseJdtCorePrefs" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000007">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/.settings" id="12" nameExpr="org.eclipse.m2e.core.prefs" oPath=".settings/org.eclipse.m2e.core.prefs" projectExpr="{$server/@srcProject}" projectId="5" purpose="orgEclipseM2eCorePrefs" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000008">
+		</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/http/servlet" id="14" nameExpr="AuthorsServlet.java" oPath="src/main/java/com/gerkenip/why/http/servlet/AuthorsServlet.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="authorsservletJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000010">
+			<javaPkg name="com.gerkenip.why.http.servlet" purpose="servletSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/http/servlet" id="15" nameExpr="CategoriesServlet.java" oPath="src/main/java/com/gerkenip/why/http/servlet/CategoriesServlet.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="categoriesservletJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000011">
+			<javaPkg name="com.gerkenip.why.http.servlet" purpose="servletSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/http/servlet" id="16" nameExpr="GoodbyeServlet.java" oPath="src/main/java/com/gerkenip/why/http/servlet/GoodbyeServlet.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="goodbyeservletJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000012">
+			<javaPkg name="com.gerkenip.why.http.servlet" purpose="servletSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/http/servlet" id="18" nameExpr="VideosServlet.java" oPath="src/main/java/com/gerkenip/why/http/servlet/VideosServlet.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="videosservletJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000014">
+			<javaPkg name="com.gerkenip.why.http.servlet" purpose="servletSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="19" nameExpr="API.java" oPath="src/main/java/com/gerkenip/why/util/API.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="apiJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000015">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="20" nameExpr="BookmarkManager.java" oPath="src/main/java/com/gerkenip/why/util/BookmarkManager.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="bookmarkmanagerJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000016">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="21" nameExpr="DownloadInfo.java" oPath="src/main/java/com/gerkenip/why/util/DownloadInfo.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="downloadinfoJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000017">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="22" nameExpr="LoadNew.java" oPath="src/main/java/com/gerkenip/why/util/LoadNew.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="loadnewJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000018">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="23" nameExpr="ParsedSearchResult.java" oPath="src/main/java/com/gerkenip/why/util/ParsedSearchResult.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="parsedsearchresultJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000019">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="24" nameExpr="ParsedVideoPage.java" oPath="src/main/java/com/gerkenip/why/util/ParsedVideoPage.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="parsedvideopageJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000020">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="25" nameExpr="VideoLoader.java" oPath="src/main/java/com/gerkenip/why/util/VideoLoader.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="videoloaderJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000021">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="26" nameExpr="WhyClient.java" oPath="src/main/java/com/gerkenip/why/util/WhyClient.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="whyclientJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000022">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/com/gerkenip/why/util" id="27" nameExpr="WhyContext.java" oPath="src/main/java/com/gerkenip/why/util/WhyContext.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="whycontextJava" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000023">
+			<javaPkg name="com.gerkenip.why.util" purpose="utilSrcMainJavaSrc">
+		</javaPkg>
+			</createFile>
+		<createFolder folderExpr="/src/test/java" id="70" oPath="/src/test/java" projectExpr="{$server/@srcProject}" projectId="5" purpose="/src/test/java">
+		</createFolder>
+		</ignored>
+	<replacement newString="{$server/@servletPkg}" oldString="com.gerkenip.why.http.servlet"/>
+	<replacement newString="{$server/@servletDir}" oldString="com/gerkenip/why/http/servlet"/>
+	<replacement newString="{$server/@rootPkg}" oldString="com.gerkenip.why.http"/>
+	<replacement newString="{$server/@rootDir}" oldString="com/gerkenip/why/http"/>
+	<replacement newString="{$server/@basePackage}" oldString="com.gerkenip.why.http"/>
+	<replacement newString="{$server/@driver}" oldString="WhyHttp"/>
+	<replacement newString="{$servlet/@servletJava}" oldString="HomeServlet"/>
+	<replacement newString="{uppercaseFirst($servlet/@name)}" oldString="Home"/>
+	<replacement newString="{lower-case($servlet/@name)}" oldString="home"/>
+	<replacement newString="{uppercaseFirst($server/@contextPath)}" oldString="Why"/>
+	<replacement newString="{$server/@contextPath}" oldString="why"/>
+	<replacement newString="{$server/@mavenGroup}" oldString="com.gerkenip"/>
+	</xform>

@@ -1,0 +1,134 @@
+
+<c:if test="not(c:isVariableDefined('root'))">
+    <c:setVariable select="/*" var="root" />
+</c:if>
+
+*******************************
+
+
+
+
+
+*** Begin custom model updates for root (3)
+
+*** End custom model updates for root (3)
+
+
+
+<c:iterate select="$root/server" var="server">
+
+    <c:set select="$server" name="srcProject"><c:get select="$server/@name" />-http</c:set>
+    <c:set select="$server" name="servletPkg"><c:get select="$server/@basePackage" />.servlet</c:set>
+    <c:set select="$server" name="servletDir"><c:get select="translate($server/@servletPkg,'.','/')" /></c:set>
+    <c:set select="$server" name="rootPkg"><c:get select="$server/@basePackage" />.access</c:set>
+    <c:set select="$server" name="rootDir"><c:get select="translate($server/@rootPkg,'.','/')" /></c:set>
+    <c:set select="$server" name="driver"><c:get select="c:uppercaseFirst($server/@contextPath)" />Http</c:set>
+
+
+    *** Begin custom model updates for server (4)
+
+    *** End custom model updates for server (4)
+
+
+
+    <c:iterate select="$server/servlet" var="servlet">
+
+        <c:set select="$servlet" name="servletJava"><c:get select="c:uppercaseFirst($servlet/@name)" />Servlet</c:set>
+
+
+        *** Begin custom model updates for servlet (92)
+
+        *** End custom model updates for servlet (92)
+
+
+        *** Begin custom model post updates for servlet (92)
+
+        *** End custom model post updates for servlet (92)
+
+
+    </c:iterate> 
+
+    *** Begin custom model post updates for server (4)
+
+    *** End custom model post updates for server (4)
+
+
+</c:iterate> 
+
+*** Begin custom model post updates for root (3)
+
+*** End custom model post updates for root (3)
+
+
+
+
+*******************************
+
+
+
+
+*** Begin custom pre-generation actions for root (3)
+
+*** End custom pre-generation actions for root (3)
+
+
+*** Begin custom generation updates for root (3)
+
+*** End custom generation updates for root (3)
+
+
+<c:iterate select="$root/server" var="server">
+
+
+    *** Begin custom pre-generation actions for server (4)
+
+    *** End custom pre-generation actions for server (4)
+
+    <c:project name="{$server/@srcProject}" />
+
+    <c:file path="{$server/@srcProject}/pom.xml" template="templates/server/pom.prod" replace="false" />
+
+
+    <c:file path="{$server/@srcProject}/src/main/java/{$server/@rootDir}/{$server/@driver}.java" template="templates/server/driver.prod" replace="true" />
+
+
+    <c:file path="{$server/@srcProject}/src/main/resources/{$server/@contextPath}.css" template="templates/server/css.prod" replace="false" />
+
+
+    <c:file path="{$server/@srcProject}/src/main/resources/sample/resource.html" template="templates/server/resourceHtml.prod" replace="false" />
+
+
+    <c:file path="{$server/@srcProject}/src/main/resources/index.html" template="templates/server/indexHtml.prod" replace="true" />
+
+
+    <c:file path="{$server/@srcProject}/readme.txt" template="templates/server/readme.prod" replace="true" />
+
+
+    *** Begin custom generation updates for server (4)
+
+    *** End custom generation updates for server (4)
+
+
+    <c:iterate select="$server/servlet" var="servlet">
+
+
+        *** Begin custom pre-generation actions for servlet (92)
+
+        *** End custom pre-generation actions for servlet (92)
+
+
+        <c:file path="{$server/@srcProject}/src/main/java/{$server/@servletDir}/{$servlet/@servletJava}.java" template="templates/servlet/servletJava.prod" replace="true" />
+
+
+        *** Begin custom generation updates for servlet (92)
+
+        *** End custom generation updates for servlet (92)
+
+
+    </c:iterate> 
+
+</c:iterate> 
+
+
+
+*******************************

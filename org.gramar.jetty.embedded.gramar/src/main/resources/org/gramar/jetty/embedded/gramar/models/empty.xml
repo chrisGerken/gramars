@@ -1,0 +1,24 @@
+
+
+
+<root>
+
+
+    <!--  name :  -->
+    <!--  basePackage :  -->
+    <!--  contextPath : A single-level context path for the web app -->
+    <!--  mavenGroup : The maven group name for the artifact to be built -->
+    <server  name=""  basePackage=""  contextPath=""  mavenGroup="">
+
+
+        <!--  name : The name of the servlet -->
+        <servlet  name="">
+
+
+        </servlet>
+
+
+    </server>
+
+
+</root>

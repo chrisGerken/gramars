@@ -1,0 +1,9 @@
+README
+======
+
+This component is managed by <c:get select="$server/@rootPkg" />.<c:get select="$server/@driver" />
+
+Run this class and browse URL http://localhost:8080/<c:get select="$server/@contextPath" />
+
+To include this component in a larger application, simply construct an instance <c:get select="$server/@driver" />, specifying the
+correct port and file system resource root directory.

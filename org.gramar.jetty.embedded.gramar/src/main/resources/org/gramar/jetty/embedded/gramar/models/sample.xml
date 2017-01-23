@@ -1,0 +1,16 @@
+
+
+
+<root>
+
+    <server  name="trans"  basePackage="org.trans.http"  contextPath="transport"  mavenGroup="org.trans">
+
+        <servlet  name="car" />
+        <servlet  name="bus" />
+        <servlet  name="train" />
+        <servlet  name="plane" />
+
+    </server>
+
+
+</root>

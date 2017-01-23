@@ -1,0 +1,1 @@
+java -jar ./target/org.gramar.jetty.embedded.gramar.jar $@

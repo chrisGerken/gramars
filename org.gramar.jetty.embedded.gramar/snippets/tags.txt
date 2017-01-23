@@ -1,0 +1,62 @@
+"getter" snippets for defined tokens (input and calculated)
+
+
+Snippets for server
+
+
+	<c:get select="$server/@name" />
+
+	<c:get select="$server/@basePackage" />
+
+	<c:get select="$server/@srcProject" />
+
+	<c:get select="$server/@servletPkg" />
+
+	<c:get select="$server/@servletDir" />
+
+	<c:get select="$server/@rootPkg" />
+
+	<c:get select="$server/@rootDir" />
+
+	<c:get select="$server/@driver" />
+
+	<c:get select="$server/@contextPath" />
+
+	<c:get select="$server/@mavenGroup" />
+
+
+    <c:iterate select="$root/server" var="server"  > 
+
+	Author notes and scratchpad:
+	
+	
+			(End notes)	    
+
+Snippets for root
+
+
+
+	Author notes and scratchpad:
+	
+	
+			(End notes)	    
+
+Snippets for servlet
+
+
+	<c:get select="$servlet/@name" />
+
+	<c:get select="$servlet/@servletJava" />
+
+
+    <c:iterate select="$server/servlet" var="servlet"  > 
+
+	Author notes and scratchpad:
+	
+	
+			(End notes)	    
+
+
+
+
+

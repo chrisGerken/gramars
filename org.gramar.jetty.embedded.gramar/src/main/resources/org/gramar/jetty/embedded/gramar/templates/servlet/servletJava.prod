@@ -1,0 +1,53 @@
+package <c:get select="$server/@servletPkg" />;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class <c:get select="$servlet/@servletJava" /> extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+
+	public <c:get select="$servlet/@servletJava" />() {
+		
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		<c:userRegion>// Begin HTML<c:initialCode> 
+
+		resp.setContentType("text/html");
+
+		PrintWriter writer = resp.getWriter();
+		 
+		writer.println("<html>");
+
+		writer.println("<head>");
+		writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"/<c:get select="$server/@contextPath" />/<c:get select="$server/@contextPath" />.css\">");
+		writer.println("</head>");
+		
+
+		writer.println("<h1>Servlet <c:get select="c:lower-case($servlet/@name)" /></h1>");
+		writer.println("<p>Other servlets include:");
+<c:iterate select="$server/servlet" var="servlet" >
+		writer.println("<p><a href=\"<c:get select="c:lower-case($servlet/@name)" />\" target=\"_blank\"><c:get select="c:uppercaseFirst($servlet/@name)" /></a>");
+</c:iterate>		
+		
+		writer.println("<h2>CSS and other HTML files</h2>");
+		writer.println("<p>Note that this page uses a CSS file from the src/main/resources folder");
+
+		writer.println("<html>");
+
+		resp.setStatus(HttpServletResponse.SC_OK);
+
+		</c:initialCode>// End HTML</c:userRegion> 
+
+	}
+
+	
+}
