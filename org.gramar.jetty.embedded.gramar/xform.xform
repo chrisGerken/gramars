@@ -1,5 +1,5 @@
 
-<xform id="2" nextID="95" provider="org.gramar" version="1.0.0" xformDir="org/gramar/jetty/embedded/gramar" xformId="org.gramar.jetty.embedded.gramar" xformProject="org.gramar.jetty.embedded.gramar">
+<xform id="2" nextID="97" provider="org.gramar" version="1.0.0" xformDir="org/gramar/jetty/embedded/gramar" xformId="org.gramar.jetty.embedded.gramar" xformProject="org.gramar.jetty.embedded.gramar">
 	<group id="4" indent="    " name="server" parentId="3" root="false">
 		<createProject id="5" locationExpr="" name="{$server/@srcProject}" oLocation="" oPath="why-http" projectExpr="{$server/@srcProject}" purpose="src">
 		</createProject>
@@ -42,8 +42,14 @@
 		<token derived="false" desc="" formula="" name="mavenGroup">
 			<desc>The maven group name for the artifact to be built</desc>
 			</token>
-		<createFile binary="false" changeableName="false" folderExpr="/src/main/resources" id="93" nameExpr="index.html" oPath="src/main/resources/sample/resource.html" path="{$server/@srcProject}/src/main/resources/index.html" projectExpr="{$server/@srcProject}" projectId="5" purpose="indexHtml" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000025" template="templates/server/indexHtml.prod"/>
-		<createFile binary="false" changeableName="false" folderExpr="" id="94" nameExpr="readme.txt" oPath="pom.xml" path="{$server/@srcProject}/readme.txt" projectExpr="{$server/@srcProject}" projectId="5" purpose="readme" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000005" template="templates/server/readme.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="/src/main/resources" id="93" nameExpr="index.html" oPath="src/main/resources/sample/resource.html" path="{$server/@srcProject}/src/main/resources/index.html" projectExpr="{$server/@srcProject}" projectId="5" purpose="indexHtml" purposeAsTokenName="false" replace="false" src="org.gramar.jetty.embedded/refimpl/art000025" template="templates/server/indexHtml.prod"/>
+		<createFile binary="false" changeableName="false" folderExpr="" id="94" nameExpr="readme.txt" oPath="pom.xml" path="{$server/@srcProject}/readme.txt" projectExpr="{$server/@srcProject}" projectId="5" purpose="readme" purposeAsTokenName="false" replace="false" src="org.gramar.jetty.embedded/refimpl/art000005" template="templates/server/readme.prod"/>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/{$server/@servletDir}" id="95" nameExpr="{$server/@abstractServlet}.java" oPath="src/main/java/com/gerkenip/why/http/servlet/HomeServlet.java" path="{$server/@srcProject}/src/main/java/{$server/@servletDir}/{$server/@abstractServlet}.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="abstractServlet" purposeAsTokenName="false" replace="false" src="org.gramar.jetty.embedded/refimpl/art000013" template="templates/server/abstractServlet.prod"/>
+		<token derived="true" desc="variable for HomeServlet" formula="Abstract{c:uppercaseFirst($server/@name)}Servlet" name="abstractServlet"/>
+		<token derived="true" desc="" formula="{$server/@basePackage}.internal" name="internalPkg"/>
+		<token derived="true" desc="" formula="{translate($server/@internalPkg,&apos;.&apos;,&apos;/&apos;)}" name="internalDir"/>
+		<createFile binary="false" changeableName="true" folderExpr="/src/main/java/{$server/@internalDir}" id="96" nameExpr="{$server/@classpathPath}.java" oPath="src/main/java/com/gerkenip/why/http/WhyHttp.java" path="{$server/@srcProject}/src/main/java/{$server/@internalDir}/{$server/@classpathPath}.java" projectExpr="{$server/@srcProject}" projectId="5" purpose="classpathPath" purposeAsTokenName="false" replace="true" src="org.gramar.jetty.embedded/refimpl/art000009" template="templates/server/classpathPath.prod"/>
+		<token derived="true" desc="variable for WhyHttp" formula="{c:uppercaseFirst($server/@contextPath)}Path" name="classpathPath"/>
 		</group>
 	<group id="3" indent="" name="root" parentId="" root="true">
 		</group>
@@ -167,4 +173,6 @@
 	<replacement newString="{uppercaseFirst($server/@contextPath)}" oldString="Why"/>
 	<replacement newString="{$server/@contextPath}" oldString="why"/>
 	<replacement newString="{$server/@mavenGroup}" oldString="com.gerkenip"/>
+	<replacement newString="{$server/@abstractServlet}" oldString="HomeServlet"/>
+	<replacement newString="{$server/@classpathResource}" oldString="WhyHttp"/>
 	</xform>

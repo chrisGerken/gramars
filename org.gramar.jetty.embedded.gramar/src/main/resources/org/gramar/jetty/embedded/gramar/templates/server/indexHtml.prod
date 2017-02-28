@@ -1,7 +1,7 @@
 <c:userRegion><html><c:initialCode>
 
 <head>
-<link rel="stylesheet" type="text/css" href="/transport/transport.css">
+<link rel="stylesheet" type="text/css" href="/<c:get select="$server/@contextPath" />/<c:get select="$server/@contextPath" />.css">
 </head>
 
 <body>

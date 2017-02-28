@@ -23,6 +23,10 @@
     <c:set select="$server" name="rootPkg"><c:get select="$server/@basePackage" />.access</c:set>
     <c:set select="$server" name="rootDir"><c:get select="translate($server/@rootPkg,'.','/')" /></c:set>
     <c:set select="$server" name="driver"><c:get select="c:uppercaseFirst($server/@contextPath)" />Http</c:set>
+    <c:set select="$server" name="abstractServlet">Abstract<c:get select="c:uppercaseFirst($server/@name)" />Servlet</c:set>
+    <c:set select="$server" name="internalPkg"><c:get select="$server/@basePackage" />.internal</c:set>
+    <c:set select="$server" name="internalDir"><c:get select="translate($server/@internalPkg,'.','/')" /></c:set>
+    <c:set select="$server" name="classpathPath"><c:get select="c:uppercaseFirst($server/@contextPath)" />Path</c:set>
 
 
     *** Begin custom model updates for server (4)
@@ -98,10 +102,16 @@
     <c:file path="{$server/@srcProject}/src/main/resources/sample/resource.html" template="templates/server/resourceHtml.prod" replace="false" />
 
 
-    <c:file path="{$server/@srcProject}/src/main/resources/index.html" template="templates/server/indexHtml.prod" replace="true" />
+    <c:file path="{$server/@srcProject}/src/main/resources/index.html" template="templates/server/indexHtml.prod" replace="false" />
 
 
-    <c:file path="{$server/@srcProject}/readme.txt" template="templates/server/readme.prod" replace="true" />
+    <c:file path="{$server/@srcProject}/readme.txt" template="templates/server/readme.prod" replace="false" />
+
+
+    <c:file path="{$server/@srcProject}/src/main/java/{$server/@servletDir}/{$server/@abstractServlet}.java" template="templates/server/abstractServlet.prod" replace="false" />
+
+
+    <c:file path="{$server/@srcProject}/src/main/java/{$server/@internalDir}/{$server/@classpathPath}.java" template="templates/server/classpathPath.prod" replace="true" />
 
 
     *** Begin custom generation updates for server (4)

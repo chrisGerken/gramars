@@ -1,5 +1,7 @@
 package <c:get select="$server/@servletPkg" />;
 
+<c:userRegion>// Begin imports<c:initialCode>
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -8,12 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class <c:get select="$servlet/@servletJava" /> extends HttpServlet {
+</c:initialCode>// End imports</c:userRegion>
+
+public class <c:get select="$servlet/@servletJava" /> extends <c:get select="$server/@abstractServlet" /> {
+
+
+	<c:userRegion>// Begin declarations<c:initialCode>
 
 	private static final long serialVersionUID = 1L;
 
+	</c:initialCode>// End declarations</c:userRegion>
+
 	public <c:get select="$servlet/@servletJava" />() {
-		
+		super();
 	}
 
 	@Override
@@ -48,6 +57,22 @@ public class <c:get select="$servlet/@servletJava" /> extends HttpServlet {
 		</c:initialCode>// End HTML</c:userRegion> 
 
 	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		<c:userRegion>// Begin POST logic<c:initialCode> 
+
+		super.doPost(req, resp);
+
+		</c:initialCode>// End POST logic</c:userRegion> 
+
+	}
+
+	<c:userRegion>// Begin custom methods<c:initialCode>
+	
+	
+	</c:initialCode>// End custom methods</c:userRegion>
 
 	
 }

@@ -24,6 +24,14 @@ Snippets for server
 
 	<c:get select="$server/@mavenGroup" />
 
+	<c:get select="$server/@abstractServlet" />
+
+	<c:get select="$server/@internalPkg" />
+
+	<c:get select="$server/@internalDir" />
+
+	<c:get select="$server/@classpathPath" />
+
 
     <c:iterate select="$root/server" var="server"  > 
 
