@@ -57,11 +57,17 @@ public class <c:get select="$server/@driver" /> implements Runnable {
 	
 	public void run() {
 		try {
-			server = new Server(port);
+			server = new Server();
 	
 			ServletContextHandler sHandler = defineServletContextHandler();
 			server.setHandler(sHandler);
 
+			HttpConfiguration config = new HttpConfiguration();
+		    config.setRequestHeaderSize(65535);
+		    ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(config));
+		    http.setPort(port);
+		    server.setConnectors(new Connector[] {http});
+		    
 			server.start();
 			server.join();
 			
